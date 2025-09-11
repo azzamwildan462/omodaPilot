@@ -9,12 +9,26 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(ros2_utils REQUIRED)
+find_package(ros2_interface REQUIRED)
+
+include_directories(include)
 
 add_executable(keyboard_input src/keyboard_input.cpp)
 ament_target_dependencies(keyboard_input rclcpp std_msgs)
 
+set(
+  CANBUS_HAL_SRCS 
+  src/canable2_slcan.cpp
+  src/canable2_socket_can.cpp
+)
+
+add_executable(CANBUS_HAL_node src/CANBUS_HAL_node.cpp ${CANBUS_HAL_SRCS})
+ament_target_dependencies(CANBUS_HAL_node rclcpp std_msgs ros2_utils)
+
 install(TARGETS
   keyboard_input
+  CANBUS_HAL_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

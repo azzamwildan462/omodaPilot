@@ -92,6 +92,21 @@ def generate_launch_description():
         prefix=['xterm -e'],
     )
 
+    CANBUS_HAL_node = Node(
+        package='hardware',
+        executable='CANBUS_HAL_node',
+        name='CANBUS_HAL_node',
+        parameters=[{
+            "can_type": 0,
+            "device_name": "/dev/ttyACM0",
+            "baudrate": 500000,
+            "fd_baudrate": 2000000,
+        }],
+        output='screen',
+        respawn=True,
+    )
+
+
 
     return LaunchDescription(
         [
@@ -105,6 +120,7 @@ def generate_launch_description():
 
             # keyboard_input,
 
-            wifi_control,
+            # wifi_control,
+            CANBUS_HAL_node,
         ]
     )
