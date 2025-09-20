@@ -39,6 +39,17 @@ private:
     int init_slcan(int fd, const char *can_bitrate, const char *fdcan_bitrate);
     std::vector<can_frame_t> parse_can_msg(char *buf, size_t len);
     int build_can_msg(can_frame_t *frame, char *ret_buf);
+
+    uint8_t char_hex2byte(char c)
+    {
+        if (c >= '0' && c <= '9')
+            return c - '0';
+        if (c >= 'A' && c <= 'F')
+            return c - 'A' + 10;
+        if (c >= 'a' && c <= 'f')
+            return c - 'a' + 10;
+        return 0; // Invalid character
+    }
 };
 
 #endif // CANABLE2_SLCAN_H

@@ -153,8 +153,12 @@ std::vector<can_frame_t> CANable2_SLCAN::parse_can_msg(char *buf, size_t len)
             break; // Incomplete frame
         }
 
+        uint8_t id_i = char_hex2byte(buf[i + 1]);
+        uint8_t id_ii = char_hex2byte(buf[i + 2]);
+        uint8_t id_iii = char_hex2byte(buf[i + 3]);
+
         can_frame_t frame;
-        frame.id = (buf[i + 1] - '0') * 16 * 16 + (buf[i + 2] - '0') * 16 + (buf[i + 3] - '0');
+        frame.id = id_i * 16 * 16 + id_ii * 16 + id_iii;
 
         frame.dlc = buf[i + 4] - '0';
         if (frame.dlc > 8)
@@ -207,7 +211,7 @@ std::vector<can_frame_t> CANable2_SLCAN::parse_can_msg(char *buf, size_t len)
         // Data bytes
         for (size_t j = 0; j < frame.dlc; j++)
         {
-            frame.data[j] = (buf[i + 5 + j * 2] - '0') * 16 + (buf[i + 6 + j * 2] - '0');
+            frame.data[j] = char_hex2byte(buf[i + 5 + j * 2]) * 16 + char_hex2byte(buf[i + 6 + j * 2]);
         }
 
         frames.push_back(frame);
