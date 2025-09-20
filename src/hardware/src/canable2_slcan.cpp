@@ -363,7 +363,7 @@ std::vector<can_frame_t> CANable2_SLCAN::recv_msgs()
     ssize_t n = read(this->fd, buf, CAN_MTU);
     if (n < 0)
     {
-        if (errno = EINTR)
+        if (errno == EINTR)
         {
             // Interrupted, try again
             // std::cerr << "read: " << strerror(errno) << "\n";
