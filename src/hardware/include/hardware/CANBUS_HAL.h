@@ -16,6 +16,7 @@ typedef struct can_frame_t
     uint8_t dlc;
     uint8_t data[CAN_MAX_DATA_FRAME];
     uint64_t timestamp;
+    uint8_t flags; // 0: normal, 1: extended, 2: remote, 4: FD
 } can_frame_t;
 
 class CANBUS_HAL
@@ -67,3 +68,16 @@ public:
 };
 
 #endif // CANBUS_HAL_H
+
+/**
+ *
+ *
+ * 7b = 01111011
+ * 34 = 00110100 01111011
+ *
+ * 00110100 01111011
+ *
+ * 11001101000000
+ *
+ * 10011010000000
+ */

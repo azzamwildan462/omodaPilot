@@ -3,6 +3,17 @@
 
 #include <hardware/CANBUS_HAL.h>
 
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cerrno>
+#include <cstring>
+
+#include <fcntl.h>     // open
+#include <termios.h>   // termios, tcgetattr, tcsetattr, cfsetspeed
+#include <unistd.h>    // read, write, close
+#include <sys/ioctl.h> // tcdrain
+
 class CANable2_SLCAN : public CANBUS_HAL
 {
 public:
@@ -22,6 +33,12 @@ public:
     int init_update_as_new_thread() override;
 
     void shutdown() override;
+
+private:
+    bool set_serial(int fd, speed_t speed);
+    int init_slcan(int fd, const char *can_bitrate, const char *fdcan_bitrate);
+    std::vector<can_frame_t> parse_can_msg(char *buf, size_t len);
+    int build_can_msg(can_frame_t *frame, char *ret_buf);
 };
 
 #endif // CANABLE2_SLCAN_H

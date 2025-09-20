@@ -20,6 +20,7 @@ public:
     std::string device_name = "can0";
     int baudrate = 500000;
     int fd_baudrate = 2000000;
+    int fd;
 
     HelpLogger logger;
     std::unique_ptr<CANBUS_HAL> canbus_hal; // Pointer to base class

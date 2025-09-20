@@ -13,12 +13,292 @@
 
 #define SLCAN_MAX_DLC 15
 
+bool CANable2_SLCAN::set_serial(int fd, speed_t speed)
+{
+    termios tty{};
+    if (tcgetattr(fd, &tty) != 0)
+    {
+        std::cerr << "tcgetattr: " << strerror(errno) << "\n";
+        return false;
+    }
+
+    // Raw mode
+    cfmakeraw(&tty);
+
+    switch (speed)
+    {
+    case 9600:
+        cfsetispeed(&tty, B9600);
+        cfsetospeed(&tty, B9600);
+        break;
+    case 19200:
+        cfsetispeed(&tty, B19200);
+        cfsetospeed(&tty, B19200);
+        break;
+    case 38400:
+        cfsetispeed(&tty, B38400);
+        cfsetospeed(&tty, B38400);
+        break;
+    case 57600:
+        cfsetispeed(&tty, B57600);
+        cfsetospeed(&tty, B57600);
+        break;
+    case 115200:
+        cfsetispeed(&tty, B115200);
+        cfsetospeed(&tty, B115200);
+        break;
+    case 1000000:
+        cfsetispeed(&tty, B1000000);
+        cfsetospeed(&tty, B1000000);
+        break;
+    }
+
+    // 8N1, no flow control
+    tty.c_cflag &= ~PARENB;
+    tty.c_cflag &= ~CSTOPB;
+    tty.c_cflag &= ~CSIZE;
+    tty.c_cflag |= CS8;
+    tty.c_cflag &= ~CRTSCTS;
+    tty.c_cflag |= (CLOCAL | CREAD);
+
+    // Set BN1
+    tty.c_iflag &= ~(IXON | IXOFF | IXANY); // no SW flow control
+    // tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
+
+    // Noncanonical read with timeout:
+    // VMIN=0, VTIME=10 => read() returns immediately with available bytes,
+    // or waits up to 1.0s (10 * 100ms) for at least 1 byte.
+    tty.c_cc[VMIN] = 0;
+    tty.c_cc[VTIME] = 10;
+
+    // Apply settings now
+    if (tcsetattr(fd, TCSANOW, &tty) != 0)
+    {
+        std::cerr << "tcsetattr: " << strerror(errno) << "\n";
+        return false;
+    }
+
+    // Optional: flush I/O
+    tcflush(fd, TCIOFLUSH);
+    return true;
+}
+int CANable2_SLCAN::init_slcan(int fd, const char *can_bitrate, const char *fdcan_bitrate)
+{
+    {
+        ssize_t w = write(fd, can_bitrate, std::strlen(can_bitrate));
+        if (w < 0)
+        {
+            std::cerr << "write: " << strerror(errno) << "\n";
+            return 1;
+        }
+    }
+
+    usleep(300000);
+    if (tcdrain(fd) != 0)
+    {
+        std::cerr << "tcdrain: " << strerror(errno) << "\n";
+        return 1;
+    }
+
+    {
+        ssize_t w = write(fd, fdcan_bitrate, std::strlen(fdcan_bitrate));
+        if (w < 0)
+        {
+            std::cerr << "write: " << strerror(errno) << "\n";
+            return 1;
+        }
+    }
+
+    usleep(300000);
+    if (tcdrain(fd) != 0)
+    {
+        std::cerr << "tcdrain: " << strerror(errno) << "\n";
+        return 1;
+    }
+
+    {
+        const char *cmd = "O\r\n";
+        ssize_t w = write(fd, cmd, std::strlen(cmd));
+        if (w < 0)
+        {
+            std::cerr << "write: " << strerror(errno) << "\n";
+            close(fd);
+            return 1;
+        }
+    }
+
+    usleep(300000);
+    if (tcdrain(fd) != 0)
+    {
+        std::cerr << "tcdrain: " << strerror(errno) << "\n";
+        return 1;
+    }
+
+    return 0;
+}
+std::vector<can_frame_t> CANable2_SLCAN::parse_can_msg(char *buf, size_t len)
+{
+    std::vector<can_frame_t> frames;
+
+    for (size_t i = 0; i < len; i++)
+    {
+        if (buf[i] != 'b')
+        {
+            continue; // Not a CAN FD frame
+        }
+
+        if (i + 5 >= len)
+        {
+            perror("Incomplete CAN FD frame");
+            break; // Incomplete frame
+        }
+
+        can_frame_t frame;
+        frame.id = (buf[i + 1] - '0') * 16 * 16 + (buf[i + 2] - '0') * 16 + (buf[i + 3] - '0');
+
+        frame.dlc = buf[i + 4] - '0';
+        if (frame.dlc > 8)
+        {
+            switch (frame.dlc)
+            {
+            case 9:
+                frame.dlc = 12;
+                break;
+            case 10:
+                frame.dlc = 16;
+                break;
+            case 11:
+                frame.dlc = 20;
+                break;
+            case 12:
+                frame.dlc = 24;
+                break;
+            case 13:
+                frame.dlc = 32;
+                break;
+            case 14:
+                frame.dlc = 48;
+                break;
+            case 15:
+                frame.dlc = 64;
+                break;
+            default:
+                frame.dlc = 0; // Fallback to 8
+                perror("Invalid DLC");
+                break;
+            }
+        }
+
+        frame.flags = 0;  // No special flags for now
+        frame.flags |= 4; // FD frame
+
+        if (frame.dlc * 2 + 5 + i > len)
+        {
+            perror("Incomplete CAN FD frame data");
+            break; // Incomplete frame data
+        }
+
+        if (frame.dlc > (CAN_MAX_DATA_FRAME - 5))
+        {
+            perror("DLC exceeds maximum data frame size");
+            break; // DLC exceeds maximum data frame size
+        }
+
+        // Data bytes
+        for (size_t j = 0; j < frame.dlc; j++)
+        {
+            frame.data[j] = (buf[i + 5 + j * 2] - '0') * 16 + (buf[i + 6 + j * 2] - '0');
+        }
+
+        frames.push_back(frame);
+    }
+
+    return frames;
+}
+int CANable2_SLCAN::build_can_msg(can_frame_t *frame, char *ret_buf)
+{
+    char msg_send[CAN_MAX_DATA_FRAME];
+    memset(msg_send, 0, CAN_MAX_DATA_FRAME);
+
+    msg_send[0] = 'b';
+    snprintf(&msg_send[1], 4, "%03X", frame->id);
+    if (frame->dlc <= 8)
+    {
+        msg_send[4] = '0' + frame->dlc;
+    }
+    else
+    {
+        switch (frame->dlc)
+        {
+        case 12:
+            msg_send[4] = '9';
+            break;
+        case 16:
+            msg_send[4] = 'A';
+            break;
+        case 20:
+            msg_send[4] = 'B';
+            break;
+        case 24:
+            msg_send[4] = 'C';
+            break;
+        case 32:
+            msg_send[4] = 'D';
+            break;
+        case 48:
+            msg_send[4] = 'E';
+            break;
+        case 64:
+            msg_send[4] = 'F';
+            break;
+        default:
+            msg_send[4] = '8'; // Fallback to 8
+            perror("Invalid DLC");
+            break;
+        }
+    }
+    for (size_t j = 0; j < frame->dlc; j++)
+    {
+        snprintf(&msg_send[5 + j * 2], 3, "%02X", frame->data[j]);
+    }
+    // msg_send[5 + frame->dlc * 2] = '\r';
+    // msg_send[5 + frame->dlc * 2 + 1] = '\0';
+
+    memcpy(ret_buf, msg_send, strlen(msg_send));
+
+    return 0;
+}
+
 int CANable2_SLCAN::init(std::string device_name, int baudRate, int fd_baudrate)
 {
     (void)device_name;
     (void)baudRate;
     (void)fd_baudrate;
     logger->info("CANable2_SLCAN initialized on %s with baudrate %d %d", device_name.c_str(), baudRate, fd_baudrate);
+
+    int fd = open(device_name.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
+    if (fd < 0)
+    {
+        logger->error("Error opening serial port %s: %s", device_name.c_str(), strerror(errno));
+        return -1;
+    }
+
+    if (!set_serial(fd, 1000000))
+    {
+        logger->error("Error setting serial port parameters: %s", strerror(errno));
+        close(fd);
+        return -1;
+    }
+
+    if (init_slcan(fd, "S6\r", "Y2\r") != 0)
+    {
+        logger->error("Error initializing SLCAN interface");
+        close(fd);
+        return -1;
+    }
+
+    this->fd = fd;
+
     return 0;
 }
 
