@@ -345,6 +345,38 @@ int CANable2_SLCAN::send_msg(can_frame_t *can_msg)
 can_frame_t CANable2_SLCAN::recv_msg()
 {
     can_frame_t frame;
+
+    char buf[CAN_MTU];
+    bzero(buf, CAN_MTU);
+    ssize_t n = read(this->fd, buf, CAN_MTU);
+    if (n < 0)
+    {
+        if (errno = EINTR)
+        {
+            // Interrupted, try again
+            // std::cerr << "read: " << strerror(errno) << "\n";
+            logger->error("Interrupted read from serial port: %s", strerror(errno));
+            return frame;
+        }
+        else if (errno == EAGAIN || errno == EWOULDBLOCK)
+        {
+            logger->error("No data available on serial port: %s", strerror(errno));
+            return frame;
+        }
+        else
+        {
+            logger->error("Error reading from serial port: %s", strerror(errno));
+            return frame;
+        }
+    }
+    else if (n == 0)
+    {
+        // EOF
+        logger->error("EOF on serial port");
+        return frame;
+    }
+
+    std::vector<can_frame_t> frames = parse_can_msg(buf, n);
     return frame;
 }
 
@@ -363,6 +395,8 @@ std::vector<can_frame_t> CANable2_SLCAN::recv_msgs()
 int CANable2_SLCAN::update()
 {
     // Hitung speed
+    float raw_kmh_longitudinal = (this->wheel_speed_rl + this->wheel_speed_rr) / 4.0f;
+    this->fb_current_velocity = raw_kmh_longitudinal / 3.6f;
 
     return 0;
 }

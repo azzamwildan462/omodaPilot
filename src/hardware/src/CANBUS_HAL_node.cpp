@@ -74,6 +74,7 @@ public:
 
     void callback_routine()
     {
+        canbus_hal->recv_msgs();
         canbus_hal->update();
 
         std_msgs::msg::Float32 msg_steering_angle;
