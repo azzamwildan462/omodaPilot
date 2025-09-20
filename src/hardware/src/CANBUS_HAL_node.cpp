@@ -3,6 +3,7 @@
  */
 
 #include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/float32.hpp"
 #include "ros2_utils/help_logger.hpp"
 #include "ros2_utils/global_definitions.hpp"
 
@@ -14,6 +15,8 @@ class CANBUS_HAL_node : public rclcpp::Node
 {
 public:
     rclcpp::TimerBase::SharedPtr tim_routine;
+    rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr pub_fb_steering_angle;
+    rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr pub_fb_current_velocity;
 
     // Configs
     int can_type = 0; // 0: CANable2_SLCAN, 1: CANable2_SOCKET_CAN
@@ -57,6 +60,9 @@ public:
             rclcpp::shutdown();
         }
 
+        pub_fb_steering_angle = this->create_publisher<std_msgs::msg::Float32>("fb_steering_angle", 1);
+        pub_fb_current_velocity = this->create_publisher<std_msgs::msg::Float32>("fb_current_velocity", 1);
+
         tim_routine = this->create_wall_timer(std::chrono::milliseconds(20), std::bind(&CANBUS_HAL_node::callback_routine, this));
 
         logger.info("CANBUS_HAL_node node initialized");
@@ -68,6 +74,15 @@ public:
 
     void callback_routine()
     {
+        canbus_hal->update();
+
+        std_msgs::msg::Float32 msg_steering_angle;
+        msg_steering_angle.data = canbus_hal->fb_steering_angle;
+        pub_fb_steering_angle->publish(msg_steering_angle);
+
+        std_msgs::msg::Float32 msg_current_velocity;
+        msg_current_velocity.data = canbus_hal->fb_current_velocity;
+        pub_fb_current_velocity->publish(msg_current_velocity);
     }
 };
 

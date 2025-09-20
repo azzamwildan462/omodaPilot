@@ -39,6 +39,7 @@ private:
     int init_slcan(int fd, const char *can_bitrate, const char *fdcan_bitrate);
     std::vector<can_frame_t> parse_can_msg(char *buf, size_t len);
     int build_can_msg(can_frame_t *frame, char *ret_buf);
+    int parse_incoming_data(can_frame_t *frame);
 
     uint8_t char_hex2byte(char c)
     {

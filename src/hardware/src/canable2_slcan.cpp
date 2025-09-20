@@ -13,6 +13,32 @@
 
 #define SLCAN_MAX_DLC 15
 
+int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
+{
+    if (frame->id == CHERY_CANFD_STEER_ANGLE_SENSOR_FRAME_ID)
+    {
+        bzero(&angle_sensor, sizeof(angle_sensor));
+        chery_canfd_steer_angle_sensor_unpack(&angle_sensor, frame.data, frame.dlc);
+        this->fb_steering_angle = chery_canfd_steer_angle_sensor_steer_angle_decode(angle_sensor.steer_angle) * 3.141592653589793 / 180.0;
+    }
+    else if (frame->id == CHERY_CANFD_WHEEL_SPEED_REAR_FRAME_ID)
+    {
+        bzero(&wheel_speed_rear, sizeof(wheel_speed_rear));
+        chery_canfd_wheel_speed_rear_unpack(&wheel_speed_rear, frame.data, frame.dlc);
+        this->wheel_speed_rl = chery_canfd_wheel_speed_rear_wheel_speed_rl_decode(wheel_speed_rear.wheel_speed_rl);
+        this->wheel_speed_rr = chery_canfd_wheel_speed_rear_wheel_speed_rr_decode(wheel_speed_rear.wheel_speed_rr);
+    }
+    else if (frame->id == CHERY_CANFD_WHEEL_SPEED_FRNT_FRAME_ID)
+    {
+        bzero(&wheel_speed_front, sizeof(wheel_speed_front));
+        chery_canfd_wheel_speed_front_unpack(&wheel_speed_front, frame.data, frame.dlc);
+        this->wheel_speed_fl = chery_canfd_wheel_speed_front_wheel_speed_fl_decode(wheel_speed_front.wheel_speed_fl);
+        this->wheel_speed_fr = chery_canfd_wheel_speed_front_wheel_speed_fr_decode(wheel_speed_front.wheel_speed_fr);
+    }
+
+    return 0;
+}
+
 bool CANable2_SLCAN::set_serial(int fd, speed_t speed)
 {
     termios tty{};
@@ -214,7 +240,11 @@ std::vector<can_frame_t> CANable2_SLCAN::parse_can_msg(char *buf, size_t len)
             frame.data[j] = char_hex2byte(buf[i + 5 + j * 2]) * 16 + char_hex2byte(buf[i + 6 + j * 2]);
         }
 
+        parse_incoming_data(&frame);
+
         frames.push_back(frame);
+
+        i += frame.dlc * 2 + 4; // Move index to the end of this frame
     }
 
     return frames;
@@ -332,6 +362,8 @@ std::vector<can_frame_t> CANable2_SLCAN::recv_msgs()
 
 int CANable2_SLCAN::update()
 {
+    // Hitung speed
+
     return 0;
 }
 
