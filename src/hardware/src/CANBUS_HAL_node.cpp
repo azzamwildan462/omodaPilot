@@ -33,8 +33,8 @@ public:
 
     HelpLogger logger;
     std::unique_ptr<CANBUS_HAL> canbus_hal; // Pointer to base class
-    time_t time_now;
-    time_t last_time_publish;
+    rclcpp::Time time_now;
+    rclcpp::Time last_time_publish;
 
     CANBUS_HAL_node()
         : Node("canbus_hal_node")
@@ -71,7 +71,7 @@ public:
             rclcpp::shutdown();
         }
 
-        time_now = rclcpp::Clock().now().seconds();
+        time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
         last_time_publish = time_now;
 
         pub_fb_steering_angle = this->create_publisher<std_msgs::msg::Float32>("fb_steering_angle", 1);
@@ -92,20 +92,20 @@ public:
         while (rclcpp::ok())
         {
             callback_routine();
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
         }
     }
 
     void callback_routine()
     {
-        time_now = rclcpp::Clock().now().seconds();
+        time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
 
         canbus_hal->recv_msgs();
         canbus_hal->update();
 
         // Memastikan publish sesuai dengan periode yang diinginkan
-        time_t dt_publish = time_now - last_time_publish;
-        if (dt_publish * 1000 < publish_period_ms)
+        rclcpp::Duration dt_publish = time_now - last_time_publish;
+        if (dt_publish.seconds() * 1000 < publish_period_ms && publish_period_ms != -1)
             return;
         last_time_publish = time_now;
 

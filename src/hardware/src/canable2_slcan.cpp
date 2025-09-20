@@ -175,7 +175,7 @@ std::vector<can_frame_t> CANable2_SLCAN::parse_can_msg(char *buf, size_t len)
 
         if (i + 5 >= len)
         {
-            perror("Incomplete CAN FD frame");
+            // perror("Incomplete CAN FD frame");
             break; // Incomplete frame
         }
 
@@ -213,8 +213,8 @@ std::vector<can_frame_t> CANable2_SLCAN::parse_can_msg(char *buf, size_t len)
                 frame.dlc = 64;
                 break;
             default:
+                // perror("Invalid DLC");
                 frame.dlc = 0; // Fallback to 8
-                perror("Invalid DLC");
                 break;
             }
         }
@@ -224,13 +224,13 @@ std::vector<can_frame_t> CANable2_SLCAN::parse_can_msg(char *buf, size_t len)
 
         if (frame.dlc * 2 + 5 + i > len)
         {
-            perror("Incomplete CAN FD frame data");
+            // perror("Incomplete CAN FD frame data");
             break; // Incomplete frame data
         }
 
         if (frame.dlc > (CAN_MAX_DATA_FRAME - 5))
         {
-            perror("DLC exceeds maximum data frame size");
+            // perror("DLC exceeds maximum data frame size");
             break; // DLC exceeds maximum data frame size
         }
 

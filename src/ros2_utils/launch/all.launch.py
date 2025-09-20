@@ -101,6 +101,7 @@ def generate_launch_description():
             "device_name": "/dev/ttyACM0",
             "baudrate": 500000,
             "fd_baudrate": 2000000,
+            "publish_period_ms": -1,
         }],
         output='screen',
         respawn=True,
