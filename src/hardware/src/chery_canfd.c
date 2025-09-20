@@ -31,7 +31,7 @@
 
 #include <string.h>
 
-#include "chery_canfd.h"
+#include "hardware/chery_canfd.h"
 
 static inline uint8_t pack_left_shift_u8(
     uint8_t value,
@@ -104,7 +104,8 @@ int chery_canfd_engine_data_pack(
 {
     uint16_t accel;
 
-    if (size < 48u) {
+    if (size < 48u)
+    {
         return (-EINVAL);
     }
 
@@ -154,7 +155,8 @@ int chery_canfd_engine_data_unpack(
 {
     uint16_t accel;
 
-    if (size < 48u) {
+    if (size < 48u)
+    {
         return (-EINVAL);
     }
 
@@ -166,7 +168,8 @@ int chery_canfd_engine_data_unpack(
     accel = unpack_left_shift_u16(src_p[4], 8u, 0x7fu);
     accel |= unpack_right_shift_u16(src_p[5], 0u, 0xffu);
 
-    if ((accel & (1u << 14)) != 0u) {
+    if ((accel & (1u << 14)) != 0u)
+    {
         accel |= 0x8000u;
     }
 
@@ -202,7 +205,8 @@ int chery_canfd_engine_data_unpack(
 
 int chery_canfd_engine_data_init(struct chery_canfd_engine_data_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_engine_data_t));
 
@@ -566,7 +570,8 @@ int chery_canfd_steer_sensor_pack(
     uint8_t torque;
     uint8_t torque_driver;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -592,7 +597,8 @@ int chery_canfd_steer_sensor_unpack(
     uint8_t torque;
     uint8_t torque_driver;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -601,7 +607,8 @@ int chery_canfd_steer_sensor_unpack(
     dst_p->fraction = unpack_right_shift_u8(src_p[0], 4u, 0xf0u);
     torque = unpack_right_shift_u8(src_p[1], 0u, 0x0fu);
 
-    if ((torque & (1u << 3)) != 0u) {
+    if ((torque & (1u << 3)) != 0u)
+    {
         torque |= 0xf0u;
     }
 
@@ -615,7 +622,8 @@ int chery_canfd_steer_sensor_unpack(
 
 int chery_canfd_steer_sensor_init(struct chery_canfd_steer_sensor_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_steer_sensor_t));
 
@@ -706,7 +714,8 @@ int chery_canfd_new_msg_127_pack(
 {
     uint8_t new_signal_1;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -728,7 +737,8 @@ int chery_canfd_new_msg_127_unpack(
 {
     uint8_t new_signal_1;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -743,7 +753,8 @@ int chery_canfd_new_msg_127_unpack(
 
 int chery_canfd_new_msg_127_init(struct chery_canfd_new_msg_127_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_127_t));
 
@@ -815,7 +826,8 @@ int chery_canfd_new_msg_128_pack(
     const struct chery_canfd_new_msg_128_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -832,7 +844,8 @@ int chery_canfd_new_msg_128_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -844,7 +857,8 @@ int chery_canfd_new_msg_128_unpack(
 
 int chery_canfd_new_msg_128_init(struct chery_canfd_new_msg_128_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_128_t));
 
@@ -873,7 +887,8 @@ int chery_canfd_steer_angle_sensor_pack(
 {
     uint8_t torque;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -896,7 +911,8 @@ int chery_canfd_steer_angle_sensor_unpack(
 {
     uint8_t torque;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -912,7 +928,8 @@ int chery_canfd_steer_angle_sensor_unpack(
 
 int chery_canfd_steer_angle_sensor_init(struct chery_canfd_steer_angle_sensor_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_steer_angle_sensor_t));
 
@@ -989,7 +1006,8 @@ int chery_canfd_lkas_pack(
     uint16_t lkas_cmd;
     uint8_t new_signal_7;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1019,14 +1037,16 @@ int chery_canfd_lkas_unpack(
     uint16_t lkas_cmd;
     uint8_t new_signal_7;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
     dst_p->new_signal_1 = unpack_right_shift_u8(src_p[0], 0u, 0x07u);
     new_signal_7 = unpack_right_shift_u8(src_p[0], 3u, 0xf8u);
 
-    if ((new_signal_7 & (1u << 4)) != 0u) {
+    if ((new_signal_7 & (1u << 4)) != 0u)
+    {
         new_signal_7 |= 0xe0u;
     }
 
@@ -1035,7 +1055,8 @@ int chery_canfd_lkas_unpack(
     lkas_cmd = unpack_left_shift_u16(src_p[1], 3u, 0x7fu);
     lkas_cmd |= unpack_right_shift_u16(src_p[2], 5u, 0xe0u);
 
-    if ((lkas_cmd & (1u << 9)) != 0u) {
+    if ((lkas_cmd & (1u << 9)) != 0u)
+    {
         lkas_cmd |= 0xfc00u;
     }
 
@@ -1051,7 +1072,8 @@ int chery_canfd_lkas_unpack(
 
 int chery_canfd_lkas_init(struct chery_canfd_lkas_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_lkas_t));
 
@@ -1208,7 +1230,8 @@ int chery_canfd_new_msg_260_pack(
 {
     uint16_t new_signal_1;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1235,7 +1258,8 @@ int chery_canfd_new_msg_260_unpack(
 {
     uint16_t new_signal_1;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1249,7 +1273,8 @@ int chery_canfd_new_msg_260_unpack(
     new_signal_1 = unpack_left_shift_u16(src_p[5], 4u, 0xffu);
     new_signal_1 |= unpack_right_shift_u16(src_p[6], 4u, 0xf0u);
 
-    if ((new_signal_1 & (1u << 11)) != 0u) {
+    if ((new_signal_1 & (1u << 11)) != 0u)
+    {
         new_signal_1 |= 0xf000u;
     }
 
@@ -1260,7 +1285,8 @@ int chery_canfd_new_msg_260_unpack(
 
 int chery_canfd_new_msg_260_init(struct chery_canfd_new_msg_260_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_260_t));
 
@@ -1379,7 +1405,8 @@ int chery_canfd_new_msg_287_pack(
     const struct chery_canfd_new_msg_287_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1396,7 +1423,8 @@ int chery_canfd_new_msg_287_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1408,7 +1436,8 @@ int chery_canfd_new_msg_287_unpack(
 
 int chery_canfd_new_msg_287_init(struct chery_canfd_new_msg_287_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_287_t));
 
@@ -1452,7 +1481,8 @@ int chery_canfd_brake_data_pack(
 {
     uint16_t brake_pos;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1474,7 +1504,8 @@ int chery_canfd_brake_data_unpack(
 {
     uint16_t brake_pos;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1483,7 +1514,8 @@ int chery_canfd_brake_data_unpack(
     brake_pos = unpack_left_shift_u16(src_p[2], 6u, 0x3fu);
     brake_pos |= unpack_right_shift_u16(src_p[3], 2u, 0xfcu);
 
-    if ((brake_pos & (1u << 11)) != 0u) {
+    if ((brake_pos & (1u << 11)) != 0u)
+    {
         brake_pos |= 0xf000u;
     }
 
@@ -1494,7 +1526,8 @@ int chery_canfd_brake_data_unpack(
 
 int chery_canfd_brake_data_init(struct chery_canfd_brake_data_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_brake_data_t));
 
@@ -1538,7 +1571,8 @@ int chery_canfd_new_msg_2_e9_pack(
 {
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1555,7 +1589,8 @@ int chery_canfd_new_msg_2_e9_unpack(
     (void)dst_p;
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1564,7 +1599,8 @@ int chery_canfd_new_msg_2_e9_unpack(
 
 int chery_canfd_new_msg_2_e9_init(struct chery_canfd_new_msg_2_e9_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_2_e9_t));
 
@@ -1576,7 +1612,8 @@ int chery_canfd_door_pack(
     const struct chery_canfd_door_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1593,7 +1630,8 @@ int chery_canfd_door_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1605,7 +1643,8 @@ int chery_canfd_door_unpack(
 
 int chery_canfd_door_init(struct chery_canfd_door_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_door_t));
 
@@ -1647,7 +1686,8 @@ int chery_canfd_new_msg_305_pack(
     const struct chery_canfd_new_msg_305_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1664,7 +1704,8 @@ int chery_canfd_new_msg_305_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1676,7 +1717,8 @@ int chery_canfd_new_msg_305_unpack(
 
 int chery_canfd_new_msg_305_init(struct chery_canfd_new_msg_305_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_305_t));
 
@@ -1720,7 +1762,8 @@ int chery_canfd_lkas_state_pack(
     const struct chery_canfd_lkas_state_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1743,7 +1786,8 @@ int chery_canfd_lkas_state_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1761,7 +1805,8 @@ int chery_canfd_lkas_state_unpack(
 
 int chery_canfd_lkas_state_init(struct chery_canfd_lkas_state_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_lkas_state_t));
 
@@ -1895,7 +1940,8 @@ int chery_canfd_wheel_speed_rear_pack(
     const struct chery_canfd_wheel_speed_rear_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1915,7 +1961,8 @@ int chery_canfd_wheel_speed_rear_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -1930,7 +1977,8 @@ int chery_canfd_wheel_speed_rear_unpack(
 
 int chery_canfd_wheel_speed_rear_init(struct chery_canfd_wheel_speed_rear_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_wheel_speed_rear_t));
 
@@ -1994,7 +2042,8 @@ int chery_canfd_wheel_speed_frnt_pack(
     uint16_t wheel_speed_fl;
     uint16_t wheel_speed_fr;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2020,7 +2069,8 @@ int chery_canfd_wheel_speed_frnt_unpack(
     uint16_t wheel_speed_fl;
     uint16_t wheel_speed_fr;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2038,7 +2088,8 @@ int chery_canfd_wheel_speed_frnt_unpack(
 
 int chery_canfd_wheel_speed_frnt_init(struct chery_canfd_wheel_speed_frnt_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_wheel_speed_frnt_t));
 
@@ -2114,7 +2165,8 @@ int chery_canfd_new_msg_319_pack(
 {
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2131,7 +2183,8 @@ int chery_canfd_new_msg_319_unpack(
     (void)dst_p;
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2140,7 +2193,8 @@ int chery_canfd_new_msg_319_unpack(
 
 int chery_canfd_new_msg_319_init(struct chery_canfd_new_msg_319_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_319_t));
 
@@ -2154,7 +2208,8 @@ int chery_canfd_lkas_cam_cmd_345_pack(
 {
     uint8_t new_signal_5;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2181,7 +2236,8 @@ int chery_canfd_lkas_cam_cmd_345_unpack(
 {
     uint8_t new_signal_5;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2201,7 +2257,8 @@ int chery_canfd_lkas_cam_cmd_345_unpack(
 
 int chery_canfd_lkas_cam_cmd_345_init(struct chery_canfd_lkas_cam_cmd_345_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_lkas_cam_cmd_345_t));
 
@@ -2343,7 +2400,8 @@ int chery_canfd_steer_button_pack(
     const struct chery_canfd_steer_button_t *src_p,
     size_t size)
 {
-    if (size < 6u) {
+    if (size < 6u)
+    {
         return (-EINVAL);
     }
 
@@ -2367,7 +2425,8 @@ int chery_canfd_steer_button_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 6u) {
+    if (size < 6u)
+    {
         return (-EINVAL);
     }
 
@@ -2386,7 +2445,8 @@ int chery_canfd_steer_button_unpack(
 
 int chery_canfd_steer_button_init(struct chery_canfd_steer_button_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_steer_button_t));
 
@@ -2535,7 +2595,8 @@ int chery_canfd_setting_pack(
     const struct chery_canfd_setting_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2563,7 +2624,8 @@ int chery_canfd_setting_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2586,7 +2648,8 @@ int chery_canfd_setting_unpack(
 
 int chery_canfd_setting_init(struct chery_canfd_setting_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_setting_t));
 
@@ -2782,7 +2845,8 @@ int chery_canfd_bcm_signal_2_pack(
     const struct chery_canfd_bcm_signal_2_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2812,7 +2876,8 @@ int chery_canfd_bcm_signal_2_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -2837,7 +2902,8 @@ int chery_canfd_bcm_signal_2_unpack(
 
 int chery_canfd_bcm_signal_2_init(struct chery_canfd_bcm_signal_2_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_bcm_signal_2_t));
 
@@ -3074,7 +3140,8 @@ int chery_canfd_bcm_signal_1_pack(
     const struct chery_canfd_bcm_signal_1_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -3098,7 +3165,8 @@ int chery_canfd_bcm_signal_1_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -3117,7 +3185,8 @@ int chery_canfd_bcm_signal_1_unpack(
 
 int chery_canfd_bcm_signal_1_init(struct chery_canfd_bcm_signal_1_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_bcm_signal_1_t));
 
@@ -3266,7 +3335,8 @@ int chery_canfd_steer_sensor_2_pack(
 {
     uint16_t torque_driver;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -3287,14 +3357,16 @@ int chery_canfd_steer_sensor_2_unpack(
 {
     uint16_t torque_driver;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
     torque_driver = unpack_left_shift_u16(src_p[0], 4u, 0xffu);
     torque_driver |= unpack_right_shift_u16(src_p[1], 4u, 0xf0u);
 
-    if ((torque_driver & (1u << 11)) != 0u) {
+    if ((torque_driver & (1u << 11)) != 0u)
+    {
         torque_driver |= 0xf000u;
     }
 
@@ -3306,7 +3378,8 @@ int chery_canfd_steer_sensor_2_unpack(
 
 int chery_canfd_steer_sensor_2_init(struct chery_canfd_steer_sensor_2_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_steer_sensor_2_t));
 
@@ -3351,7 +3424,8 @@ int chery_canfd_acc_cmd_pack(
     uint16_t cmd;
     uint8_t new_signal_4;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -3392,7 +3466,8 @@ int chery_canfd_acc_cmd_unpack(
     uint16_t cmd;
     uint8_t new_signal_4;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -3400,7 +3475,8 @@ int chery_canfd_acc_cmd_unpack(
     cmd = unpack_left_shift_u16(src_p[0], 3u, 0x7fu);
     cmd |= unpack_right_shift_u16(src_p[1], 5u, 0xe0u);
 
-    if ((cmd & (1u << 9)) != 0u) {
+    if ((cmd & (1u << 9)) != 0u)
+    {
         cmd |= 0xfc00u;
     }
 
@@ -3420,7 +3496,8 @@ int chery_canfd_acc_cmd_unpack(
     dst_p->new_signal_3 = unpack_right_shift_u8(src_p[4], 7u, 0x80u);
     new_signal_4 = unpack_right_shift_u8(src_p[5], 0u, 0x7fu);
 
-    if ((new_signal_4 & (1u << 6)) != 0u) {
+    if ((new_signal_4 & (1u << 6)) != 0u)
+    {
         new_signal_4 |= 0x80u;
     }
 
@@ -3435,7 +3512,8 @@ int chery_canfd_acc_cmd_unpack(
 
 int chery_canfd_acc_cmd_init(struct chery_canfd_acc_cmd_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_acc_cmd_t));
 
@@ -3751,7 +3829,8 @@ int chery_canfd_acc_pack(
     const struct chery_canfd_acc_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -3782,7 +3861,8 @@ int chery_canfd_acc_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -3808,7 +3888,8 @@ int chery_canfd_acc_unpack(
 
 int chery_canfd_acc_init(struct chery_canfd_acc_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_acc_t));
 
@@ -4064,7 +4145,8 @@ int chery_canfd_new_msg_3_a7_pack(
 {
     (void)src_p;
 
-    if (size < 24u) {
+    if (size < 24u)
+    {
         return (-EINVAL);
     }
 
@@ -4081,7 +4163,8 @@ int chery_canfd_new_msg_3_a7_unpack(
     (void)dst_p;
     (void)src_p;
 
-    if (size < 24u) {
+    if (size < 24u)
+    {
         return (-EINVAL);
     }
 
@@ -4090,7 +4173,8 @@ int chery_canfd_new_msg_3_a7_unpack(
 
 int chery_canfd_new_msg_3_a7_init(struct chery_canfd_new_msg_3_a7_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_3_a7_t));
 
@@ -4102,7 +4186,8 @@ int chery_canfd_new_msg_3_af_pack(
     const struct chery_canfd_new_msg_3_af_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4125,7 +4210,8 @@ int chery_canfd_new_msg_3_af_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4143,7 +4229,8 @@ int chery_canfd_new_msg_3_af_unpack(
 
 int chery_canfd_new_msg_3_af_init(struct chery_canfd_new_msg_3_af_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_3_af_t));
 
@@ -4230,7 +4317,8 @@ int chery_canfd_new_msg_3_dc_pack(
     const struct chery_canfd_new_msg_3_dc_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4259,7 +4347,8 @@ int chery_canfd_new_msg_3_dc_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4283,7 +4372,8 @@ int chery_canfd_new_msg_3_dc_unpack(
 
 int chery_canfd_new_msg_3_dc_init(struct chery_canfd_new_msg_3_dc_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_3_dc_t));
 
@@ -4468,7 +4558,8 @@ int chery_canfd_new_msg_3_de_pack(
     const struct chery_canfd_new_msg_3_de_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4492,7 +4583,8 @@ int chery_canfd_new_msg_3_de_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4511,7 +4603,8 @@ int chery_canfd_new_msg_3_de_unpack(
 
 int chery_canfd_new_msg_3_de_init(struct chery_canfd_new_msg_3_de_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_3_de_t));
 
@@ -4632,7 +4725,8 @@ int chery_canfd_new_msg_3_e2_pack(
 {
     uint16_t new_signal_1;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4653,7 +4747,8 @@ int chery_canfd_new_msg_3_e2_unpack(
 {
     uint16_t new_signal_1;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4661,7 +4756,8 @@ int chery_canfd_new_msg_3_e2_unpack(
     new_signal_1 = unpack_left_shift_u16(src_p[2], 4u, 0x3fu);
     new_signal_1 |= unpack_right_shift_u16(src_p[3], 4u, 0xf0u);
 
-    if ((new_signal_1 & (1u << 9)) != 0u) {
+    if ((new_signal_1 & (1u << 9)) != 0u)
+    {
         new_signal_1 |= 0xfc00u;
     }
 
@@ -4672,7 +4768,8 @@ int chery_canfd_new_msg_3_e2_unpack(
 
 int chery_canfd_new_msg_3_e2_init(struct chery_canfd_new_msg_3_e2_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_3_e2_t));
 
@@ -4714,7 +4811,8 @@ int chery_canfd_lead_front_pack(
     const struct chery_canfd_lead_front_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4741,7 +4839,8 @@ int chery_canfd_lead_front_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4763,7 +4862,8 @@ int chery_canfd_lead_front_unpack(
 
 int chery_canfd_lead_front_init(struct chery_canfd_lead_front_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_lead_front_t));
 
@@ -4952,7 +5052,8 @@ int chery_canfd_new_msg_3_f0_pack(
 {
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4969,7 +5070,8 @@ int chery_canfd_new_msg_3_f0_unpack(
     (void)dst_p;
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -4978,7 +5080,8 @@ int chery_canfd_new_msg_3_f0_unpack(
 
 int chery_canfd_new_msg_3_f0_init(struct chery_canfd_new_msg_3_f0_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_3_f0_t));
 
@@ -4990,7 +5093,8 @@ int chery_canfd_lead_right_left_pack(
     const struct chery_canfd_lead_right_left_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5022,7 +5126,8 @@ int chery_canfd_lead_right_left_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5049,7 +5154,8 @@ int chery_canfd_lead_right_left_unpack(
 
 int chery_canfd_lead_right_left_init(struct chery_canfd_lead_right_left_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_lead_right_left_t));
 
@@ -5264,7 +5370,8 @@ int chery_canfd_hud_alert_pack(
 {
     uint8_t new_signal_3;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5290,7 +5397,8 @@ int chery_canfd_hud_alert_unpack(
 {
     uint8_t new_signal_3;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5309,7 +5417,8 @@ int chery_canfd_hud_alert_unpack(
 
 int chery_canfd_hud_alert_init(struct chery_canfd_hud_alert_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_hud_alert_t));
 
@@ -5443,7 +5552,8 @@ int chery_canfd_new_msg_40_f_pack(
     const struct chery_canfd_new_msg_40_f_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5464,7 +5574,8 @@ int chery_canfd_new_msg_40_f_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5480,7 +5591,8 @@ int chery_canfd_new_msg_40_f_unpack(
 
 int chery_canfd_new_msg_40_f_init(struct chery_canfd_new_msg_40_f_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_40_f_t));
 
@@ -5582,7 +5694,8 @@ int chery_canfd_new_msg_427_pack(
     const struct chery_canfd_new_msg_427_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5599,7 +5712,8 @@ int chery_canfd_new_msg_427_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5611,7 +5725,8 @@ int chery_canfd_new_msg_427_unpack(
 
 int chery_canfd_new_msg_427_init(struct chery_canfd_new_msg_427_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_427_t));
 
@@ -5653,7 +5768,8 @@ int chery_canfd_new_msg_430_pack(
     const struct chery_canfd_new_msg_430_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5678,7 +5794,8 @@ int chery_canfd_new_msg_430_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5698,7 +5815,8 @@ int chery_canfd_new_msg_430_unpack(
 
 int chery_canfd_new_msg_430_init(struct chery_canfd_new_msg_430_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_430_t));
 
@@ -5864,7 +5982,8 @@ int chery_canfd_new_msg_435_pack(
     const struct chery_canfd_new_msg_435_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5880,7 +5999,8 @@ int chery_canfd_new_msg_435_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5891,7 +6011,8 @@ int chery_canfd_new_msg_435_unpack(
 
 int chery_canfd_new_msg_435_init(struct chery_canfd_new_msg_435_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_435_t));
 
@@ -5920,7 +6041,8 @@ int chery_canfd_new_msg_45_a_pack(
     const struct chery_canfd_new_msg_45_a_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5936,7 +6058,8 @@ int chery_canfd_new_msg_45_a_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5947,7 +6070,8 @@ int chery_canfd_new_msg_45_a_unpack(
 
 int chery_canfd_new_msg_45_a_init(struct chery_canfd_new_msg_45_a_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_45_a_t));
 
@@ -5974,7 +6098,8 @@ int chery_canfd_bsm_left_pack(
     const struct chery_canfd_bsm_left_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -5992,7 +6117,8 @@ int chery_canfd_bsm_left_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6005,7 +6131,8 @@ int chery_canfd_bsm_left_unpack(
 
 int chery_canfd_bsm_left_init(struct chery_canfd_bsm_left_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_bsm_left_t));
 
@@ -6062,7 +6189,8 @@ int chery_canfd_bsm_right_pack(
     const struct chery_canfd_bsm_right_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6079,7 +6207,8 @@ int chery_canfd_bsm_right_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6091,7 +6220,8 @@ int chery_canfd_bsm_right_unpack(
 
 int chery_canfd_bsm_right_init(struct chery_canfd_bsm_right_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_bsm_right_t));
 
@@ -6133,7 +6263,8 @@ int chery_canfd_new_msg_4_dd_pack(
     const struct chery_canfd_new_msg_4_dd_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6150,7 +6281,8 @@ int chery_canfd_new_msg_4_dd_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6162,7 +6294,8 @@ int chery_canfd_new_msg_4_dd_unpack(
 
 int chery_canfd_new_msg_4_dd_init(struct chery_canfd_new_msg_4_dd_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_4_dd_t));
 
@@ -6206,7 +6339,8 @@ int chery_canfd_new_msg_4_e3_pack(
     const struct chery_canfd_new_msg_4_e3_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6223,7 +6357,8 @@ int chery_canfd_new_msg_4_e3_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6235,7 +6370,8 @@ int chery_canfd_new_msg_4_e3_unpack(
 
 int chery_canfd_new_msg_4_e3_init(struct chery_canfd_new_msg_4_e3_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_4_e3_t));
 
@@ -6277,7 +6413,8 @@ int chery_canfd_brake_sensor_pack(
     const struct chery_canfd_brake_sensor_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6301,7 +6438,8 @@ int chery_canfd_brake_sensor_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6320,7 +6458,8 @@ int chery_canfd_brake_sensor_unpack(
 
 int chery_canfd_brake_sensor_init(struct chery_canfd_brake_sensor_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_brake_sensor_t));
 
@@ -6467,7 +6606,8 @@ int chery_canfd_carlinko_pack(
     const struct chery_canfd_carlinko_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6484,7 +6624,8 @@ int chery_canfd_carlinko_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6496,7 +6637,8 @@ int chery_canfd_carlinko_unpack(
 
 int chery_canfd_carlinko_init(struct chery_canfd_carlinko_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_carlinko_t));
 
@@ -6538,7 +6680,8 @@ int chery_canfd_epb_pack(
     const struct chery_canfd_epb_t *src_p,
     size_t size)
 {
-    if (size < 2u) {
+    if (size < 2u)
+    {
         return (-EINVAL);
     }
 
@@ -6555,7 +6698,8 @@ int chery_canfd_epb_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 2u) {
+    if (size < 2u)
+    {
         return (-EINVAL);
     }
 
@@ -6567,7 +6711,8 @@ int chery_canfd_epb_unpack(
 
 int chery_canfd_epb_init(struct chery_canfd_epb_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_epb_t));
 
@@ -6609,7 +6754,8 @@ int chery_canfd_window_command_pack(
     const struct chery_canfd_window_command_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6625,7 +6771,8 @@ int chery_canfd_window_command_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6636,7 +6783,8 @@ int chery_canfd_window_command_unpack(
 
 int chery_canfd_window_command_init(struct chery_canfd_window_command_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_window_command_t));
 
@@ -6663,7 +6811,8 @@ int chery_canfd_aeb_command_pack(
     const struct chery_canfd_aeb_command_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6679,7 +6828,8 @@ int chery_canfd_aeb_command_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6690,7 +6840,8 @@ int chery_canfd_aeb_command_unpack(
 
 int chery_canfd_aeb_command_init(struct chery_canfd_aeb_command_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_aeb_command_t));
 
@@ -6719,7 +6870,8 @@ int chery_canfd_new_msg_51_b_pack(
 {
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6736,7 +6888,8 @@ int chery_canfd_new_msg_51_b_unpack(
     (void)dst_p;
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6745,7 +6898,8 @@ int chery_canfd_new_msg_51_b_unpack(
 
 int chery_canfd_new_msg_51_b_init(struct chery_canfd_new_msg_51_b_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_51_b_t));
 
@@ -6757,7 +6911,8 @@ int chery_canfd_new_msg_51_d_pack(
     const struct chery_canfd_new_msg_51_d_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6774,7 +6929,8 @@ int chery_canfd_new_msg_51_d_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6786,7 +6942,8 @@ int chery_canfd_new_msg_51_d_unpack(
 
 int chery_canfd_new_msg_51_d_init(struct chery_canfd_new_msg_51_d_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_51_d_t));
 
@@ -6830,7 +6987,8 @@ int chery_canfd_new_msg_535_pack(
 {
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6847,7 +7005,8 @@ int chery_canfd_new_msg_535_unpack(
     (void)dst_p;
     (void)src_p;
 
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6856,7 +7015,8 @@ int chery_canfd_new_msg_535_unpack(
 
 int chery_canfd_new_msg_535_init(struct chery_canfd_new_msg_535_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_535_t));
 
@@ -6868,7 +7028,8 @@ int chery_canfd_new_msg_537_pack(
     const struct chery_canfd_new_msg_537_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6886,7 +7047,8 @@ int chery_canfd_new_msg_537_unpack(
     const uint8_t *src_p,
     size_t size)
 {
-    if (size < 8u) {
+    if (size < 8u)
+    {
         return (-EINVAL);
     }
 
@@ -6899,7 +7061,8 @@ int chery_canfd_new_msg_537_unpack(
 
 int chery_canfd_new_msg_537_init(struct chery_canfd_new_msg_537_t *msg_p)
 {
-    if (msg_p == NULL) return -1;
+    if (msg_p == NULL)
+        return -1;
 
     memset(msg_p, 0, sizeof(struct chery_canfd_new_msg_537_t));
 

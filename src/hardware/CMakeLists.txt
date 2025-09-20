@@ -21,6 +21,7 @@ set(
   CANBUS_HAL_SRCS 
   src/canable2_slcan.cpp
   src/canable2_socket_can.cpp
+  src/chery_canfd.c
 )
 
 add_executable(CANBUS_HAL_node src/CANBUS_HAL_node.cpp ${CANBUS_HAL_SRCS})

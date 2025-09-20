@@ -6,6 +6,7 @@
 #include <string>
 
 #include "ros2_utils/help_logger.hpp"
+#include "hardware/chery_canfd.h"
 
 #define CAN_MAX_DATA_FRAME 128
 #define CAN_MTU 1024
@@ -44,7 +45,7 @@ public:
     chery_canfd_lkas_cam_cmd_345_t lkas_cam_cmd;
     chery_canfd_steer_angle_sensor_t angle_sensor;
     chery_canfd_wheel_speed_rear_t wheel_speed_rear;
-    chery_canfd_wheel_speed_front_t wheel_speed_front;
+    chery_canfd_wheel_speed_frnt_t wheel_speed_front;
 
     float wheel_speed_rl; // km/h
     float wheel_speed_rr; // km/h
