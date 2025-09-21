@@ -193,6 +193,28 @@ int build_can_msg(canfd_frame_t *frame, char *ret_buf)
     return 0;
 }
 
+uint8_t calculate_crc(const uint8_t *data, size_t length, uint8_t poly, uint8_t xor_output)
+{
+    uint8_t crc = 0;
+    for (size_t i = 0; i < length; ++i)
+    {
+        crc ^= data[i];
+        for (int j = 0; j < 8; ++j)
+        {
+            if (crc & 0x80)
+            {
+                crc = (crc << 1) ^ poly;
+            }
+            else
+            {
+                crc <<= 1;
+            }
+            crc &= 0xFF; // Ensure crc remains within 8 bits
+        }
+    }
+    return (crc ^ xor_output);
+}
+
 int main()
 {
     const char *smpl_can_data_terima = "b3458F966000000000000\rasd123asdb123401020304";
@@ -224,6 +246,34 @@ int main()
     }
 
     printf("semua: %s\n", smpl_can_data_kirim);
+
+    printf("==========================\n\n");
+
+    // data hex kirim b3457A9C000CBEFE2ABA,
+    // pack data
+    canfd_frame_t frame_kirim;
+    frame_kirim.can_id = 0x345;
+    frame_kirim.dlc = 8;
+    frame_kirim.data[0] = 0x7A;
+    frame_kirim.data[1] = 0x9C;
+    frame_kirim.data[2] = 0x00;
+    frame_kirim.data[3] = 0x0C;
+    frame_kirim.data[4] = 0xBE;
+    frame_kirim.data[5] = 0xFE;
+    frame_kirim.data[6] = 0x2A;
+    frame_kirim.data[7] = 0xBA;
+
+    // frame_kirim.data[0] = 0x7B;
+    // frame_kirim.data[1] = 0x34;
+    // frame_kirim.data[2] = 0x00;
+    // frame_kirim.data[3] = 0xE3;
+    // frame_kirim.data[4] = 0x06;
+    // frame_kirim.data[5] = 0x00;
+    // frame_kirim.data[6] = 0x13;
+    // harusnya B0
+
+    uint8_t crc = calculate_crc(frame_kirim.data, 7, 0x1D, 0xA);
+    printf("CRC: %02X\n", crc);
 
     return 0;
 }

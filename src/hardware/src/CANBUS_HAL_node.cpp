@@ -134,27 +134,26 @@ public:
     {
     }
 
-    uint8_t calculate_crc(const uint8_t *data, std::size_t len,
-                          uint8_t poly, uint8_t xor_out)
+    uint8_t calculate_crc(const uint8_t *data, size_t length, uint8_t poly, uint8_t xor_output)
     {
-        uint8_t crc = 0x00;
-        for (std::size_t idx = 0; idx < len - 1; ++idx)
+        uint8_t crc = 0;
+        for (size_t i = 0; i < length; ++i)
         {
-            crc ^= data[idx];
-            for (int i = 0; i < 8; ++i)
+            crc ^= data[i];
+            for (int j = 0; j < 8; ++j)
             {
                 if (crc & 0x80)
                 {
-                    crc = static_cast<uint8_t>((crc << 1) ^ poly);
+                    crc = (crc << 1) ^ poly;
                 }
                 else
                 {
-                    crc = static_cast<uint8_t>(crc << 1);
+                    crc <<= 1;
                 }
-                crc &= 0xFF; // mirrors the Python masking
+                crc &= 0xFF;
             }
         }
-        return static_cast<uint8_t>(crc ^ xor_out);
+        return (crc ^ xor_output);
     }
 
     // =========================================================================================
@@ -174,7 +173,7 @@ public:
         bzero(&frame_steer_cmd, sizeof(frame_steer_cmd));
         chery_canfd_lkas_cam_cmd_345_pack(frame_steer_cmd.data, &msg_steer_cmd, sizeof(frame_steer_cmd.data));
 
-        uint8_t crc = calculate_crc(frame_steer_cmd.data, sizeof(frame_steer_cmd.data) - 1, 0x1D, 0xA);
+        uint8_t crc = calculate_crc(frame_steer_cmd.data, CHERY_CANFD_LKAS_CAM_CMD_345_LENGTH - 1, 0x1D, 0xA);
         msg_steer_cmd.checksum = crc;
         bzero(&frame_steer_cmd, sizeof(frame_steer_cmd));
         chery_canfd_lkas_cam_cmd_345_pack(frame_steer_cmd.data, &msg_steer_cmd, sizeof(frame_steer_cmd.data));
