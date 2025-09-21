@@ -263,16 +263,34 @@ int main()
     frame_kirim.data[6] = 0x2A;
     frame_kirim.data[7] = 0xBA;
 
-    // frame_kirim.data[0] = 0x7B;
-    // frame_kirim.data[1] = 0x34;
-    // frame_kirim.data[2] = 0x00;
-    // frame_kirim.data[3] = 0xE3;
-    // frame_kirim.data[4] = 0x06;
-    // frame_kirim.data[5] = 0x00;
-    // frame_kirim.data[6] = 0x13;
-    // harusnya B0
-
     uint8_t crc = calculate_crc(frame_kirim.data, 7, 0x1D, 0xA);
+    // print data and crc
+    printf("CAN ID: %X %d | %d\n", frame_kirim.can_id, frame_kirim.can_id, frame_kirim.dlc);
+    printf("Data: ");
+    for (size_t j = 0; j < frame_kirim.dlc; j++)
+    {
+        printf("%02X ", frame_kirim.data[j]);
+    }
+    printf("\n");
+    printf("CRC: %02X\n", crc);
+
+    frame_kirim.data[0] = 0x7B;
+    frame_kirim.data[1] = 0x34;
+    frame_kirim.data[2] = 0x00;
+    frame_kirim.data[3] = 0xE3;
+    frame_kirim.data[4] = 0x06;
+    frame_kirim.data[5] = 0x00;
+    frame_kirim.data[6] = 0x13;
+    frame_kirim.data[7] = 0xB0;
+
+    crc = calculate_crc(frame_kirim.data, 7, 0x1D, 0xA);
+    printf("CAN ID: %X %d | %d\n", frame_kirim.can_id, frame_kirim.can_id, frame_kirim.dlc);
+    printf("Data: ");
+    for (size_t j = 0; j < frame_kirim.dlc; j++)
+    {
+        printf("%02X ", frame_kirim.data[j]);
+    }
+    printf("\n");
     printf("CRC: %02X\n", crc);
 
     return 0;
