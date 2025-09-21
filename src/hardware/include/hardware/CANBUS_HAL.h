@@ -34,10 +34,10 @@ public:
 
     float fb_steering_angle;   // rad
     float fb_current_velocity; // m/s
-    float fb_brake;
-    float fb_throttle;
-    uint32_t fb_buttons_bus1;
-    uint32_t fb_buttons_bus2;
+    // float fb_brake;
+    // float fb_throttle;
+    // uint32_t fb_buttons_bus1;
+    // uint32_t fb_buttons_bus2;
 
     /**
      * Data data interface can bus hal
@@ -53,6 +53,28 @@ public:
     float wheel_speed_fr; // km/h
 
     HelpLogger *logger;
+
+    chery_canfd_engine_data_t engine_data;
+    uint16_t engine_gas_pos;
+    uint16_t engine_gas;
+    uint8_t engine_gear;
+    uint8_t engine_gear_button;
+    uint8_t engine_brake_press;
+    uint8_t engine_switch_to_p;
+
+    std::string gear_status;
+    std::string gear_button_status;
+
+    chery_canfd_steer_button_t steer_button;
+    uint8_t btn_acc;
+    uint8_t btn_cc;
+    uint8_t btn_res_plus;
+    uint8_t btn_res_minus;
+    uint8_t btn_gap_adjust_up;
+    uint8_t btn_gap_adjust_down;
+
+    chery_canfd_brake_data_t brake_data;
+    int16_t data_brake_pos;
 
     /**
      * Data data internal untuk canbus hal

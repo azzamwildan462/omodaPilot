@@ -19,7 +19,7 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
     {
         bzero(&angle_sensor, sizeof(angle_sensor));
         chery_canfd_steer_angle_sensor_unpack(&angle_sensor, frame->data, frame->dlc);
-        this->fb_steering_angle = chery_canfd_steer_angle_sensor_steer_angle_decode(angle_sensor.steer_angle) * 3.141592653589793 / 180.0;
+        this->fb_steering_angle = chery_canfd_steer_angle_sensor_steer_angle_decode(angle_sensor.steer_angle) * 3.141592653589793 / 180.0; // deg to rad
     }
     else if (frame->id == CHERY_CANFD_WHEEL_SPEED_REAR_FRAME_ID)
     {
@@ -34,6 +34,43 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         chery_canfd_wheel_speed_frnt_unpack(&wheel_speed_front, frame->data, frame->dlc);
         this->wheel_speed_fl = chery_canfd_wheel_speed_frnt_wheel_speed_fl_decode(wheel_speed_front.wheel_speed_fl);
         this->wheel_speed_fr = chery_canfd_wheel_speed_frnt_wheel_speed_fr_decode(wheel_speed_front.wheel_speed_fr);
+    }
+
+    else if (frame->id == CHERY_CANFD_ENGINE_DATA_FRAME_ID)
+    {
+        bzero(&engine_data, sizeof(engine_data));
+        chery_canfd_engine_data_unpack(&engine_data, frame->data, frame->dlc);
+        this->engine_gas_pos = chery_canfd_engine_data_gas_pos_decode(engine_data.gas_pos);
+        this->engine_gas = chery_canfd_engine_data_gas_decode(engine_data.gas);
+        this->engine_gear = chery_canfd_engine_data_gear_decode(engine_data.gear);
+        this->engine_gear_button = chery_canfd_engine_data_gear_button_decode(engine_data.gear_button);
+        this->engine_brake_press = chery_canfd_engine_data_brake_press_decode(engine_data.brake_press);
+        this->engine_switch_to_p = chery_canfd_engine_data_switch_to_p_decode(engine_data.switch_to_p);
+    }
+
+    else if (frame->id == CHERY_CANFD_STEER_BUTTON_FRAME_ID)
+    {
+        bzero(&steer_button, sizeof(steer_button));
+        chery_canfd_steer_button_unpack(&steer_button, frame->data, frame->dlc);
+        this->btn_acc = chery_canfd_steer_button_acc_decode(steer_button.acc);
+        this->btn_cc = chery_canfd_steer_button_cc_btn_decode(steer_button.cc_btn);
+        this->btn_res_plus = chery_canfd_steer_button_res_plus_decode(steer_button.res_plus);
+        this->btn_res_minus = chery_canfd_steer_button_res_minus_decode(steer_button.res_minus);
+        this->btn_gap_adjust_up = chery_canfd_steer_button_gap_adjust_up_decode(steer_button.gap_adjust_up);
+        this->btn_gap_adjust_down = chery_canfd_steer_button_gap_adjust_down_decode(steer_button.gap_adjust_down);
+    }
+
+    else if (frame->id == CHERY_CANFD_BRAKE_DATA_FRAME_ID)
+    {
+        bzero(&brake_data, sizeof(brake_data));
+        chery_canfd_brake_data_unpack(&brake_data, frame->data, frame->dlc);
+        this->data_brake_pos = chery_canfd_brake_data_brake_pos_decode(brake_data.brake_pos);
+    }
+
+    else
+    {
+        // Unknown frame ID
+        return -1;
     }
 
     return 0;
@@ -399,6 +436,44 @@ int CANable2_SLCAN::update()
     float raw_kmh_longitudinal = (this->wheel_speed_rl + this->wheel_speed_rr) / 2.0f;
     this->fb_current_velocity = raw_kmh_longitudinal / 3.6f;
 
+    // GEAR 1 "P" 2 "R" 3 "N" 4 "D";
+    switch (this->engine_gear)
+    {
+    case CHERY_CANFD_ENGINE_DATA_GEAR_P_CHOICE:
+        this->gear_status = "P";
+        break;
+    case CHERY_CANFD_ENGINE_DATA_GEAR_R_CHOICE:
+        this->gear_status = "R";
+        break;
+    case CHERY_CANFD_ENGINE_DATA_GEAR_N_CHOICE:
+        this->gear_status = "N";
+        break;
+    case CHERY_CANFD_ENGINE_DATA_GEAR_D_CHOICE:
+        this->gear_status = "D";
+        break;
+    default:
+        this->gear_status = "Unknown";
+        break;
+    }
+    // GEAR_BUTTON 1 "Park Pressed" 3 "Netral Pressed" 4 "Drive Pressed" 2 "Reverse Pressed";
+    switch (this->engine_gear_button)
+    {
+    case CHERY_CANFD_ENGINE_DATA_GEAR_BUTTON_PARK__PRESSED_CHOICE:
+        this->gear_button_status = "Park Pressed";
+        break;
+    case CHERY_CANFD_ENGINE_DATA_GEAR_BUTTON_REVERSE__PRESSED_CHOICE:
+        this->gear_button_status = "Reverse Pressed";
+        break;
+    case CHERY_CANFD_ENGINE_DATA_GEAR_BUTTON_NETRAL__PRESSED_CHOICE:
+        this->gear_button_status = "Netral Pressed";
+        break;
+    case CHERY_CANFD_ENGINE_DATA_GEAR_BUTTON_DRIVE__PRESSED_CHOICE:
+        this->gear_button_status = "Drive Pressed";
+        break;
+    default:
+        this->gear_button_status = "Unknown";
+        break;
+    }
     return 0;
 }
 
