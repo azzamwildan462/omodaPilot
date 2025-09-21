@@ -96,9 +96,12 @@ def generate_launch_description():
         package='hardware',
         executable='CANBUS_HAL_node',
         name='CANBUS_HAL_node',
+        namespace='hardware',
         parameters=[{
-            "can_type": 0,
-            "device_name": "/dev/ttyACM0",
+            "can1_type": 0,
+            "can2_type": 0,
+            "device1_name": "/dev/ttyACM1",
+            "device2_name": "/dev/ttyACM0", # String kosong untuk nonaktifkan
             "baudrate": 500000,
             "fd_baudrate": 2000000,
             "publish_period_ms": -1,
@@ -125,3 +128,6 @@ def generate_launch_description():
             CANBUS_HAL_node,
         ]
     )
+
+
+# b34587e5a000000000042

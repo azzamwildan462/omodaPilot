@@ -27,10 +27,10 @@ class CANBUS_HAL
      */
 public:
     float target_steering_angle; // rad
-    float target_velocity;       // m/s
-    float target_brake;
-    uint32_t acc_setting;
-    uint32_t hud_alert;
+    // float target_velocity;       // m/s
+    // float target_brake;
+    // uint32_t acc_setting;
+    // uint32_t hud_alert;
 
     float fb_steering_angle;   // rad
     float fb_current_velocity; // m/s
@@ -55,8 +55,8 @@ public:
     HelpLogger *logger;
 
     chery_canfd_engine_data_t engine_data;
-    uint16_t engine_gas_pos;
-    uint16_t engine_gas;
+    double engine_gas_pos;
+    double engine_gas;
     uint8_t engine_gear;
     uint8_t engine_gear_button;
     uint8_t engine_brake_press;
@@ -75,6 +75,8 @@ public:
 
     chery_canfd_brake_data_t brake_data;
     int16_t data_brake_pos;
+
+    uint8_t is_can_to_adas = 0;
 
     /**
      * Data data internal untuk canbus hal

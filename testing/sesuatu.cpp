@@ -195,7 +195,7 @@ int build_can_msg(canfd_frame_t *frame, char *ret_buf)
 
 int main()
 {
-    const char *smpl_can_data_terima = "b1d3879a4000000000fb5\rasd123asdb123401020304";
+    const char *smpl_can_data_terima = "b3458F966000000000000\rasd123asdb123401020304";
     char smpl_can_data_kirim[CAN_MTU];
     size_t idx_pos_kirim = 0;
 

@@ -66,6 +66,12 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         chery_canfd_brake_data_unpack(&brake_data, frame->data, frame->dlc);
         this->data_brake_pos = chery_canfd_brake_data_brake_pos_decode(brake_data.brake_pos);
     }
+    else if (frame->id == CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID)
+    {
+        bzero(&lkas_cam_cmd, sizeof(lkas_cam_cmd));
+        chery_canfd_lkas_cam_cmd_345_unpack(&lkas_cam_cmd, frame->data, frame->dlc);
+        this->target_steering_angle = chery_canfd_steer_angle_sensor_steer_angle_decode(lkas_cam_cmd.cmd) * 3.141592653589793 / 180.0; // deg to rad
+    }
 
     else
     {
@@ -223,7 +229,7 @@ std::vector<can_frame_t> CANable2_SLCAN::parse_can_msg(char *buf, size_t len)
         can_frame_t frame;
         frame.id = id_i * 16 * 16 + id_ii * 16 + id_iii;
 
-        frame.dlc = buf[i + 4] - '0';
+        frame.dlc = char_hex2byte(buf[i + 4]);
         if (frame.dlc > 8)
         {
             switch (frame.dlc)
@@ -332,8 +338,16 @@ int CANable2_SLCAN::build_can_msg(can_frame_t *frame, char *ret_buf)
     {
         snprintf(&msg_send[5 + j * 2], 3, "%02X", frame->data[j]);
     }
-    // msg_send[5 + frame->dlc * 2] = '\r';
-    // msg_send[5 + frame->dlc * 2 + 1] = '\0';
+
+    // SEMENTARA
+    // Ubah char huruf besar ke huruf kecil
+    for (size_t k = 1; k < strlen(msg_send); k++)
+    {
+        if (msg_send[k] >= 'A' && msg_send[k] <= 'F')
+        {
+            msg_send[k] = msg_send[k] - 'A' + 'a';
+        }
+    }
 
     memcpy(ret_buf, msg_send, strlen(msg_send));
 
@@ -376,6 +390,30 @@ int CANable2_SLCAN::init(std::string device_name, int baudRate, int fd_baudrate)
 int CANable2_SLCAN::send_msg(can_frame_t *can_msg)
 {
     (void)can_msg;
+
+    char rts_data[CAN_MAX_DATA_FRAME];
+    bzero(rts_data, CAN_MAX_DATA_FRAME);
+    build_can_msg(can_msg, rts_data);
+    size_t len = strlen(rts_data);
+
+    // add \r\n at the end
+    rts_data[len] = '\r';
+
+    logger->info("Sending CAN ID: %X %d | %d -> %s", can_msg->id, can_msg->id, can_msg->dlc, rts_data);
+
+    ssize_t w = write(this->fd, rts_data, len + 1);
+    if (w < 0)
+    {
+        std::cerr << "write: " << strerror(errno) << "\n";
+        return 1;
+    }
+
+    if (tcdrain(this->fd) != 0)
+    {
+        std::cerr << "tcdrain: " << strerror(errno) << "\n";
+        return 1;
+    }
+
     return 0;
 }
 
@@ -474,6 +512,36 @@ int CANable2_SLCAN::update()
         this->gear_button_status = "Unknown";
         break;
     }
+
+    //     chery_canfd_engine_data_t engine_data;
+    // uint16_t engine_gas_pos;
+    // uint16_t engine_gas;
+    // uint8_t engine_gear;
+    // uint8_t engine_gear_button;
+    // uint8_t engine_brake_press;
+    // uint8_t engine_switch_to_p;
+
+    // std::string gear_status;
+    // std::string gear_button_status;
+
+    // chery_canfd_steer_button_t steer_button;
+    // uint8_t btn_acc;
+    // uint8_t btn_cc;
+    // uint8_t btn_res_plus;
+    // uint8_t btn_res_minus;
+    // uint8_t btn_gap_adjust_up;
+    // uint8_t btn_gap_adjust_down;
+
+    // chery_canfd_brake_data_t brake_data;
+    // int16_t data_brake_pos;
+
+    logger->info("%d %d %s %.2lf || %.2f %.2f %.2f %.2f || %.2f %.2f %d %d || %d %d %d %d %d || %.2f",
+                 this->engine_gear, this->engine_gear_button, this->gear_status.c_str(), this->engine_gas,
+                 this->fb_steering_angle, this->wheel_speed_fl, this->wheel_speed_fr, this->wheel_speed_rl, this->wheel_speed_rr,
+                 this->fb_current_velocity, this->btn_acc, this->btn_cc, this->btn_res_plus,
+                 this->btn_res_minus, this->btn_gap_adjust_up, this->btn_gap_adjust_down, this->data_brake_pos,
+                 this->target_steering_angle);
+
     return 0;
 }
 
