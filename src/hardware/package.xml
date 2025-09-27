@@ -11,6 +11,7 @@
 
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
   <depend>ros2_interface</depend>
   <depend>ros2_utils</depend>
 

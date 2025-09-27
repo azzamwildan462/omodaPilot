@@ -11,6 +11,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(ros2_utils REQUIRED)
 find_package(ros2_interface REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 include_directories(include)
 
@@ -27,9 +28,13 @@ set(
 add_executable(CANBUS_HAL_node src/CANBUS_HAL_node.cpp ${CANBUS_HAL_SRCS})
 ament_target_dependencies(CANBUS_HAL_node rclcpp std_msgs ros2_utils)
 
+add_executable(stm_HAL_node src/stm_HAL_node.cpp)
+ament_target_dependencies(stm_HAL_node rclcpp std_msgs ros2_utils sensor_msgs)
+
 install(TARGETS
   keyboard_input
   CANBUS_HAL_node
+  stm_HAL_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

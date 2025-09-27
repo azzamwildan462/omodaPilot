@@ -110,6 +110,18 @@ def generate_launch_description():
         respawn=True,
     )
 
+    stm_HAL_node = Node(
+        package='hardware',
+        executable='stm_HAL_node',
+        name='stm_HAL_node',
+        namespace='hardware',
+        parameters=[{
+            "encoder_to_meter": 1.0,
+        }],
+        output='screen',
+        respawn=True,
+    )
+
 
 
     return LaunchDescription(
@@ -125,7 +137,8 @@ def generate_launch_description():
             # keyboard_input,
 
             # wifi_control,
-            CANBUS_HAL_node,
+            # CANBUS_HAL_node,
+            stm_HAL_node,
         ]
     )
 
