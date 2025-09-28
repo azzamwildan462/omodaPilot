@@ -62,6 +62,7 @@ def generate_launch_description():
         package='master',
         executable='master',
         name='master',
+        namespace='master',
         output='screen',
         respawn=True,
         prefix='nice -n -10',
@@ -106,6 +107,11 @@ def generate_launch_description():
             "fd_baudrate": 2000000,
             "publish_period_ms": -1,
         }],
+        remappings=[
+            ("cmd_target_steering_angle", "/master/cmd_target_steering_angle"),
+            ("cmd_target_velocity", "/master/cmd_target_velocity"),
+            ("cmd_hw_flag", "/master/cmd_hw_flag"),
+        ],
         output='screen',
         respawn=True,
     )
@@ -120,9 +126,9 @@ def generate_launch_description():
 
             # telemetry,
 
-            # master,
+            master,
 
-            # keyboard_input,
+            keyboard_input,
 
             # wifi_control,
             CANBUS_HAL_node,

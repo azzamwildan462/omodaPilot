@@ -19,6 +19,9 @@
 
 #include <thread>
 
+#define CMD_STEER_ACTIVE 0b01
+#define CMD_GAS_ACTIVE 0b10
+
 class CANBUS_HAL_node : public rclcpp::Node
 {
 public:
@@ -28,6 +31,9 @@ public:
     rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr pub_throttle_position;
     rclcpp::Publisher<std_msgs::msg::Int16>::SharedPtr pub_brake_position;
     rclcpp::Publisher<std_msgs::msg::UInt8>::SharedPtr pub_gear_status;
+    rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr sub_target_steering_angle;
+    rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr sub_target_velocity;
+    rclcpp::Subscription<std_msgs::msg::UInt8>::SharedPtr sub_hw_flag;
 
     std::thread thread_can1_routine;
     std::thread thread_can2_routine;
@@ -50,6 +56,10 @@ public:
 
     // Data kirim untuk can bus
     chery_canfd_lkas_cam_cmd_345_t msg_steer_cmd;
+
+    float cmd_target_steering_angle = 0;
+    float cmd_target_velocity = 0;
+    uint8_t cmd_hw_flag = 0;
 
     CANBUS_HAL_node()
         : Node("canbus_hal_node")
@@ -121,6 +131,13 @@ public:
         pub_brake_position = this->create_publisher<std_msgs::msg::Int16>("fb_brake_position", 1);
         pub_gear_status = this->create_publisher<std_msgs::msg::UInt8>("fb_gear_status", 1);
 
+        sub_target_steering_angle = this->create_subscription<std_msgs::msg::Float32>(
+            "cmd_target_steering_angle", 1, std::bind(&CANBUS_HAL_node::callback_sub_target_steering_angle, this, std::placeholders::_1));
+        sub_target_velocity = this->create_subscription<std_msgs::msg::Float32>(
+            "cmd_target_velocity", 1, std::bind(&CANBUS_HAL_node::callback_sub_target_velocity, this, std::placeholders::_1));
+        sub_hw_flag = this->create_subscription<std_msgs::msg::UInt8>(
+            "cmd_hw_flag", 1, std::bind(&CANBUS_HAL_node::callback_sub_hw_flag, this, std::placeholders::_1));
+
         if (device1_name != "")
             thread_can1_routine = std::thread(std::bind(&CANBUS_HAL_node::callback_can1, this), this);
 
@@ -132,6 +149,21 @@ public:
 
     ~CANBUS_HAL_node()
     {
+    }
+
+    void callback_sub_target_steering_angle(const std_msgs::msg::Float32::SharedPtr msg)
+    {
+        cmd_target_steering_angle = msg->data;
+    }
+
+    void callback_sub_target_velocity(const std_msgs::msg::Float32::SharedPtr msg)
+    {
+        cmd_target_velocity = msg->data;
+    }
+
+    void callback_sub_hw_flag(const std_msgs::msg::UInt8::SharedPtr msg)
+    {
+        cmd_hw_flag = msg->data;
     }
 
     uint8_t calculate_crc(const uint8_t *data, size_t length, uint8_t poly, uint8_t xor_output)
@@ -160,13 +192,11 @@ public:
 
     void send_steer_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
     {
-        float target_steering_angel = 0.5;
-
         // Copy dari bus adas ke bus mobil
         memcpy(&canbus_hal_from_adas->lkas_cam_cmd, &msg_steer_cmd, sizeof(msg_steer_cmd));
 
-        msg_steer_cmd.cmd = chery_canfd_lkas_cam_cmd_345_cmd_encode(target_steering_angel * 180 / 3.141592653589793);
-        msg_steer_cmd.lka_active = 1;
+        msg_steer_cmd.cmd = chery_canfd_lkas_cam_cmd_345_cmd_encode(cmd_target_steering_angle * 180 / 3.141592653589793);
+        msg_steer_cmd.lka_active = ((cmd_hw_flag & CMD_STEER_ACTIVE) >> 0x00);
         msg_steer_cmd.set_x0 = 0;
 
         can_frame_t frame_steer_cmd;
@@ -178,34 +208,6 @@ public:
         bzero(&frame_steer_cmd, sizeof(frame_steer_cmd));
         chery_canfd_lkas_cam_cmd_345_pack(frame_steer_cmd.data, &msg_steer_cmd, sizeof(frame_steer_cmd.data));
 
-        frame_steer_cmd.id = CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID;
-        frame_steer_cmd.dlc = CHERY_CANFD_LKAS_CAM_CMD_345_LENGTH;
-        canbus_hal_to_send->send_msg(&frame_steer_cmd);
-    }
-
-    void send_steer_cmd_hardcode(std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
-    {
-        static uint8_t status_cmd_naik = 0;
-        static float cmd_steer_angle = 0.0;
-        static uint64_t counter = 0;
-        static const float cmd_steer_angle_max = 1.57; // rad
-        static const float cmd_steer_angle_min = -1.57;
-        static const float cmd_steer_angle_step = 0.02;
-
-        counter++;
-        cmd_steer_angle += status_cmd_naik ? cmd_steer_angle_step : -cmd_steer_angle_step;
-        if (cmd_steer_angle >= cmd_steer_angle_max)
-            status_cmd_naik = 0;
-        else if (cmd_steer_angle <= cmd_steer_angle_min)
-            status_cmd_naik = 1;
-
-        msg_steer_cmd.cmd = chery_canfd_lkas_cam_cmd_345_cmd_encode(cmd_steer_angle * 180.0 / 3.141592653589793); // rad to deg
-        msg_steer_cmd.lka_active = 1;
-        msg_steer_cmd.set_x0 = 0;
-
-        can_frame_t frame_steer_cmd;
-        bzero(&frame_steer_cmd, sizeof(frame_steer_cmd));
-        chery_canfd_lkas_cam_cmd_345_pack(frame_steer_cmd.data, &msg_steer_cmd, sizeof(frame_steer_cmd.data));
         frame_steer_cmd.id = CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID;
         frame_steer_cmd.dlc = CHERY_CANFD_LKAS_CAM_CMD_345_LENGTH;
         canbus_hal_to_send->send_msg(&frame_steer_cmd);
@@ -235,16 +237,16 @@ public:
     {
         canbus2_hal->recv_msgs();
         canbus2_hal->update();
-        // send_steer_cmd_hardcode(canbus2_hal);
     }
 
     void callback_can1_routine()
     {
         time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
 
+        logger.info("%.2f %.2f %d", cmd_target_steering_angle, cmd_target_velocity, cmd_hw_flag);
+
         // canbus1_hal->recv_msgs();
         // canbus1_hal->update();
-        // send_steer_cmd_hardcode(canbus1_hal);
         send_steer_cmd(canbus2_hal, canbus1_hal);
 
         // Memastikan publish sesuai dengan periode yang diinginkan
