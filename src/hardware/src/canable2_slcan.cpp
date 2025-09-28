@@ -72,6 +72,13 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         chery_canfd_lkas_cam_cmd_345_unpack(&lkas_cam_cmd, frame->data, frame->dlc);
         this->target_steering_angle = chery_canfd_steer_angle_sensor_steer_angle_decode(lkas_cam_cmd.cmd) * 3.141592653589793 / 180.0; // deg to rad
     }
+    else if (frame->id == CHERY_CANFD_ACC_CMD_FRAME_ID)
+    {
+        bzero(&acc_cam_cmd, sizeof(acc_cam_cmd));
+        chery_canfd_acc_cmd_unpack(&acc_cam_cmd, frame->data, frame->dlc);
+
+        // logger->info("%d %d %d %d %d", acc_cam_cmd.acc_state, acc_cam_cmd.accel_on, acc_cam_cmd.cmd, acc_cam_cmd.gas_pressed, acc_cam_cmd.stopped);
+    }
 
     else
     {
@@ -535,12 +542,12 @@ int CANable2_SLCAN::update()
     // chery_canfd_brake_data_t brake_data;
     // int16_t data_brake_pos;
 
-    logger->info("%d %d %s %.2lf || %.2f %.2f %.2f %.2f || %.2f %.2f %d %d || %d %d %d %d %d || %.2f",
-                 this->engine_gear, this->engine_gear_button, this->gear_status.c_str(), this->engine_gas,
-                 this->fb_steering_angle, this->wheel_speed_fl, this->wheel_speed_fr, this->wheel_speed_rl, this->wheel_speed_rr,
-                 this->fb_current_velocity, this->btn_acc, this->btn_cc, this->btn_res_plus,
-                 this->btn_res_minus, this->btn_gap_adjust_up, this->btn_gap_adjust_down, this->data_brake_pos,
-                 this->target_steering_angle);
+    // logger->info("%d %d %s %.2lf || %.2f %.2f %.2f %.2f || %.2f %.2f %d %d || %d %d %d %d %d || %.2f",
+    //              this->engine_gear, this->engine_gear_button, this->gear_status.c_str(), this->engine_gas,
+    //              this->fb_steering_angle, this->wheel_speed_fl, this->wheel_speed_fr, this->wheel_speed_rl, this->wheel_speed_rr,
+    //              this->fb_current_velocity, this->btn_acc, this->btn_cc, this->btn_res_plus,
+    //              this->btn_res_minus, this->btn_gap_adjust_up, this->btn_gap_adjust_down, this->data_brake_pos,
+    //              this->target_steering_angle);
 
     return 0;
 }

@@ -101,6 +101,7 @@ def generate_launch_description():
         parameters=[{
             "can1_type": 0,
             "can2_type": 0,
+            # "device1_name": "",
             "device1_name": "/dev/ttyACM1",
             "device2_name": "/dev/ttyACM0", # String kosong untuk nonaktifkan
             "baudrate": 500000,

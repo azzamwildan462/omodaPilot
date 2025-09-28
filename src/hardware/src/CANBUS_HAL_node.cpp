@@ -21,6 +21,8 @@
 
 #define CMD_STEER_ACTIVE 0b01
 #define CMD_GAS_ACTIVE 0b10
+#define CMD_GAS_FULL_STOP 0b100
+#define CMD_GAS_ACCEL_ON 0b1000
 
 class CANBUS_HAL_node : public rclcpp::Node
 {
@@ -47,6 +49,10 @@ public:
     int fd_baudrate = 2000000;
     int fd;
     int publish_period_ms = 20;
+    float MAX_ACCEL = 2.0;  // m/s^2
+    float MIN_ACCEL = -3.5; // m/s^2
+    float MAX_GAS = 51.0;
+    float MIN_GAS = -51.0;
 
     HelpLogger logger;
     std::unique_ptr<CANBUS_HAL> canbus1_hal; // Pointer to base class
@@ -56,10 +62,13 @@ public:
 
     // Data kirim untuk can bus
     chery_canfd_lkas_cam_cmd_345_t msg_steer_cmd;
+    chery_canfd_acc_cmd_t msg_acc_cmd;
 
     float cmd_target_steering_angle = 0;
     float cmd_target_velocity = 0;
     uint8_t cmd_hw_flag = 0;
+
+    uint64_t can1_internal_tick = 0;
 
     CANBUS_HAL_node()
         : Node("canbus_hal_node")
@@ -121,6 +130,7 @@ public:
 
         // Memastikan semua variabel sudah diinisialisasi
         bzero(&msg_steer_cmd, sizeof(msg_steer_cmd));
+        bzero(&msg_acc_cmd, sizeof(msg_acc_cmd));
 
         time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
         last_time_publish = time_now;
@@ -193,24 +203,115 @@ public:
     void send_steer_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
     {
         // Copy dari bus adas ke bus mobil
-        memcpy(&canbus_hal_from_adas->lkas_cam_cmd, &msg_steer_cmd, sizeof(msg_steer_cmd));
+        memcpy(&msg_steer_cmd, &canbus_hal_from_adas->lkas_cam_cmd, sizeof(msg_steer_cmd));
 
+        // Mengisi sesuai target
         msg_steer_cmd.cmd = chery_canfd_lkas_cam_cmd_345_cmd_encode(cmd_target_steering_angle * 180 / 3.141592653589793);
         msg_steer_cmd.lka_active = ((cmd_hw_flag & CMD_STEER_ACTIVE) >> 0x00);
         msg_steer_cmd.set_x0 = 0;
 
+        // Packing can
         can_frame_t frame_steer_cmd;
         bzero(&frame_steer_cmd, sizeof(frame_steer_cmd));
         chery_canfd_lkas_cam_cmd_345_pack(frame_steer_cmd.data, &msg_steer_cmd, sizeof(frame_steer_cmd.data));
 
+        // Menimpa CRC lalu packing lagi
         uint8_t crc = calculate_crc(frame_steer_cmd.data, CHERY_CANFD_LKAS_CAM_CMD_345_LENGTH - 1, 0x1D, 0xA);
         msg_steer_cmd.checksum = crc;
         bzero(&frame_steer_cmd, sizeof(frame_steer_cmd));
         chery_canfd_lkas_cam_cmd_345_pack(frame_steer_cmd.data, &msg_steer_cmd, sizeof(frame_steer_cmd.data));
 
+        // Mengirim ke bus mobil
         frame_steer_cmd.id = CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID;
         frame_steer_cmd.dlc = CHERY_CANFD_LKAS_CAM_CMD_345_LENGTH;
         canbus_hal_to_send->send_msg(&frame_steer_cmd);
+    }
+
+    void send_gas_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
+    {
+        // Clipping
+        if (cmd_target_velocity > MAX_ACCEL)
+            cmd_target_velocity = MAX_ACCEL;
+        if (cmd_target_velocity < MIN_ACCEL)
+            cmd_target_velocity = MIN_ACCEL;
+
+        // Normalisasi
+        float target_gas = 0;
+        if (fabsf(cmd_target_velocity - __FLT_EPSILON__) < 0)
+        {
+            target_gas = -24;
+        }
+        else if (cmd_target_velocity > 0)
+        {
+            float norm_vel = cmd_target_velocity / MAX_ACCEL;
+            target_gas = norm_vel * MAX_GAS;
+        }
+        else if (cmd_target_velocity < 0)
+        {
+            float norm_vel = cmd_target_velocity / MIN_ACCEL;
+            target_gas = norm_vel * MIN_GAS;
+        }
+
+        // Clipping
+        if (target_gas > MAX_GAS)
+            target_gas = MAX_GAS;
+        if (target_gas < MIN_GAS)
+            target_gas = MIN_GAS;
+
+        // Copy dari bus adas ke bus mobil
+        memcpy(&msg_acc_cmd, &canbus_hal_from_adas->acc_cam_cmd, sizeof(msg_acc_cmd));
+
+        // Mengisi sesuai target
+        int16_t throttle = -24;
+        if ((cmd_hw_flag & CMD_GAS_ACTIVE) == CMD_GAS_ACTIVE)
+            throttle = (int16_t)(target_gas);
+
+        uint8_t acc_state = canbus_hal_from_adas->acc_cam_cmd.acc_state;
+        if ((cmd_hw_flag & CMD_GAS_FULL_STOP) == CMD_GAS_FULL_STOP)
+            acc_state = 2;
+        else if ((cmd_hw_flag & CMD_GAS_ACTIVE) == CMD_GAS_ACTIVE)
+            acc_state = 3;
+
+        msg_acc_cmd.cmd = throttle;
+        if ((cmd_hw_flag & CMD_GAS_FULL_STOP) == CMD_GAS_FULL_STOP)
+            msg_acc_cmd.cmd = 400;
+
+        msg_acc_cmd.accel_on = 0;
+        if ((cmd_hw_flag & CMD_GAS_ACCEL_ON) == CMD_GAS_ACCEL_ON)
+            msg_acc_cmd.accel_on = 1;
+
+        msg_acc_cmd.acc_state = acc_state;
+
+        msg_acc_cmd.stopped = canbus_hal_from_adas->acc_cam_cmd.stopped;
+        if ((cmd_hw_flag & CMD_GAS_FULL_STOP) == CMD_GAS_FULL_STOP)
+            msg_acc_cmd.stopped = 1;
+        else if ((cmd_hw_flag & CMD_GAS_ACTIVE) == CMD_GAS_ACTIVE)
+            msg_acc_cmd.stopped = 0;
+
+        msg_acc_cmd.gas_pressed = 0;
+        if (target_gas > 0 && ((cmd_hw_flag & CMD_GAS_FULL_STOP) == 0))
+            msg_acc_cmd.gas_pressed = 1;
+
+        msg_acc_cmd.counter = (uint8_t)(can1_internal_tick % 0x0f);
+
+        logger.info("Target gas: %.2f, Throttle: %d, Acc state: %d, Stopped: %d, Gas pressed: %d %d",
+                    target_gas, msg_acc_cmd.cmd, msg_acc_cmd.acc_state, msg_acc_cmd.stopped, msg_acc_cmd.gas_pressed, msg_acc_cmd.accel_on);
+
+        // Packing can
+        can_frame_t frame_acc_cmd;
+        bzero(&frame_acc_cmd, sizeof(frame_acc_cmd));
+        chery_canfd_acc_cmd_pack(frame_acc_cmd.data, &msg_acc_cmd, sizeof(frame_acc_cmd.data));
+
+        // Menimpa CRC lalu packing lagi
+        uint8_t crc = calculate_crc(frame_acc_cmd.data, CHERY_CANFD_ACC_CMD_LENGTH - 1, 0x1D, 0xA);
+        msg_acc_cmd.checksum = crc;
+        bzero(&frame_acc_cmd, sizeof(frame_acc_cmd));
+        chery_canfd_acc_cmd_pack(frame_acc_cmd.data, &msg_acc_cmd, sizeof(frame_acc_cmd.data));
+
+        // Mengirim ke bus mobil
+        frame_acc_cmd.id = CHERY_CANFD_ACC_CMD_FRAME_ID;
+        frame_acc_cmd.dlc = CHERY_CANFD_ACC_CMD_LENGTH;
+        canbus_hal_to_send->send_msg(&frame_acc_cmd);
     }
 
     //
@@ -248,6 +349,9 @@ public:
         // canbus1_hal->recv_msgs();
         // canbus1_hal->update();
         send_steer_cmd(canbus2_hal, canbus1_hal);
+        send_gas_cmd(canbus2_hal, canbus1_hal);
+
+        can1_internal_tick++;
 
         // Memastikan publish sesuai dengan periode yang diinginkan
         rclcpp::Duration dt_publish = time_now - last_time_publish;

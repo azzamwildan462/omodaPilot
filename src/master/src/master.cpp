@@ -32,10 +32,17 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
     switch (current_key_pressed)
     {
     case 'a':
-        cmd_target_steering_angle += 0.1;
+        cmd_target_steering_angle += 0.2;
         break;
     case 'd':
-        cmd_target_steering_angle -= 0.1;
+        cmd_target_steering_angle -= 0.2;
+        break;
+
+    case 'w':
+        cmd_target_velocity += 0.1;
+        break;
+    case 's':
+        cmd_target_velocity -= 0.1;
         break;
 
     case 'l':
@@ -43,6 +50,24 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
         break;
     case 'k':
         cmd_hw_flag |= CMD_GAS_ACTIVE;
+        break;
+    case 'j':
+        cmd_hw_flag |= CMD_GAS_FULL_STOP;
+        break;
+    case 'h':
+        cmd_hw_flag |= CMD_GAS_ACCEL_ON;
+        break;
+    case ',':
+        cmd_hw_flag &= ~CMD_STEER_ACTIVE;
+        break;
+    case 'm':
+        cmd_hw_flag &= ~CMD_GAS_ACTIVE;
+        break;
+    case 'n':
+        cmd_hw_flag &= ~CMD_GAS_FULL_STOP;
+        break;
+    case 'b':
+        cmd_hw_flag &= ~CMD_GAS_ACCEL_ON;
         break;
 
     case ' ':

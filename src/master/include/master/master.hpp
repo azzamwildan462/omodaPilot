@@ -9,6 +9,8 @@
 
 #define CMD_STEER_ACTIVE 0b01
 #define CMD_GAS_ACTIVE 0b10
+#define CMD_GAS_FULL_STOP 0b100
+#define CMD_GAS_ACCEL_ON 0b1000
 
 class Master : public rclcpp::Node
 {

@@ -46,6 +46,7 @@ public:
     chery_canfd_steer_angle_sensor_t angle_sensor;
     chery_canfd_wheel_speed_rear_t wheel_speed_rear;
     chery_canfd_wheel_speed_frnt_t wheel_speed_front;
+    chery_canfd_acc_cmd_t acc_cam_cmd;
 
     float wheel_speed_rl; // km/h
     float wheel_speed_rr; // km/h
