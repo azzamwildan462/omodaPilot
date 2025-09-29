@@ -32,17 +32,17 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
     switch (current_key_pressed)
     {
     case 'a':
-        cmd_target_steering_angle += 0.2;
+        cmd_target_steering_angle += 0.1;
         break;
     case 'd':
-        cmd_target_steering_angle -= 0.2;
+        cmd_target_steering_angle -= 0.1;
         break;
 
     case 'w':
-        cmd_target_velocity += 0.1;
+        cmd_target_velocity += 0.05;
         break;
     case 's':
-        cmd_target_velocity -= 0.1;
+        cmd_target_velocity -= 0.05;
         break;
 
     case 'l':

@@ -42,11 +42,14 @@ public:
     /**
      * Data data interface can bus hal
      */
-    chery_canfd_lkas_cam_cmd_345_t lkas_cam_cmd;
+    chery_canfd_lkas_cam_cmd_345_t lkas_cam_cmd; // ke mobil
+    chery_canfd_lkas_state_t lkas_state;         // ke mobil
+    chery_canfd_acc_cmd_t acc_cam_cmd;           // ke mobil
+    chery_canfd_steer_button_t button_cmd;       // ke adas
+
     chery_canfd_steer_angle_sensor_t angle_sensor;
     chery_canfd_wheel_speed_rear_t wheel_speed_rear;
     chery_canfd_wheel_speed_frnt_t wheel_speed_front;
-    chery_canfd_acc_cmd_t acc_cam_cmd;
 
     float wheel_speed_rl; // km/h
     float wheel_speed_rr; // km/h

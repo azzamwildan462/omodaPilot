@@ -62,7 +62,9 @@ public:
 
     // Data kirim untuk can bus
     chery_canfd_lkas_cam_cmd_345_t msg_steer_cmd;
+    chery_canfd_lkas_state_t msg_lkas_state_cmd;
     chery_canfd_acc_cmd_t msg_acc_cmd;
+    chery_canfd_steer_button_t msg_steer_button_cmd;
 
     float cmd_target_steering_angle = 0;
     float cmd_target_velocity = 0;
@@ -130,7 +132,9 @@ public:
 
         // Memastikan semua variabel sudah diinisialisasi
         bzero(&msg_steer_cmd, sizeof(msg_steer_cmd));
+        bzero(&msg_lkas_state_cmd, sizeof(msg_lkas_state_cmd));
         bzero(&msg_acc_cmd, sizeof(msg_acc_cmd));
+        bzero(&msg_steer_button_cmd, sizeof(msg_steer_button_cmd));
 
         time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
         last_time_publish = time_now;
@@ -314,14 +318,87 @@ public:
         canbus_hal_to_send->send_msg(&frame_acc_cmd);
     }
 
-    //
+    //     def create_button_msg(packer, bus: int,frame, stock_values: dict, cancel=False, resume=False):
+    //   """
+    //   Creates a CAN message for buttons/switches.
+
+    //   Includes cruise control buttons.
+
+    //   Frequency is 20Hz.
+    //   """
+    //   # print(bus)
+    //   values = {s: stock_values[s] for s in [
+    //     "ACC",
+    //     "CC_BTN",
+    //     "RES_PLUS",
+    //     "RES_MINUS",
+    //     "NEW_SIGNAL_1",
+    //     "GAP_ADJUST_UP",
+    //     "GAP_ADJUST_DOWN",
+    //     "COUNTER",
+    //     "CHECKSUM",
+    //   ]}
+
+    //   values.update({
+    //     "ACC": 1 if cancel else 0,      # CC cancel button
+    //     "RES_PLUS": 1 if resume else 0,      # CC resume button
+    //     # "COUNTER": (frame) % 0x0f,
+    //   })
+
+    //   dat = packer.make_can_msg("STEER_BUTTON", bus, values)[1]
+
+    //   crc = calculate_crc(dat[:-1], 0x1D, 0xA)
+    //   values["CHECKSUM"] = crc
+
+    //   # print(values)
+
+    //   return packer.make_can_msg("STEER_BUTTON", bus, values)
+    // ini tpi ke adas. buat trigger kah??
+    void send_steer_button_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
+    {
+        // Copy dari bus adas ke bus mobil
+        memcpy(&msg_steer_button_cmd, &canbus_hal_from_adas->steer_button, sizeof(msg_steer_button_cmd));
+
+        // Mengisi sesuai target
+    }
+
+    void send_lkas_state_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send) // 20 Hz
+    {
+        // Copy dari bus adas ke bus mobil
+        memcpy(&msg_lkas_state_cmd, &canbus_hal_from_adas->lkas_state, sizeof(msg_lkas_state_cmd));
+
+        // Mengisi sesuai target
+        msg_lkas_state_cmd.new_signal_1 = 1;
+        msg_lkas_state_cmd.new_signal_2 = ((cmd_hw_flag & CMD_STEER_ACTIVE) >> 0x00) ? 2 : 0;
+        msg_lkas_state_cmd.new_signal_3 = ((cmd_hw_flag & CMD_STEER_ACTIVE) >> 0x00) ? 2 : 0;
+        msg_lkas_state_cmd.new_signal_4 = 1;
+        msg_lkas_state_cmd.state = ((cmd_hw_flag & CMD_STEER_ACTIVE) >> 0x00) ? 0 : 1;
+        msg_lkas_state_cmd.lka_active = ((cmd_hw_flag & CMD_STEER_ACTIVE) >> 0x00) ? 1 : 0;
+        msg_lkas_state_cmd.counter = (uint8_t)(can1_internal_tick % 0x0f);
+
+        // Packing can
+        can_frame_t frame_lkas_state_cmd;
+        bzero(&frame_lkas_state_cmd, sizeof(frame_lkas_state_cmd));
+        chery_canfd_lkas_state_pack(frame_lkas_state_cmd.data, &msg_lkas_state_cmd, sizeof(frame_lkas_state_cmd.data));
+
+        // Menimpa CRC lalu packing lagi
+        uint8_t crc = calculate_crc(frame_lkas_state_cmd.data, CHERY_CANFD_LKAS_STATE_LENGTH - 1, 0x1D, 0xA);
+        msg_lkas_state_cmd.checksum = crc;
+        bzero(&frame_lkas_state_cmd, sizeof(frame_lkas_state_cmd));
+        chery_canfd_lkas_state_pack(frame_lkas_state_cmd.data, &msg_lkas_state_cmd, sizeof(frame_lkas_state_cmd.data));
+
+        // Mengirim ke bus mobil
+        frame_lkas_state_cmd.id = CHERY_CANFD_LKAS_STATE_FRAME_ID;
+        frame_lkas_state_cmd.dlc = CHERY_CANFD_LKAS_STATE_LENGTH;
+        canbus_hal_to_send->send_msg(&frame_lkas_state_cmd);
+    }
 
     void callback_can2()
     {
         while (rclcpp::ok())
         {
             callback_can2_routine();
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
 
@@ -330,14 +407,16 @@ public:
         while (rclcpp::ok())
         {
             callback_can1_routine();
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
 
     void callback_can2_routine()
     {
-        canbus2_hal->recv_msgs();
+        std::vector<can_frame_t> canbus2_frames = canbus2_hal->recv_msgs();
         canbus2_hal->update();
+
+        canbus1_hal->send_msgs(canbus2_frames);
     }
 
     void callback_can1_routine()
@@ -346,12 +425,24 @@ public:
 
         logger.info("%.2f %.2f %d", cmd_target_steering_angle, cmd_target_velocity, cmd_hw_flag);
 
-        // canbus1_hal->recv_msgs();
-        // canbus1_hal->update();
-        send_steer_cmd(canbus2_hal, canbus1_hal);
-        send_gas_cmd(canbus2_hal, canbus1_hal);
+        std::vector<can_frame_t> canbus1_frames = canbus1_hal->recv_msgs();
+        canbus1_hal->update();
 
-        can1_internal_tick++;
+        canbus2_hal->send_msgs(canbus1_frames);
+        // send 20 ms
+        if (can1_internal_tick % 2 == 0)
+        {
+            send_steer_cmd(canbus2_hal, canbus1_hal);
+            send_gas_cmd(canbus2_hal, canbus1_hal);
+        }
+
+        // send 50 ms
+        if (can1_internal_tick % 5 == 0)
+        {
+            send_lkas_state_cmd(canbus2_hal, canbus1_hal);
+        }
+
+        can1_internal_tick++; // Increment internal tick every 10 ms
 
         // Memastikan publish sesuai dengan periode yang diinginkan
         rclcpp::Duration dt_publish = time_now - last_time_publish;

@@ -80,6 +80,18 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         // logger->info("%d %d %d %d %d", acc_cam_cmd.acc_state, acc_cam_cmd.accel_on, acc_cam_cmd.cmd, acc_cam_cmd.gas_pressed, acc_cam_cmd.stopped);
     }
 
+    else if (frame->id == CHERY_CANFD_LKAS_STATE_FRAME_ID)
+    {
+        bzero(&lkas_state, sizeof(lkas_state));
+        chery_canfd_lkas_state_unpack(&lkas_state, frame->data, frame->dlc);
+    }
+
+    // else if (frame->id == CHERY_CANFD_STEER_BUTTON_FRAME_ID)
+    // {
+    //     bzero(&button_cmd, sizeof(button_cmd));
+    //     chery_canfd_steer_button_unpack(&button_cmd, frame->data, frame->dlc);
+    // }
+
     else
     {
         // Unknown frame ID
@@ -433,6 +445,38 @@ can_frame_t CANable2_SLCAN::recv_msg()
 int CANable2_SLCAN::send_msgs(const std::vector<can_frame_t> &can_msgs)
 {
     (void)can_msgs;
+
+    char can_data_kirim[CAN_MTU];
+    size_t idx_pos_kirim = 0;
+
+    bzero(can_data_kirim, CAN_MTU);
+
+    for (const auto &frame : can_msgs)
+    {
+        char rts_data[CAN_MAX_DATA_FRAME];
+        memset(rts_data, 0, CAN_MAX_DATA_FRAME);
+        build_can_msg(const_cast<can_frame_t *>(&frame), rts_data);
+        // printf("rts %s\n", rts_data);
+
+        memcpy(can_data_kirim + idx_pos_kirim, rts_data, strlen(rts_data));
+        memset(can_data_kirim + idx_pos_kirim + 1, 49, 1); // Tambah '\r'
+        idx_pos_kirim = strlen(rts_data) + 1;
+    }
+
+    ssize_t w = write(this->fd, can_data_kirim, idx_pos_kirim);
+
+    if (w < 0)
+    {
+        std::cerr << "write: " << strerror(errno) << "\n";
+        return 1;
+    }
+
+    if (tcdrain(this->fd) != 0)
+    {
+        std::cerr << "tcdrain: " << strerror(errno) << "\n";
+        return 1;
+    }
+
     return 0;
 }
 
