@@ -1,11 +1,14 @@
 /**
  * Menggunakan factory pattern untuk memilih hardware CANBUS_HAL yang sesuai
+ * canbus1 adalah canbus mobil
+ * canbus2 adalah canbus ADAS
  */
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float32.hpp"
 #include "std_msgs/msg/u_int8.hpp"
 #include "std_msgs/msg/int16.hpp"
+#include "std_msgs/msg/int8.hpp"
 #include "ros2_utils/help_logger.hpp"
 #include "ros2_utils/global_definitions.hpp"
 
@@ -33,12 +36,14 @@ public:
     rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr pub_throttle_position;
     rclcpp::Publisher<std_msgs::msg::Int16>::SharedPtr pub_brake_position;
     rclcpp::Publisher<std_msgs::msg::UInt8>::SharedPtr pub_gear_status;
+    rclcpp::Publisher<std_msgs::msg::Int8>::SharedPtr pub_steer_torque;
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr sub_target_steering_angle;
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr sub_target_velocity;
     rclcpp::Subscription<std_msgs::msg::UInt8>::SharedPtr sub_hw_flag;
 
     std::thread thread_can1_routine;
     std::thread thread_can2_routine;
+    std::thread thread_routine_all;
 
     // Configs
     int can1_type = 0; // 0: CANable2_SLCAN, 1: CANable2_SOCKET_CAN
@@ -114,6 +119,10 @@ public:
                 logger.error("Failed to initialize CANBUS_HAL can1");
                 rclcpp::shutdown();
             }
+
+            canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID);
+            canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_STATE_FRAME_ID);
+            // canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
         }
 
         if (device2_name != "")
@@ -128,6 +137,10 @@ public:
                 logger.error("Failed to initialize CANBUS_HAL can2");
                 rclcpp::shutdown();
             }
+
+            canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID);
+            canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_STATE_FRAME_ID);
+            // canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
         }
 
         // Memastikan semua variabel sudah diinisialisasi
@@ -144,6 +157,7 @@ public:
         pub_throttle_position = this->create_publisher<std_msgs::msg::Float32>("fb_throttle_position", 1);
         pub_brake_position = this->create_publisher<std_msgs::msg::Int16>("fb_brake_position", 1);
         pub_gear_status = this->create_publisher<std_msgs::msg::UInt8>("fb_gear_status", 1);
+        pub_steer_torque = this->create_publisher<std_msgs::msg::Int8>("fb_steer_torque", 1);
 
         sub_target_steering_angle = this->create_subscription<std_msgs::msg::Float32>(
             "cmd_target_steering_angle", 1, std::bind(&CANBUS_HAL_node::callback_sub_target_steering_angle, this, std::placeholders::_1));
@@ -152,11 +166,16 @@ public:
         sub_hw_flag = this->create_subscription<std_msgs::msg::UInt8>(
             "cmd_hw_flag", 1, std::bind(&CANBUS_HAL_node::callback_sub_hw_flag, this, std::placeholders::_1));
 
-        if (device1_name != "")
-            thread_can1_routine = std::thread(std::bind(&CANBUS_HAL_node::callback_can1, this), this);
+        // if (device1_name != "")
+        //     thread_can1_routine = std::thread(std::bind(&CANBUS_HAL_node::callback_can1, this), this);
 
-        if (device2_name != "")
-            thread_can2_routine = std::thread(std::bind(&CANBUS_HAL_node::callback_can2, this), this);
+        // if (device2_name != "")
+        //     thread_can2_routine = std::thread(std::bind(&CANBUS_HAL_node::callback_can2, this), this);
+
+        if (device1_name != "" && device2_name != "")
+        {
+            thread_routine_all = std::thread(std::bind(&CANBUS_HAL_node::callback_routine_all, this), this);
+        }
 
         logger.info("CANBUS_HAL_node node initialized");
     }
@@ -180,6 +199,8 @@ public:
         cmd_hw_flag = msg->data;
     }
 
+    // =========================================================================================
+
     uint8_t calculate_crc(const uint8_t *data, size_t length, uint8_t poly, uint8_t xor_output)
     {
         uint8_t crc = 0;
@@ -201,8 +222,6 @@ public:
         }
         return (crc ^ xor_output);
     }
-
-    // =========================================================================================
 
     void send_steer_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
     {
@@ -298,8 +317,8 @@ public:
 
         msg_acc_cmd.counter = (uint8_t)(can1_internal_tick % 0x0f);
 
-        logger.info("Target gas: %.2f, Throttle: %d, Acc state: %d, Stopped: %d, Gas pressed: %d %d",
-                    target_gas, msg_acc_cmd.cmd, msg_acc_cmd.acc_state, msg_acc_cmd.stopped, msg_acc_cmd.gas_pressed, msg_acc_cmd.accel_on);
+        logger.info("Target gas: %.2f, Throttle: %d, Acc state: %d, Stopped: %d, Gas pressed: %d %d -> %d",
+                    target_gas, msg_acc_cmd.cmd, msg_acc_cmd.acc_state, msg_acc_cmd.stopped, msg_acc_cmd.gas_pressed, msg_acc_cmd.accel_on, canbus1_hal->steer_sensor.torque_driver);
 
         // Packing can
         can_frame_t frame_acc_cmd;
@@ -318,44 +337,10 @@ public:
         canbus_hal_to_send->send_msg(&frame_acc_cmd);
     }
 
-    //     def create_button_msg(packer, bus: int,frame, stock_values: dict, cancel=False, resume=False):
-    //   """
-    //   Creates a CAN message for buttons/switches.
-
-    //   Includes cruise control buttons.
-
-    //   Frequency is 20Hz.
-    //   """
-    //   # print(bus)
-    //   values = {s: stock_values[s] for s in [
-    //     "ACC",
-    //     "CC_BTN",
-    //     "RES_PLUS",
-    //     "RES_MINUS",
-    //     "NEW_SIGNAL_1",
-    //     "GAP_ADJUST_UP",
-    //     "GAP_ADJUST_DOWN",
-    //     "COUNTER",
-    //     "CHECKSUM",
-    //   ]}
-
-    //   values.update({
-    //     "ACC": 1 if cancel else 0,      # CC cancel button
-    //     "RES_PLUS": 1 if resume else 0,      # CC resume button
-    //     # "COUNTER": (frame) % 0x0f,
-    //   })
-
-    //   dat = packer.make_can_msg("STEER_BUTTON", bus, values)[1]
-
-    //   crc = calculate_crc(dat[:-1], 0x1D, 0xA)
-    //   values["CHECKSUM"] = crc
-
-    //   # print(values)
-
-    //   return packer.make_can_msg("STEER_BUTTON", bus, values)
     // ini tpi ke adas. buat trigger kah??
     void send_steer_button_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
     {
+        (void)canbus_hal_to_send;
         // Copy dari bus adas ke bus mobil
         memcpy(&msg_steer_button_cmd, &canbus_hal_from_adas->steer_button, sizeof(msg_steer_button_cmd));
 
@@ -391,6 +376,77 @@ public:
         frame_lkas_state_cmd.id = CHERY_CANFD_LKAS_STATE_FRAME_ID;
         frame_lkas_state_cmd.dlc = CHERY_CANFD_LKAS_STATE_LENGTH;
         canbus_hal_to_send->send_msg(&frame_lkas_state_cmd);
+    }
+
+    // =========================================================================================
+
+    void callback_routine_all_routine()
+    {
+        time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
+
+        std::vector<can_frame_t> canbus1_frames = canbus1_hal->recv_msgs();
+        canbus1_hal->update();
+        canbus2_hal->send_msgs(canbus1_frames);
+
+        std::vector<can_frame_t> canbus2_frames = canbus2_hal->recv_msgs();
+        canbus2_hal->update();
+        canbus1_hal->send_msgs(canbus2_frames);
+
+        static uint16_t divider_50_hz = 0;
+        if (divider_50_hz++ >= 20)
+        {
+            divider_50_hz = 0;
+            send_steer_cmd(canbus2_hal, canbus1_hal);
+            send_gas_cmd(canbus2_hal, canbus1_hal);
+        }
+
+        static uint16_t divider_20_hz = 0;
+        if (divider_20_hz++ >= 50)
+        {
+            divider_20_hz = 0;
+            send_lkas_state_cmd(canbus2_hal, canbus1_hal);
+        }
+
+        can1_internal_tick++;
+
+        // Memastikan publish sesuai dengan periode yang diinginkan
+        rclcpp::Duration dt_publish = time_now - last_time_publish;
+        if (dt_publish.seconds() * 1000 < publish_period_ms && publish_period_ms != -1)
+            return;
+        last_time_publish = time_now;
+
+        std_msgs::msg::Float32 msg_steering_angle;
+        msg_steering_angle.data = canbus1_hal->fb_steering_angle;
+        pub_fb_steering_angle->publish(msg_steering_angle);
+
+        std_msgs::msg::Float32 msg_current_velocity;
+        msg_current_velocity.data = canbus1_hal->fb_current_velocity;
+        pub_fb_current_velocity->publish(msg_current_velocity);
+
+        std_msgs::msg::Float32 msg_throttle_position;
+        msg_throttle_position.data = (float)canbus1_hal->engine_gas;
+        pub_throttle_position->publish(msg_throttle_position);
+
+        std_msgs::msg::Int16 msg_brake_position;
+        msg_brake_position.data = canbus1_hal->data_brake_pos;
+        pub_brake_position->publish(msg_brake_position);
+
+        std_msgs::msg::UInt8 msg_gear_status;
+        msg_gear_status.data = canbus1_hal->engine_gear;
+        pub_gear_status->publish(msg_gear_status);
+
+        std_msgs::msg::Int8 msg_steer_torque;
+        msg_steer_torque.data = canbus1_hal->steer_sensor.torque_driver;
+        pub_steer_torque->publish(msg_steer_torque);
+    }
+
+    void callback_routine_all()
+    {
+        while (rclcpp::ok())
+        {
+            callback_routine_all_routine();
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
     }
 
     void callback_can2()

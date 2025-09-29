@@ -48,6 +48,7 @@ public:
     chery_canfd_steer_button_t button_cmd;       // ke adas
 
     chery_canfd_steer_angle_sensor_t angle_sensor;
+    chery_canfd_steer_sensor_t steer_sensor;
     chery_canfd_wheel_speed_rear_t wheel_speed_rear;
     chery_canfd_wheel_speed_frnt_t wheel_speed_front;
 
@@ -81,6 +82,8 @@ public:
     int16_t data_brake_pos;
 
     uint8_t is_can_to_adas = 0;
+
+    std::vector<uint16_t> intercepted_can_ids;
 
     /**
      * Data data internal untuk canbus hal

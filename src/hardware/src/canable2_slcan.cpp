@@ -21,6 +21,11 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         chery_canfd_steer_angle_sensor_unpack(&angle_sensor, frame->data, frame->dlc);
         this->fb_steering_angle = chery_canfd_steer_angle_sensor_steer_angle_decode(angle_sensor.steer_angle) * 3.141592653589793 / 180.0; // deg to rad
     }
+    else if (frame->id == CHERY_CANFD_STEER_SENSOR_FRAME_ID)
+    {
+        bzero(&steer_sensor, sizeof(steer_sensor));
+        chery_canfd_steer_sensor_unpack(&steer_sensor, frame->data, frame->dlc);
+    }
     else if (frame->id == CHERY_CANFD_WHEEL_SPEED_REAR_FRAME_ID)
     {
         bzero(&wheel_speed_rear, sizeof(wheel_speed_rear));
@@ -304,7 +309,20 @@ std::vector<can_frame_t> CANable2_SLCAN::parse_can_msg(char *buf, size_t len)
 
         parse_incoming_data(&frame);
 
-        frames.push_back(frame);
+        uint8_t is_msg_intercepted = 0;
+        for (size_t k = 0; k < intercepted_can_ids.size(); k++)
+        {
+            if (frame.id == intercepted_can_ids[k])
+            {
+                is_msg_intercepted = 1;
+                break;
+            }
+        }
+
+        if (is_msg_intercepted == 0)
+        {
+            frames.push_back(frame);
+        }
 
         i += frame.dlc * 2 + 4; // Move index to the end of this frame
     }
@@ -418,7 +436,7 @@ int CANable2_SLCAN::send_msg(can_frame_t *can_msg)
     // add \r\n at the end
     rts_data[len] = '\r';
 
-    logger->info("Sending CAN ID: %X %d | %d -> %s", can_msg->id, can_msg->id, can_msg->dlc, rts_data);
+    // logger->info("Sending CAN ID: %X %d | %d -> %s", can_msg->id, can_msg->id, can_msg->dlc, rts_data);
 
     ssize_t w = write(this->fd, rts_data, len + 1);
     if (w < 0)
@@ -444,37 +462,9 @@ can_frame_t CANable2_SLCAN::recv_msg()
 
 int CANable2_SLCAN::send_msgs(const std::vector<can_frame_t> &can_msgs)
 {
-    (void)can_msgs;
-
-    char can_data_kirim[CAN_MTU];
-    size_t idx_pos_kirim = 0;
-
-    bzero(can_data_kirim, CAN_MTU);
-
-    for (const auto &frame : can_msgs)
+    for (size_t i = 0; i < can_msgs.size(); i++)
     {
-        char rts_data[CAN_MAX_DATA_FRAME];
-        memset(rts_data, 0, CAN_MAX_DATA_FRAME);
-        build_can_msg(const_cast<can_frame_t *>(&frame), rts_data);
-        // printf("rts %s\n", rts_data);
-
-        memcpy(can_data_kirim + idx_pos_kirim, rts_data, strlen(rts_data));
-        memset(can_data_kirim + idx_pos_kirim + 1, 49, 1); // Tambah '\r'
-        idx_pos_kirim = strlen(rts_data) + 1;
-    }
-
-    ssize_t w = write(this->fd, can_data_kirim, idx_pos_kirim);
-
-    if (w < 0)
-    {
-        std::cerr << "write: " << strerror(errno) << "\n";
-        return 1;
-    }
-
-    if (tcdrain(this->fd) != 0)
-    {
-        std::cerr << "tcdrain: " << strerror(errno) << "\n";
-        return 1;
+        send_msg(const_cast<can_frame_t *>(&can_msgs[i]));
     }
 
     return 0;
@@ -498,7 +488,7 @@ std::vector<can_frame_t> CANable2_SLCAN::recv_msgs()
         }
         else if (errno == EAGAIN || errno == EWOULDBLOCK)
         {
-            logger->error("No data available on serial port: %s", strerror(errno));
+            // logger->error("No data available on serial port: %s", strerror(errno));
             return frames;
         }
         else

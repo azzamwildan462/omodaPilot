@@ -64,6 +64,14 @@ def generate_launch_description():
         name='master',
         namespace='master',
         output='screen',
+        remappings=[
+            ("fb_steering_angle", "/hardware/fb_steering_angle"),
+            ("fb_current_velocity", "/hardware/fb_current_velocity"),
+            ("fb_throttle_position", "/hardware/fb_throttle_position"),
+            ("fb_brake_position", "/hardware/fb_brake_position"),
+            ("fb_gear_status", "/hardware/fb_gear_status"),
+            ("fb_steer_torque", "/hardware/fb_steer_torque"),
+        ],
         respawn=True,
         prefix='nice -n -10',
     )
@@ -106,7 +114,7 @@ def generate_launch_description():
             "device2_name": "/dev/ttyACM0", # String kosong untuk nonaktifkan
             "baudrate": 500000,
             "fd_baudrate": 2000000,
-            "publish_period_ms": -1,
+            "publish_period_ms": 20,
         }],
         remappings=[
             ("cmd_target_steering_angle", "/master/cmd_target_steering_angle"),
