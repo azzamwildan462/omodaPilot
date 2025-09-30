@@ -15,6 +15,7 @@
 
 int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
 {
+
     if (frame->id == CHERY_CANFD_STEER_ANGLE_SENSOR_FRAME_ID)
     {
         bzero(&angle_sensor, sizeof(angle_sensor));
@@ -63,6 +64,12 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         this->btn_res_minus = chery_canfd_steer_button_res_minus_decode(steer_button.res_minus);
         this->btn_gap_adjust_up = chery_canfd_steer_button_gap_adjust_up_decode(steer_button.gap_adjust_up);
         this->btn_gap_adjust_down = chery_canfd_steer_button_gap_adjust_down_decode(steer_button.gap_adjust_down);
+
+        // logger->info("Steer Button: ACC: %d, CC: %d, RES+: %d, RES-: %d, GAP UP: %d, GAP DOWN: %d",
+        //              this->btn_acc, this->btn_cc, this->btn_res_plus, this->btn_res_minus,
+        //              this->btn_gap_adjust_up, this->btn_gap_adjust_down);
+
+        // logger->info("============================");
     }
 
     else if (frame->id == CHERY_CANFD_BRAKE_DATA_FRAME_ID)
@@ -83,16 +90,29 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         chery_canfd_acc_cmd_unpack(&acc_cam_cmd, frame->data, frame->dlc);
 
         // print logger info decode
-        logger->info("accel_on: %lf, cmd: %lf, acc_state_2: %lf, stopped: %lf, acc_state: %lf, stopping: %lf, gas_pressed: %lf",
-                     chery_canfd_acc_cmd_accel_on_decode(acc_cam_cmd.accel_on),
-                     chery_canfd_acc_cmd_cmd_decode(acc_cam_cmd.cmd),
-                     chery_canfd_acc_cmd_acc_state_2_decode(acc_cam_cmd.acc_state_2),
-                     chery_canfd_acc_cmd_stopped_decode(acc_cam_cmd.stopped),
-                     chery_canfd_acc_cmd_acc_state_decode(acc_cam_cmd.acc_state),
-                     chery_canfd_acc_cmd_stopping_decode(acc_cam_cmd.stopping),
-                     chery_canfd_acc_cmd_gas_pressed_decode(acc_cam_cmd.gas_pressed));
+        // logger->info("accel_on: %lf, cmd: %lf, acc_state_2: %lf, stopped: %lf, acc_state: %lf, stopping: %lf, gas_pressed: %lf",
+        //              chery_canfd_acc_cmd_accel_on_decode(acc_cam_cmd.accel_on),
+        //              chery_canfd_acc_cmd_cmd_decode(acc_cam_cmd.cmd),
+        //              chery_canfd_acc_cmd_acc_state_2_decode(acc_cam_cmd.acc_state_2),
+        //              chery_canfd_acc_cmd_stopped_decode(acc_cam_cmd.stopped),
+        //              chery_canfd_acc_cmd_acc_state_decode(acc_cam_cmd.acc_state),
+        //              chery_canfd_acc_cmd_stopping_decode(acc_cam_cmd.stopping),
+        //              chery_canfd_acc_cmd_gas_pressed_decode(acc_cam_cmd.gas_pressed));
 
-        logger->info("============================");
+        // logger->info("============================");
+    }
+
+    else if (frame->id == CHERY_CANFD_ACC_FRAME_ID)
+    {
+        bzero(&acc_data, sizeof(acc_data));
+        chery_canfd_acc_unpack(&acc_data, frame->data, frame->dlc);
+
+        // logger->info("acc active: %lf, aeb active: %lf, gas pressed: %lf",
+        //              chery_canfd_acc_acc_active_decode(acc_data.acc_active),
+        //              chery_canfd_acc_aeb_active_decode(acc_data.aeb_active),
+        //              chery_canfd_acc_gas_pressed_decode(acc_data.gas_pressed));
+
+        // logger->info("============================");
     }
 
     else if (frame->id == CHERY_CANFD_LKAS_STATE_FRAME_ID)
@@ -109,12 +129,6 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
 
         // logger->info("cc_speed: %f", this->speed_cc);
     }
-
-    // else if (frame->id == CHERY_CANFD_STEER_BUTTON_FRAME_ID)
-    // {
-    //     bzero(&button_cmd, sizeof(button_cmd));
-    //     chery_canfd_steer_button_unpack(&button_cmd, frame->data, frame->dlc);
-    // }
 
     else
     {

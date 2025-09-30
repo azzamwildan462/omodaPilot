@@ -49,6 +49,8 @@ public:
 
     chery_canfd_setting_t setting_cmd_from_adas;
 
+    chery_canfd_acc_t acc_data;
+
     chery_canfd_steer_angle_sensor_t angle_sensor;
     chery_canfd_steer_sensor_t steer_sensor;
     chery_canfd_wheel_speed_rear_t wheel_speed_rear;

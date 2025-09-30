@@ -13,6 +13,7 @@
 #define CMD_GAS_ACTIVE 0b10
 #define CMD_GAS_FULL_STOP 0b100
 #define CMD_GAS_ACCEL_ON 0b1000
+#define CMD_ACC_BTN_PRESS 0b10000
 
 class Master : public rclcpp::Node
 {
@@ -44,6 +45,9 @@ public:
     int16_t brake_position = 0;
     uint8_t gear_status = 0;
     int8_t steer_torque = 0;
+
+    rclcpp::Time last_time_steer_button_press;
+    rclcpp::Time time_now;
 
     Master();
     ~Master();

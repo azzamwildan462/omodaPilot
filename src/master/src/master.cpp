@@ -87,6 +87,18 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
         cmd_target_velocity -= 0.05;
         break;
 
+    case 'z':
+        cmd_target_velocity = 0.0;
+        break;
+
+    case 'x':
+        cmd_target_velocity -= 0.15;
+        break;
+
+    case 'c':
+        cmd_target_velocity += 0.15;
+        break;
+
     case 'l':
         cmd_hw_flag |= CMD_STEER_ACTIVE;
         break;
@@ -112,6 +124,11 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
         cmd_hw_flag &= ~CMD_GAS_ACCEL_ON;
         break;
 
+    case 't':
+        cmd_hw_flag |= CMD_ACC_BTN_PRESS;
+        last_time_steer_button_press = rclcpp::Clock(RCL_SYSTEM_TIME).now();
+        break;
+
     case ' ':
         cmd_hw_flag = 0;
         cmd_target_steering_angle = 0;
@@ -122,6 +139,7 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
 
 void Master::callback_routine()
 {
+    time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
     // static uint16_t counter_steer_dipegang = 0;
 
     // if (steer_torque > 18)
@@ -140,6 +158,12 @@ void Master::callback_routine()
     // {
     //     counter_steer_dipegang = 0;
     // }
+
+    // last_time_steer_button_press - time_now > 2 second
+    if ((cmd_hw_flag & CMD_ACC_BTN_PRESS) != 0 && (time_now - last_time_steer_button_press).seconds() > 1.0)
+    {
+        cmd_hw_flag &= ~CMD_ACC_BTN_PRESS;
+    }
 
     process_transmitter();
 }
