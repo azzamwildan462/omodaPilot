@@ -47,6 +47,8 @@ public:
     chery_canfd_acc_cmd_t acc_cam_cmd;           // ke mobil
     chery_canfd_steer_button_t button_cmd;       // ke adas
 
+    chery_canfd_setting_t setting_cmd_from_adas;
+
     chery_canfd_steer_angle_sensor_t angle_sensor;
     chery_canfd_steer_sensor_t steer_sensor;
     chery_canfd_wheel_speed_rear_t wheel_speed_rear;
@@ -56,6 +58,8 @@ public:
     float wheel_speed_rr; // km/h
     float wheel_speed_fl; // km/h
     float wheel_speed_fr; // km/h
+
+    float speed_cc;
 
     HelpLogger *logger;
 

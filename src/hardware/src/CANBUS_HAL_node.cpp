@@ -71,6 +71,8 @@ public:
     chery_canfd_acc_cmd_t msg_acc_cmd;
     chery_canfd_steer_button_t msg_steer_button_cmd;
 
+    chery_canfd_setting_t msg_setting_dari_adas_cmd;
+
     float cmd_target_steering_angle = 0;
     float cmd_target_velocity = 0;
     uint8_t cmd_hw_flag = 0;
@@ -122,7 +124,8 @@ public:
 
             canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID);
             canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_STATE_FRAME_ID);
-            // canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
+            canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_SETTING_FRAME_ID);
+            canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
         }
 
         if (device2_name != "")
@@ -140,7 +143,8 @@ public:
 
             canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID);
             canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_STATE_FRAME_ID);
-            // canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
+            canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_SETTING_FRAME_ID);
+            canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
         }
 
         // Memastikan semua variabel sudah diinisialisasi
@@ -148,6 +152,7 @@ public:
         bzero(&msg_lkas_state_cmd, sizeof(msg_lkas_state_cmd));
         bzero(&msg_acc_cmd, sizeof(msg_acc_cmd));
         bzero(&msg_steer_button_cmd, sizeof(msg_steer_button_cmd));
+        bzero(&msg_setting_dari_adas_cmd, sizeof(msg_setting_dari_adas_cmd));
 
         time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
         last_time_publish = time_now;
@@ -248,6 +253,31 @@ public:
         frame_steer_cmd.id = CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID;
         frame_steer_cmd.dlc = CHERY_CANFD_LKAS_CAM_CMD_345_LENGTH;
         canbus_hal_to_send->send_msg(&frame_steer_cmd);
+    }
+
+    void send_cc_speed_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
+    {
+        // Copy dari bus adas ke bus mobil
+        memcpy(&msg_setting_dari_adas_cmd, &canbus_hal_from_adas->setting_cmd_from_adas, sizeof(msg_setting_dari_adas_cmd));
+
+        // Mengisi sesuai target
+        msg_setting_dari_adas_cmd.cc_speed = chery_canfd_setting_cc_speed_encode(10.0);
+
+        // Packing can
+        can_frame_t frame_setting_dari_adas_cmd;
+        bzero(&frame_setting_dari_adas_cmd, sizeof(frame_setting_dari_adas_cmd));
+        chery_canfd_setting_pack(frame_setting_dari_adas_cmd.data, &msg_setting_dari_adas_cmd, sizeof(frame_setting_dari_adas_cmd.data));
+
+        // Menimpa CRC lalu packing lagi
+        uint8_t crc = calculate_crc(frame_setting_dari_adas_cmd.data, CHERY_CANFD_SETTING_LENGTH - 1, 0x1D, 0xA);
+        msg_setting_dari_adas_cmd.checksum = crc;
+        bzero(&frame_setting_dari_adas_cmd, sizeof(frame_setting_dari_adas_cmd));
+        chery_canfd_setting_pack(frame_setting_dari_adas_cmd.data, &msg_setting_dari_adas_cmd, sizeof(frame_setting_dari_adas_cmd.data));
+
+        // Mengirim ke bus mobil
+        frame_setting_dari_adas_cmd.id = CHERY_CANFD_SETTING_FRAME_ID;
+        frame_setting_dari_adas_cmd.dlc = CHERY_CANFD_SETTING_LENGTH;
+        canbus_hal_to_send->send_msg(&frame_setting_dari_adas_cmd);
     }
 
     void send_gas_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
@@ -405,6 +435,7 @@ public:
         {
             divider_20_hz = 0;
             send_lkas_state_cmd(canbus2_hal, canbus1_hal);
+            send_cc_speed_cmd(canbus2_hal, canbus1_hal);
         }
 
         can1_internal_tick++;
