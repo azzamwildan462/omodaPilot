@@ -11,6 +11,12 @@ path_config_buffer_split = path_config_buffer.split(":")
 ws_path = path_config_buffer_split[0] + "/../../"
 path_config = ws_path + "src/ros2_utils/configs/"
 
+CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID = 0x345
+CHERY_CANFD_LKAS_STATE_FRAME_ID = 0x307
+CHERY_CANFD_SETTING_FRAME_ID = 0x387
+CHERY_CANFD_ACC_CMD_FRAME_ID = 0x3a2
+CHERY_CANFD_STEER_BUTTON_FRAME_ID = 0x360
+
 def generate_launch_description():
     
     SetEnvironmentVariable(name='RMW_IMPLEMENTATION', value='rmw_cyclonedds_cpp'),
@@ -109,9 +115,14 @@ def generate_launch_description():
         parameters=[{
             "can1_type": 0,
             "can2_type": 0,
-            # "device1_name": "",
             "device1_name": "/dev/ttyACM1",
             "device2_name": "/dev/ttyACM0", # String kosong untuk nonaktifkan
+            "intercepted_ids_can": [CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID, 
+                                    CHERY_CANFD_LKAS_STATE_FRAME_ID, 
+                                    # CHERY_CANFD_SETTING_FRAME_ID, 
+                                    CHERY_CANFD_ACC_CMD_FRAME_ID, 
+                                    CHERY_CANFD_STEER_BUTTON_FRAME_ID
+                                    ],
             "baudrate": 500000,
             "fd_baudrate": 2000000,
             "publish_period_ms": 20,

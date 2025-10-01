@@ -86,6 +86,14 @@ public:
     uint8_t flag_reset = 0;
     uint8_t counter_berapa_kali_kirim = 0;
 
+    std::vector<uint16_t> intercepted_id;
+
+    bool intercept_steer = false;
+    bool intercept_steer_btn = false;
+    bool intercept_gas = false;
+    bool intercept_lkas_state = false;
+    bool intercept_cc_speed = false;
+
     CANBUS_HAL_node()
         : Node("canbus_hal_node")
     {
@@ -110,6 +118,10 @@ public:
         this->declare_parameter("publish_period_ms", publish_period_ms);
         this->get_parameter("publish_period_ms", publish_period_ms);
 
+        std::vector<int64_t> temp_intercepted_ids;
+        this->declare_parameter<std::vector<int64_t>>("intercepted_ids_can", temp_intercepted_ids);
+        this->get_parameter("intercepted_ids_can", temp_intercepted_ids);
+
         if (!logger.init())
         {
             RCLCPP_ERROR(this->get_logger(), "Failed to initialize logger");
@@ -128,13 +140,6 @@ public:
                 logger.error("Failed to initialize CANBUS_HAL can1");
                 rclcpp::shutdown();
             }
-
-            // canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID);
-            // canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_STATE_FRAME_ID);
-
-            // canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_SETTING_FRAME_ID);
-            // canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
-            // canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_STEER_BUTTON_FRAME_ID);
         }
 
         if (device2_name != "")
@@ -149,13 +154,6 @@ public:
                 logger.error("Failed to initialize CANBUS_HAL can2");
                 rclcpp::shutdown();
             }
-
-            // canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID);
-            // canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_STATE_FRAME_ID);
-
-            // canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_SETTING_FRAME_ID);
-            // canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
-            // canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_STEER_BUTTON_FRAME_ID);
         }
 
         // Memastikan semua variabel sudah diinisialisasi
@@ -184,15 +182,17 @@ public:
 
         time_Start_program = rclcpp::Clock(RCL_SYSTEM_TIME).now();
 
-        // if (device1_name != "")
-        //     thread_can1_routine = std::thread(std::bind(&CANBUS_HAL_node::callback_can1, this), this);
-
-        // if (device2_name != "")
-        //     thread_can2_routine = std::thread(std::bind(&CANBUS_HAL_node::callback_can2, this), this);
-
         if (device1_name != "" && device2_name != "")
         {
             thread_routine_all = std::thread(std::bind(&CANBUS_HAL_node::callback_routine_all, this), this);
+        }
+
+        // Convert ke uint16_t dan store untuk nanti digunakan
+        intercepted_id.clear();
+        for (auto id : temp_intercepted_ids)
+        {
+            intercepted_id.push_back(static_cast<uint16_t>(id));
+            logger.info("Parameter intercepted ID: 0x%03X", static_cast<uint16_t>(id));
         }
 
         logger.info("CANBUS_HAL_node node initialized");
@@ -248,146 +248,6 @@ public:
             }
         }
         return (crc ^ xor_output);
-    }
-
-    void calculate_crc_khusus_steer_btn()
-    {
-        msg_steer_button_cmd.checksum = 0;
-
-        if (msg_steer_button_cmd.acc == 1)
-        {
-            if (msg_steer_button_cmd.counter == 0)
-            {
-                msg_steer_button_cmd.checksum = 159;
-            }
-            else if (msg_steer_button_cmd.counter == 1)
-            {
-                msg_steer_button_cmd.checksum = 113;
-            }
-            else if (msg_steer_button_cmd.counter == 2)
-            {
-                msg_steer_button_cmd.checksum = 94;
-            }
-            else if (msg_steer_button_cmd.counter == 3)
-            {
-                msg_steer_button_cmd.checksum = 176;
-            }
-            else if (msg_steer_button_cmd.counter == 4)
-            {
-                msg_steer_button_cmd.checksum = 0;
-            }
-            else if (msg_steer_button_cmd.counter == 5)
-            {
-                msg_steer_button_cmd.checksum = 238;
-            }
-            else if (msg_steer_button_cmd.counter == 6)
-            {
-                msg_steer_button_cmd.checksum = 193;
-            }
-            else if (msg_steer_button_cmd.counter == 7)
-            {
-                msg_steer_button_cmd.checksum = 47;
-            }
-            else if (msg_steer_button_cmd.counter == 8)
-            {
-                msg_steer_button_cmd.checksum = 188;
-            }
-            else if (msg_steer_button_cmd.counter == 9)
-            {
-                msg_steer_button_cmd.checksum = 82;
-            }
-            else if (msg_steer_button_cmd.counter == 10)
-            {
-                msg_steer_button_cmd.checksum = 125;
-            }
-            else if (msg_steer_button_cmd.counter == 11)
-            {
-                msg_steer_button_cmd.checksum = 147;
-            }
-            else if (msg_steer_button_cmd.counter == 12)
-            {
-                msg_steer_button_cmd.checksum = 35;
-            }
-            else if (msg_steer_button_cmd.counter == 13)
-            {
-                msg_steer_button_cmd.checksum = 205;
-            }
-            else if (msg_steer_button_cmd.counter == 14)
-            {
-                msg_steer_button_cmd.checksum = 226;
-            }
-            else if (msg_steer_button_cmd.counter == 15)
-            {
-                msg_steer_button_cmd.checksum = 12;
-            }
-        }
-        else
-        {
-            if (msg_steer_button_cmd.counter == 0)
-            {
-                msg_steer_button_cmd.checksum = 16;
-            }
-            else if (msg_steer_button_cmd.counter == 1)
-            {
-                msg_steer_button_cmd.checksum = 254;
-            }
-            else if (msg_steer_button_cmd.counter == 2)
-            {
-                msg_steer_button_cmd.checksum = 209;
-            }
-            else if (msg_steer_button_cmd.counter == 3)
-            {
-                msg_steer_button_cmd.checksum = 63;
-            }
-            else if (msg_steer_button_cmd.counter == 4)
-            {
-                msg_steer_button_cmd.checksum = 143;
-            }
-            else if (msg_steer_button_cmd.counter == 5)
-            {
-                msg_steer_button_cmd.checksum = 97;
-            }
-            else if (msg_steer_button_cmd.counter == 6)
-            {
-                msg_steer_button_cmd.checksum = 78;
-            }
-            else if (msg_steer_button_cmd.counter == 7)
-            {
-                msg_steer_button_cmd.checksum = 160;
-            }
-            else if (msg_steer_button_cmd.counter == 8)
-            {
-                msg_steer_button_cmd.checksum = 51;
-            }
-            else if (msg_steer_button_cmd.counter == 9)
-            {
-                msg_steer_button_cmd.checksum = 221;
-            }
-            else if (msg_steer_button_cmd.counter == 10)
-            {
-                msg_steer_button_cmd.checksum = 242;
-            }
-            else if (msg_steer_button_cmd.counter == 11)
-            {
-                msg_steer_button_cmd.checksum = 28;
-            }
-            else if (msg_steer_button_cmd.counter == 12)
-            {
-                msg_steer_button_cmd.checksum = 172;
-            }
-            else if (msg_steer_button_cmd.counter == 13)
-            {
-                msg_steer_button_cmd.checksum = 66;
-            }
-            else if (msg_steer_button_cmd.counter == 14)
-            {
-                msg_steer_button_cmd.checksum = 109;
-            }
-            else if (msg_steer_button_cmd.counter == 15)
-            {
-                msg_steer_button_cmd.checksum = 131;
-            }
-        }
     }
 
     uint8_t crc_str_btn(const uint8_t *data, size_t length)
@@ -557,17 +417,6 @@ public:
     // ini tpi ke adas. buat trigger kah??
     void send_steer_button_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
     {
-        // logger.info("from: %d %d %d %d %d %d %d %d %d",
-        //             canbus_hal_to_send->steer_button.checksum,
-        //             canbus_hal_to_send->steer_button.counter,
-        //             canbus_hal_to_send->steer_button.res_plus,
-        //             canbus_hal_to_send->steer_button.cc_btn,
-        //             canbus_hal_to_send->steer_button.acc,
-        //             canbus_hal_to_send->steer_button.new_signal_1,
-        //             canbus_hal_to_send->steer_button.res_minus,
-        //             canbus_hal_to_send->steer_button.gap_adjust_up,
-        //             canbus_hal_to_send->steer_button.gap_adjust_down);
-
         // Copy dari bus mobil ke bus afas
         memcpy(&msg_steer_button_cmd, &canbus_hal_to_send->steer_button, sizeof(msg_steer_button_cmd));
 
@@ -596,24 +445,9 @@ public:
         chery_canfd_steer_button_pack(frame_steer_button_cmd.data, &msg_steer_button_cmd, sizeof(frame_steer_button_cmd.data));
 
         // Menimpa CRC lalu packing lagi
-        // msg_steer_button_cmd.checksum = 0;
-        // uint8_t crc = calculate_crc(data_baru, CHERY_CANFD_STEER_BUTTON_LENGTH - 1, 0x1D, 0xA);
-        // msg_steer_button_cmd.checksum = crc;
-        // calculate_crc_khusus_steer_btn();
         crc_str_btn(&frame_steer_button_cmd.data[1], CHERY_CANFD_STEER_BUTTON_LENGTH - 1);
         bzero(&frame_steer_button_cmd, sizeof(frame_steer_button_cmd));
         chery_canfd_steer_button_pack(frame_steer_button_cmd.data, &msg_steer_button_cmd, sizeof(frame_steer_button_cmd.data));
-
-        // logger.info("to: %d %d %d %d %d %d %d %d %d",
-        //             msg_steer_button_cmd.checksum,
-        //             msg_steer_button_cmd.counter,
-        //             msg_steer_button_cmd.res_plus,
-        //             msg_steer_button_cmd.cc_btn,
-        //             msg_steer_button_cmd.acc,
-        //             msg_steer_button_cmd.new_signal_1,
-        //             msg_steer_button_cmd.res_minus,
-        //             msg_steer_button_cmd.gap_adjust_up,
-        //             msg_steer_button_cmd.gap_adjust_down);
 
         // Mengirim ke bus adas
         frame_steer_button_cmd.id = CHERY_CANFD_STEER_BUTTON_FRAME_ID;
@@ -672,38 +506,62 @@ public:
         {
             is_mobil_initialized = 1;
 
-            canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID);
-            canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_STATE_FRAME_ID);
-            // canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_SETTING_FRAME_ID);
-            canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
-            canbus1_hal->intercepted_can_ids.push_back(CHERY_CANFD_STEER_BUTTON_FRAME_ID);
+            // Gunakan parameter intercepted_ids_can jika tersedia, kalau tidak pakai hardcoded
+            if (!intercepted_id.empty())
+            {
+                // Gunakan dari parameter
+                for (auto id : intercepted_id)
+                {
+                    canbus1_hal->intercepted_can_ids.push_back(id);
+                    canbus2_hal->intercepted_can_ids.push_back(id);
+                    logger.info("Added intercepted ID from parameter: 0x%03X", id);
 
-            canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID);
-            canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_LKAS_STATE_FRAME_ID);
-            // canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_SETTING_FRAME_ID);
-            canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_ACC_CMD_FRAME_ID);
-            canbus2_hal->intercepted_can_ids.push_back(CHERY_CANFD_STEER_BUTTON_FRAME_ID);
+                    if (id == CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID)
+                        intercept_steer = true;
 
-            logger.info("Mobil sudah diinisialisasi");
+                    if (id == CHERY_CANFD_LKAS_STATE_FRAME_ID)
+                        intercept_lkas_state = true;
+
+                    if (id == CHERY_CANFD_STEER_BUTTON_FRAME_ID)
+                        intercept_steer_btn = true;
+
+                    if (id == CHERY_CANFD_ACC_CMD_FRAME_ID)
+                        intercept_gas = true;
+
+                    if (id == CHERY_CANFD_SETTING_FRAME_ID)
+                        intercept_cc_speed = true;
+                }
+            }
+            logger.info("Mobil sudah diinisialisasi dengan %zu intercepted IDs",
+                        canbus1_hal->intercepted_can_ids.size());
         }
 
         if (is_mobil_initialized)
         {
             static uint16_t divider_50_hz = 0;
+
             if (divider_50_hz++ >= 20)
             {
                 divider_50_hz = 0;
-                send_steer_cmd(canbus2_hal, canbus1_hal);
-                send_steer_button_cmd(canbus2_hal, canbus1_hal);
-                send_gas_cmd(canbus2_hal, canbus1_hal);
+                if (intercept_steer)
+                    send_steer_cmd(canbus2_hal, canbus1_hal);
+
+                if (intercept_steer_btn)
+                    send_steer_button_cmd(canbus2_hal, canbus1_hal);
+
+                if (intercept_gas)
+                    send_gas_cmd(canbus2_hal, canbus1_hal);
             }
 
             static uint16_t divider_20_hz = 0;
             if (divider_20_hz++ >= 50)
             {
                 divider_20_hz = 0;
-                send_lkas_state_cmd(canbus2_hal, canbus1_hal);
-                // send_cc_speed_cmd(canbus2_hal, canbus1_hal);
+                if (intercept_lkas_state)
+                    send_lkas_state_cmd(canbus2_hal, canbus1_hal);
+
+                if (intercept_cc_speed)
+                    send_cc_speed_cmd(canbus2_hal, canbus1_hal);
             }
         }
 
@@ -740,7 +598,8 @@ public:
         pub_steer_torque->publish(msg_steer_torque);
     }
 
-    void callback_routine_all()
+    void
+    callback_routine_all()
     {
         while (rclcpp::ok())
         {
