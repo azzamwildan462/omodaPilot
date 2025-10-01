@@ -390,6 +390,25 @@ public:
         }
     }
 
+    uint8_t crc_str_btn(const uint8_t *data, size_t length)
+    {
+        const uint8_t poly = 0x1D;
+        uint8_t crc = 0xFF;
+        for (size_t i = 0; i < length; ++i)
+        {
+            crc ^= data[i];
+            for (int b = 0; b < 8; ++b)
+            {
+                if (crc & 0x80)
+                    crc = (uint8_t)((crc << 1) ^ poly);
+                else
+                    crc = (uint8_t)(crc << 1);
+            }
+        }
+        crc ^= 0xFF;
+        return crc;
+    }
+
     void send_steer_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
     {
         // Copy dari bus adas ke bus mobil
@@ -580,7 +599,8 @@ public:
         // msg_steer_button_cmd.checksum = 0;
         // uint8_t crc = calculate_crc(data_baru, CHERY_CANFD_STEER_BUTTON_LENGTH - 1, 0x1D, 0xA);
         // msg_steer_button_cmd.checksum = crc;
-        calculate_crc_khusus_steer_btn();
+        // calculate_crc_khusus_steer_btn();
+        crc_str_btn(&frame_steer_button_cmd.data[1], CHERY_CANFD_STEER_BUTTON_LENGTH - 1);
         bzero(&frame_steer_button_cmd, sizeof(frame_steer_button_cmd));
         chery_canfd_steer_button_pack(frame_steer_button_cmd.data, &msg_steer_button_cmd, sizeof(frame_steer_button_cmd.data));
 

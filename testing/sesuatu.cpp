@@ -12,6 +12,10 @@
 
 #include "chery_canfd.h"
 
+#include <cstdint>
+#include <cstddef>
+#include <cstdio>
+
 #define CAN_MAX_DATA_FRAME 128
 #define CAN_MTU 1024
 
@@ -215,6 +219,25 @@ uint8_t calculate_crc(const uint8_t *data, size_t length, uint8_t poly, uint8_t 
     return (crc ^ xor_output);
 }
 
+uint8_t crc8_chery(const uint8_t *data, size_t length)
+{
+    const uint8_t poly = 0x1D;
+    uint8_t crc = 0xFF;
+    for (size_t i = 0; i < length; ++i)
+    {
+        crc ^= data[i];
+        for (int b = 0; b < 8; ++b)
+        {
+            if (crc & 0x80)
+                crc = (uint8_t)((crc << 1) ^ poly);
+            else
+                crc = (uint8_t)(crc << 1);
+        }
+    }
+    crc ^= 0xFF;
+    return crc;
+}
+
 int main()
 {
     const char *smpl_can_data_terima = "b3458F966000000000000\rasd123asdb123401020304";
@@ -261,7 +284,7 @@ int main()
     frame_kirim.data[4] = 0xBE;
     frame_kirim.data[5] = 0xFE;
     frame_kirim.data[6] = 0x2A;
-    frame_kirim.data[7] = 0xBA;
+    frame_kirim.data[7] = 0xBA; // checksum 0x7A
 
     uint8_t crc = calculate_crc(frame_kirim.data, 7, 0x1D, 0xA);
     // print data and crc
@@ -281,7 +304,7 @@ int main()
     frame_kirim.data[4] = 0x06;
     frame_kirim.data[5] = 0x00;
     frame_kirim.data[6] = 0x13;
-    frame_kirim.data[7] = 0xB0;
+    frame_kirim.data[7] = 0xB0; // checksum 0x7B
 
     crc = calculate_crc(frame_kirim.data, 7, 0x1D, 0xA);
     printf("CAN ID: %X %d | %d\n", frame_kirim.can_id, frame_kirim.can_id, frame_kirim.dlc);
@@ -293,5 +316,39 @@ int main()
     printf("\n");
     printf("CRC: %02X\n", crc);
 
+    frame_kirim.can_id = 0x360;
+    frame_kirim.dlc = 6;
+    frame_kirim.data[0] = 0x42; // checksum
+    frame_kirim.data[1] = 0xD0;
+    frame_kirim.data[2] = 0x00;
+    frame_kirim.data[3] = 0x00;
+    frame_kirim.data[4] = 0x00;
+    frame_kirim.data[5] = 0x00;
+
+    chery_canfd_steer_button_t steer_btn;
+    bzero(&steer_btn, sizeof(steer_btn));
+    chery_canfd_steer_button_unpack(&steer_btn, frame_kirim.data, frame_kirim.dlc);
+    printf("Steer Btn: %d %d %d %d %d %d %d %d %d\n",
+           steer_btn.checksum,
+           steer_btn.counter,
+           steer_btn.res_plus,
+           steer_btn.cc_btn,
+           steer_btn.acc,
+           steer_btn.new_signal_1,
+           steer_btn.res_minus,
+           steer_btn.gap_adjust_up,
+           steer_btn.gap_adjust_down);
+
+    crc = crc8_chery(&frame_kirim.data[1], 5);
+
+    frame_kirim.data[0] = crc; // update checksum
+    printf("CAN ID: %X %d | %d\n", frame_kirim.can_id, frame_kirim.can_id, frame_kirim.dlc);
+    printf("Data: ");
+    for (size_t j = 0; j < frame_kirim.dlc; j++)
+    {
+        printf("%02X ", frame_kirim.data[j]);
+    }
+    printf("\n");
+    printf("CRC: %02X\n", crc);
     return 0;
 }
