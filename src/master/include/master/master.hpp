@@ -32,6 +32,9 @@ public:
 
     HelpLogger logger;
 
+    float MAX_STEERING_ANGLE = 5.0;
+    float MIN_STEERING_ANGLE = -5.0;
+
     int16_t current_key_pressed = 0;
     int16_t prev_key_pressed = 0;
 

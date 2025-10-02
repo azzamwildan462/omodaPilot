@@ -11,6 +11,7 @@
 #include "std_msgs/msg/int8.hpp"
 #include "ros2_utils/help_logger.hpp"
 #include "ros2_utils/global_definitions.hpp"
+#include "ros2_utils/pid.hpp"
 
 #include "hardware/CANBUS_HAL.h"
 #include "hardware/canable2_slcan.h"
@@ -60,6 +61,9 @@ public:
     float MAX_GAS = 511.0;
     float MIN_GAS = -511.0;
 
+    float MAX_STEERING_ANGLE = 5.0;
+    float MIN_STEERING_ANGLE = -5.0;
+
     HelpLogger logger;
     std::unique_ptr<CANBUS_HAL> canbus1_hal; // Pointer to base class
     std::unique_ptr<CANBUS_HAL> canbus2_hal; // Pointer to base class
@@ -94,6 +98,10 @@ public:
     bool intercept_lkas_state = false;
     bool intercept_cc_speed = false;
 
+    std::vector<double> pid_terms;
+
+    PID pid_vx;
+
     CANBUS_HAL_node()
         : Node("canbus_hal_node")
     {
@@ -121,6 +129,9 @@ public:
         std::vector<int64_t> temp_intercepted_ids;
         this->declare_parameter<std::vector<int64_t>>("intercepted_ids_can", temp_intercepted_ids);
         this->get_parameter("intercepted_ids_can", temp_intercepted_ids);
+
+        this->declare_parameter<std::vector<double>>("pid_terms", {0.0070, 0.000000, 0, 0.02, -0.04, 0.4, -0.0005, 0.0005});
+        this->get_parameter("pid_terms", pid_terms);
 
         if (!logger.init())
         {
@@ -162,6 +173,8 @@ public:
         bzero(&msg_acc_cmd, sizeof(msg_acc_cmd));
         bzero(&msg_steer_button_cmd, sizeof(msg_steer_button_cmd));
         bzero(&msg_setting_dari_adas_cmd, sizeof(msg_setting_dari_adas_cmd));
+
+        pid_vx.init(pid_terms[0], pid_terms[1], pid_terms[2], pid_terms[3], pid_terms[4], pid_terms[5], pid_terms[6], pid_terms[7]);
 
         time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
         last_time_publish = time_now;
@@ -275,6 +288,11 @@ public:
         memcpy(&msg_steer_cmd, &canbus_hal_from_adas->lkas_cam_cmd, sizeof(msg_steer_cmd));
 
         // Mengisi sesuai target
+        if (cmd_target_steering_angle > MAX_STEERING_ANGLE)
+            cmd_target_steering_angle = MAX_STEERING_ANGLE;
+        else if (cmd_target_steering_angle < MIN_STEERING_ANGLE)
+            cmd_target_steering_angle = MIN_STEERING_ANGLE;
+
         msg_steer_cmd.cmd = chery_canfd_lkas_cam_cmd_345_cmd_encode(cmd_target_steering_angle * 180 / 3.141592653589793);
         msg_steer_cmd.lka_active = ((cmd_hw_flag & CMD_STEER_ACTIVE) >> 0x00);
         msg_steer_cmd.set_x0 = 0;
@@ -323,27 +341,30 @@ public:
 
     void send_gas_cmd(std::unique_ptr<CANBUS_HAL> &canbus_hal_from_adas, std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
     {
+
+        float target_acc = pid_vx.calculate(cmd_target_velocity - canbus1_hal->fb_current_velocity);
+
         // Clipping
-        if (cmd_target_velocity > MAX_ACCEL)
-            cmd_target_velocity = MAX_ACCEL;
-        if (cmd_target_velocity < MIN_ACCEL)
-            cmd_target_velocity = MIN_ACCEL;
+        if (target_acc > MAX_ACCEL)
+            target_acc = MAX_ACCEL;
+        if (target_acc < MIN_ACCEL)
+            target_acc = MIN_ACCEL;
 
         // Normalisasi
         float target_gas = -24;
-        if (fabsf(cmd_target_velocity - __FLT_EPSILON__) < 0)
+        if (fabsf(target_acc - __FLT_EPSILON__) < 0)
         {
             target_gas = -24;
         }
-        else if (cmd_target_velocity > 0)
+        else if (target_acc > 0)
         {
-            float norm_vel = cmd_target_velocity / MAX_ACCEL;
-            target_gas = norm_vel * MAX_GAS;
+            float norm_acc = target_acc / MAX_ACCEL;
+            target_gas = norm_acc * MAX_GAS;
         }
-        else if (cmd_target_velocity < 0)
+        else if (target_acc < 0)
         {
-            float norm_vel = cmd_target_velocity / MIN_ACCEL;
-            target_gas = norm_vel * MIN_GAS;
+            float norm_acc = target_acc / MIN_ACCEL;
+            target_gas = norm_acc * MIN_GAS - 24.0;
         }
 
         // Clipping
@@ -362,28 +383,23 @@ public:
 
         uint8_t acc_state = canbus_hal_from_adas->acc_cam_cmd.acc_state;
 
-        if (can1_internal_tick > 2000)
-        {
-            acc_state = 2;
-        }
-
-        if ((cmd_hw_flag & CMD_GAS_FULL_STOP) == CMD_GAS_FULL_STOP)
+        if (((cmd_hw_flag & CMD_GAS_FULL_STOP) == CMD_GAS_FULL_STOP) || (cmd_target_velocity < 0 && canbus1_hal->fb_current_velocity < 0.5))
             acc_state = 2;
         else if ((cmd_hw_flag & CMD_GAS_ACTIVE) == CMD_GAS_ACTIVE)
             acc_state = 3;
 
         msg_acc_cmd.cmd = (int16_t)throttle;
-        if ((cmd_hw_flag & CMD_GAS_FULL_STOP) == CMD_GAS_FULL_STOP)
+        if (((cmd_hw_flag & CMD_GAS_FULL_STOP) == CMD_GAS_FULL_STOP) || (cmd_target_velocity < 0 && canbus1_hal->fb_current_velocity < 0.5))
             msg_acc_cmd.cmd = 400;
 
         msg_acc_cmd.accel_on = 0;
-        if ((cmd_hw_flag & CMD_GAS_ACCEL_ON) == CMD_GAS_ACCEL_ON)
+        if (((cmd_hw_flag & CMD_GAS_ACCEL_ON) == CMD_GAS_ACCEL_ON) || (target_gas > 0))
             msg_acc_cmd.accel_on = 1;
 
         msg_acc_cmd.acc_state = acc_state;
 
         msg_acc_cmd.stopped = canbus_hal_from_adas->acc_cam_cmd.stopped;
-        if ((cmd_hw_flag & CMD_GAS_FULL_STOP) == CMD_GAS_FULL_STOP)
+        if (((cmd_hw_flag & CMD_GAS_FULL_STOP) == CMD_GAS_FULL_STOP) || (cmd_target_velocity < 0 && canbus1_hal->fb_current_velocity < 0.5))
             msg_acc_cmd.stopped = 1;
         else if ((cmd_hw_flag & CMD_GAS_ACTIVE) == CMD_GAS_ACTIVE)
             msg_acc_cmd.stopped = 0;
@@ -394,8 +410,10 @@ public:
 
         msg_acc_cmd.counter = (uint8_t)(can1_internal_tick % 0x0f);
 
-        logger.info("Target gas: %.2f, Throttle: %d, Acc state: %d, Stopped: %d, Gas pressed: %d %d -> %d",
-                    target_gas, msg_acc_cmd.cmd, msg_acc_cmd.acc_state, msg_acc_cmd.stopped, msg_acc_cmd.gas_pressed, msg_acc_cmd.accel_on, canbus1_hal->steer_sensor.torque_driver);
+        logger.info("Throttle: %d, Acc on %d Acc_state %d, target_acc %.2f || target_vel %.2f || fb %.2f || setir %.2f",
+                    msg_acc_cmd.cmd, msg_acc_cmd.accel_on, acc_state, target_acc, cmd_target_velocity, canbus1_hal->fb_current_velocity, cmd_target_steering_angle);
+
+        // logger.info("==============================");
 
         // Packing can
         can_frame_t frame_acc_cmd;
@@ -598,92 +616,13 @@ public:
         pub_steer_torque->publish(msg_steer_torque);
     }
 
-    void
-    callback_routine_all()
+    void callback_routine_all()
     {
         while (rclcpp::ok())
         {
             callback_routine_all_routine();
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
-    }
-
-    void callback_can2()
-    {
-        while (rclcpp::ok())
-        {
-            callback_can2_routine();
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
-    }
-
-    void callback_can1()
-    {
-        while (rclcpp::ok())
-        {
-            callback_can1_routine();
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
-    }
-
-    void callback_can2_routine()
-    {
-        std::vector<can_frame_t> canbus2_frames = canbus2_hal->recv_msgs();
-        canbus2_hal->update();
-
-        canbus1_hal->send_msgs(canbus2_frames);
-    }
-
-    void callback_can1_routine()
-    {
-        time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
-
-        logger.info("%.2f %.2f %d", cmd_target_steering_angle, cmd_target_velocity, cmd_hw_flag);
-
-        std::vector<can_frame_t> canbus1_frames = canbus1_hal->recv_msgs();
-        canbus1_hal->update();
-
-        canbus2_hal->send_msgs(canbus1_frames);
-        // send 20 ms
-        if (can1_internal_tick % 2 == 0)
-        {
-            send_steer_cmd(canbus2_hal, canbus1_hal);
-            send_gas_cmd(canbus2_hal, canbus1_hal);
-        }
-
-        // send 50 ms
-        if (can1_internal_tick % 5 == 0)
-        {
-            send_lkas_state_cmd(canbus2_hal, canbus1_hal);
-        }
-
-        can1_internal_tick++; // Increment internal tick every 10 ms
-
-        // Memastikan publish sesuai dengan periode yang diinginkan
-        rclcpp::Duration dt_publish = time_now - last_time_publish;
-        if (dt_publish.seconds() * 1000 < publish_period_ms && publish_period_ms != -1)
-            return;
-        last_time_publish = time_now;
-
-        std_msgs::msg::Float32 msg_steering_angle;
-        msg_steering_angle.data = canbus1_hal->fb_steering_angle;
-        pub_fb_steering_angle->publish(msg_steering_angle);
-
-        std_msgs::msg::Float32 msg_current_velocity;
-        msg_current_velocity.data = canbus1_hal->fb_current_velocity;
-        pub_fb_current_velocity->publish(msg_current_velocity);
-
-        std_msgs::msg::Float32 msg_throttle_position;
-        msg_throttle_position.data = (float)canbus1_hal->engine_gas;
-        pub_throttle_position->publish(msg_throttle_position);
-
-        std_msgs::msg::Int16 msg_brake_position;
-        msg_brake_position.data = canbus1_hal->data_brake_pos;
-        pub_brake_position->publish(msg_brake_position);
-
-        std_msgs::msg::UInt8 msg_gear_status;
-        msg_gear_status.data = canbus1_hal->engine_gear;
-        pub_gear_status->publish(msg_gear_status);
     }
 };
 

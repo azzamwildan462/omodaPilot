@@ -80,23 +80,49 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
         cmd_target_steering_angle -= 0.1;
         break;
 
+    case 'q':
+        cmd_target_steering_angle = 4.8;
+        break;
+    case 'e':
+        cmd_target_steering_angle = -4.8;
+        break;
+
+    case '9':
+        cmd_target_steering_angle += 0.01;
+        break;
+    case '0':
+        cmd_target_steering_angle -= 0.01;
+        break;
+
     case 'w':
-        cmd_target_velocity += 0.05;
+        cmd_target_velocity += 0.1;
         break;
     case 's':
-        cmd_target_velocity -= 0.05;
+        cmd_target_velocity -= 0.1;
         break;
 
     case 'z':
-        cmd_target_velocity = 0.0;
+        cmd_target_velocity = -1.0;
         break;
 
-    case 'x':
-        cmd_target_velocity -= 0.15;
+    case '1':
+        cmd_target_velocity = 1.0;
         break;
 
-    case 'c':
-        cmd_target_velocity += 0.15;
+    case '2':
+        cmd_target_velocity = 2.0;
+        break;
+
+    case '3':
+        cmd_target_velocity = 3.0;
+        break;
+
+    case '4':
+        cmd_target_velocity = 4.0;
+        break;
+
+    case '5':
+        cmd_target_velocity = 5.0;
         break;
 
     case 'l':
@@ -135,6 +161,11 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
         cmd_target_velocity = 0;
         break;
     }
+
+    if (cmd_target_steering_angle > MAX_STEERING_ANGLE)
+        cmd_target_steering_angle = MAX_STEERING_ANGLE;
+    else if (cmd_target_steering_angle < MIN_STEERING_ANGLE)
+        cmd_target_steering_angle = MIN_STEERING_ANGLE;
 }
 
 void Master::callback_routine()

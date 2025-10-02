@@ -125,6 +125,7 @@ def generate_launch_description():
                                     ],
             "baudrate": 500000,
             "fd_baudrate": 2000000,
+            "pid_terms": [0.4, 0.002, 0, 0.02, -3.5, 2.0, -0.1, 0.02],
             "publish_period_ms": 20,
         }],
         remappings=[
