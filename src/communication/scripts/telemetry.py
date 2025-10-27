@@ -5,6 +5,7 @@ import sys
 import time
 from datetime import datetime 
 import psutil
+import math
 
 import influxdb_client
 import rclpy
@@ -18,9 +19,8 @@ from io import StringIO
 from threading import Lock
 import numpy as np
 
-from std_msgs.msg import Float32
-from nav_msgs.msg import Odometry
-from std_msgs.msg import Int16
+from sensor_msgs.msg import NavSatFix
+from ublox_msgs.msg import NavPVT
 
 class Telemetry(Node):
     def __init__(self):
@@ -32,13 +32,13 @@ class Telemetry(Node):
         # Get config from ROS2 parameters
         # -------------------------------
         self.get_logger().info("Getting config from ROS2 parameters")
-        self.declare_parameter("INFLUXDB_URL", "http://x.x.x.x:8086")
-        self.declare_parameter("INFLUXDB_USERNAME", "x")
-        self.declare_parameter("INFLUXDB_PASSWORD", "xx")
-        self.declare_parameter("INFLUXDB_ORG", "xxx")
-        self.declare_parameter("INFLUXDB_BUCKET", "xxxx")
-        self.declare_parameter("ROBOT_NAME", "xxxxx")
-        self.declare_parameter("publish_period", 10) # in ms
+        self.declare_parameter("INFLUXDB_URL", "http://10.199.13.56:8086")
+        self.declare_parameter("INFLUXDB_USERNAME", "raisa")
+        self.declare_parameter("INFLUXDB_PASSWORD", "itssurabaya")
+        self.declare_parameter("INFLUXDB_ORG", "ITS")
+        self.declare_parameter("INFLUXDB_BUCKET", "raisa_nwe")
+        self.declare_parameter("ROBOT_NAME", "raisa")
+        self.declare_parameter("publish_period", 10)
 
         self.INFLUXDB_URL = self.get_parameter("INFLUXDB_URL").get_parameter_value().string_value
         self.INFLUXDB_USERNAME = self.get_parameter("INFLUXDB_USERNAME").get_parameter_value().string_value
@@ -50,9 +50,8 @@ class Telemetry(Node):
 
         # Subscriber
         # ----------
-        self.sub_distance_travelled = self.create_subscription(Float32, "/distance_travelled", self.callback_sub_distance_travelled, 10)
-        self.sub_odom = self.create_subscription(Odometry, "/odom", self.callback_sub_odom, 10)
-        self.sub_battery = self.create_subscription(Int16, "/can/battery", self.callback_sub_battery, 10)
+        self.sub_gps_pvt = self.create_subscription(NavPVT, "/gps/navpvt", self.callback_sub_gps_pvt, 10)
+        self.sub_gps = self.create_subscription(NavSatFix, "/gps/fix", self.callback_sub_gps, 10)
 
         # ROS2 Timer
         # ----------
@@ -99,12 +98,19 @@ class Telemetry(Node):
         self.has_init = True
         self.error_counter = 0
         self.time_robot_started = datetime.utcnow()
-        self.distance_travelled = 0.0
-        self.prev_distance_travelled = 0.0
-        self.battery = 0.0
-        self.odom = Odometry()
+
         self.cpu_usage_percent = 0.0
         self.ram_usage_percent = 0.0
+
+        self.prev_latitude = 0.0
+        self.prev_longitude = 0.0
+        self.current_latitude = 0.0
+        self.current_longitude = 0.0
+        self.current_fix_status = 0
+
+        self.distance_travelled = 0.0
+
+        self.has_init_positioned = False
         
         logger.info("Connected to InfluxDB")
 
@@ -142,20 +148,29 @@ class Telemetry(Node):
     
     # ======================================================================================= 
 
-    def callback_sub_distance_travelled(self, msg):
+    def haversine(self, lat1, lon1, lat2, lon2):
+        R = 6371000.0  # Earth radius in meters
+        phi1 = math.radians(lat1)
+        phi2 = math.radians(lat2)
+        dphi = math.radians(lat2 - lat1)
+        dlambda = math.radians(lon2 - lon1)
+
+        a = math.sin(dphi / 2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2)**2
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+        return R * c
+    
+    def callback_sub_gps(self, msg):
         self.lock.acquire()
-        self.distance_travelled = msg.data
+        self.current_latitude = msg.latitude
+        self.current_longitude = msg.longitude
         self.lock.release()
     
-    def callback_sub_battery(self, msg):
+    def callback_sub_gps_pvt(self, msg):
         self.lock.acquire()
-        self.battery = float(msg.data)
+        self.current_fix_status = msg.fix_type
         self.lock.release()
-    
-    def callback_sub_odom(self, msg):
-        self.lock.acquire()
-        self.odom = msg
-        self.lock.release()
+
     
     def timer_routine_callback(self):
         if not self.has_init:
@@ -163,20 +178,26 @@ class Telemetry(Node):
         
         self.cpu_usage_percent = psutil.cpu_percent(interval=1)
         self.ram_usage_percent = psutil.virtual_memory().percent
+
+        if not self.has_init_positioned:
+            self.prev_latitude = self.current_latitude
+            self.prev_longitude = self.current_longitude
+            self.has_init_positioned = True
+            return
         
-        odom_pose_x = self.odom.pose.pose.position.x
-        odom_pose_y = self.odom.pose.pose.position.y
-        odom_pose_theta = np.arctan2(2*(self.odom.pose.pose.orientation.w*self.odom.pose.pose.orientation.z), 1-2*(self.odom.pose.pose.orientation.z**2))
+        self.current_distance_travelled = self.haversine(self.prev_latitude, self.prev_longitude, self.current_latitude, self.current_longitude)
 
-        delta_distance_travelled = self.distance_travelled - self.prev_distance_travelled
-
+        # if(self.current_distance_travelled > 10000)
+        #     self.current_fix_status = 2
+        
         self.lock.acquire()
-        self.write_sequently(["battery", "pose_x", "pose_y", "pose_theta", "cpu_usage", "ram_usage", "current_distance_travalled"], [self.battery, odom_pose_x, odom_pose_y, odom_pose_theta, self.cpu_usage_percent, self.ram_usage_percent, delta_distance_travelled])
+        self.write_sequently(["cpu_usage", "ram_usage", "lat", "long", "current_distance_travalled", "fix_status"], [self.cpu_usage_percent, self.ram_usage_percent, self.current_latitude, self.current_longitude, self.current_distance_travelled, self.current_fix_status])
         self.write_once(["distance_travelled"], [self.distance_travelled])
         self.lock.release()
 
-        self.prev_distance_travelled = self.distance_travelled
-        
+        self.prev_latitude = self.current_latitude
+        self.prev_longitude = self.current_longitude
+
 def main(args=None):
     rclpy.init(args=args)
 

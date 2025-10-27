@@ -10,6 +10,7 @@ path_config_buffer = os.getenv('AMENT_PREFIX_PATH', '')
 path_config_buffer_split = path_config_buffer.split(":")
 ws_path = path_config_buffer_split[0] + "/../../"
 path_config = ws_path + "src/ros2_utils/configs/"
+utils_config = ws_path + "src/ros2_utils/"
 
 CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID = 0x345
 CHERY_CANFD_LKAS_STATE_FRAME_ID = 0x307
@@ -21,6 +22,25 @@ def generate_launch_description():
     
     SetEnvironmentVariable(name='RMW_IMPLEMENTATION', value='rmw_cyclonedds_cpp'),
     SetEnvironmentVariable(name='CYCLONEDDS_URI', value='file://' + path_config + 'cyclonedds.xml'),
+
+    # =========================== Robot Description ===========================
+
+    robot_state_publisher_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        parameters=[
+            {"robot_description": Command(["xacro ", LaunchConfiguration("model")])}
+        ],
+    )
+
+    joint_state_publisher_node = Node(
+        package="joint_state_publisher",
+        executable="joint_state_publisher",
+        name="joint_state_publisher",
+        arguments=[os.path.join(utils_config, "description", "omoda.urdf")],
+    )
+
+    # =========================== Bawaan ROS ===========================
 
     rosbridge_server = Node(
         package='rosbridge_server',
@@ -37,6 +57,8 @@ def generate_launch_description():
         respawn=True,
     )
 
+    # =========================== Communication ===========================
+
     wifi_control = Node(
         package="communication",
         executable="wifi_control",
@@ -51,52 +73,23 @@ def generate_launch_description():
         respawn=True,
     )
 
-    ui_server = Node(
-        package="web_ui",
-        executable="ui_server.py",
-        name="ui_server",
-        parameters=[
-            {
-                "ui_root_path": os.path.join(ws_path,"src/web_ui/src")
-            },
-        ],
-        output="screen",
-        respawn=True,
-    )
-
-    master = Node(
-        package='master',
-        executable='master',
-        name='master',
-        namespace='master',
-        output='screen',
-        remappings=[
-            ("fb_steering_angle", "/hardware/fb_steering_angle"),
-            ("fb_current_velocity", "/hardware/fb_current_velocity"),
-            ("fb_throttle_position", "/hardware/fb_throttle_position"),
-            ("fb_brake_position", "/hardware/fb_brake_position"),
-            ("fb_gear_status", "/hardware/fb_gear_status"),
-            ("fb_steer_torque", "/hardware/fb_steer_torque"),
-        ],
-        respawn=True,
-        prefix='nice -n -10',
-    )
-
     telemetry = Node(
         package="communication",
         executable="telemetry.py",
         name="telemetry",
         parameters=[{
-            "INFLUXDB_URL": "http://172.30.37.21:8086",
-            "INFLUXDB_USERNAME": "awm462",
-            "INFLUXDB_PASSWORD": "wildan462",
-            "INFLUXDB_ORG": "awmawm",
-            "INFLUXDB_BUCKET": "ujiCoba",
-            "ROBOT_NAME": "gh_template",
+            "INFLUXDB_URL": "http://127.0.0.1:8086",
+            "INFLUXDB_USERNAME": "its",
+            "INFLUXDB_PASSWORD": "itssurabaya",
+            "INFLUXDB_ORG": "its",
+            "INFLUXDB_BUCKET": "robotics",
+            "ROBOT_NAME": "omoda", 
         }],
         output="screen",
         respawn=True,
     )
+
+    # =========================== Hardware ===========================
 
     keyboard_input = Node(
         package='hardware',
@@ -137,6 +130,55 @@ def generate_launch_description():
         respawn=True,
     )
 
+    multilidar = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [os.path.join(utils_config, "launch"), "/multi_vlp16.launch.py"]
+        )
+    )
+
+    multicamera = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [os.path.join(utils_config, "launch"), "/multicamera.launch.py"]
+        )
+    )
+
+    # =========================== Master ===========================
+
+    master = Node(
+        package='master',
+        executable='master',
+        name='master',
+        namespace='master',
+        output='screen',
+        remappings=[
+            ("fb_steering_angle", "/hardware/fb_steering_angle"),
+            ("fb_current_velocity", "/hardware/fb_current_velocity"),
+            ("fb_throttle_position", "/hardware/fb_throttle_position"),
+            ("fb_brake_position", "/hardware/fb_brake_position"),
+            ("fb_gear_status", "/hardware/fb_gear_status"),
+            ("fb_steer_torque", "/hardware/fb_steer_torque"),
+        ],
+        respawn=True,
+        prefix='nice -n -10',
+    )
+
+    # =========================== Vision ===========================
+    # =========================== Web UI ===========================
+
+    ui_server = Node(
+        package="web_ui",
+        executable="ui_server.py",
+        name="ui_server",
+        parameters=[
+            {
+                "ui_root_path": os.path.join(ws_path,"src/web_ui/src")
+            },
+        ],
+        output="screen",
+        respawn=True,
+    )
+
+    # =========================== World Model ===========================
 
 
     return LaunchDescription(

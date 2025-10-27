@@ -1,0 +1,27 @@
+image_width: 1920
+image_height: 1080
+# camera_name: narrow_stereo
+camera_name: li-gw5200
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [983.39981,   0.     , 981.41525,
+           0.     , 994.22033, 550.12412,
+           0.     ,   0.     ,   1.     ]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.274573, 0.053867, -0.000636, 0.000391, 0.000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1., 0., 0.,
+         0., 1., 0.,
+         0., 0., 1.]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [652.64471,   0.     , 986.33435,   0.     ,
+           0.     , 903.47952, 551.70693,   0.     ,
+           0.     ,   0.     ,   1.     ,   0.     ]
