@@ -6,6 +6,17 @@ from launch.actions import SetEnvironmentVariable
 
 from ament_index_python.packages import get_package_share_directory
 
+from launch.actions import (
+    DeclareLaunchArgument,
+    ExecuteProcess,
+    IncludeLaunchDescription,
+    TimerAction,
+)
+from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
+from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
+
 path_config_buffer = os.getenv('AMENT_PREFIX_PATH', '')
 path_config_buffer_split = path_config_buffer.split(":")
 ws_path = path_config_buffer_split[0] + "/../../"
@@ -29,7 +40,7 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         parameters=[
-            {"robot_description": Command(["xacro ", LaunchConfiguration("model")])}
+            {"robot_description": Command(["xacro ", os.path.join(utils_config, "description", "omoda.urdf")])}
         ],
     )
 
@@ -49,12 +60,23 @@ def generate_launch_description():
         output='screen',
         respawn=True,
     )
+
     rosapi_node = Node(
         package='rosapi',
         executable='rosapi_node',
         name='rosapi_node',
         output='screen',
         respawn=True,
+    )
+
+    rviz2 = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        # fmt: off
+        arguments=["-d",os.path.join(path_config,"robot.rviz"),
+                   "--ros-args","--log-level","error",]
+        # fmt: on
     )
 
     # =========================== Communication ===========================
@@ -142,6 +164,19 @@ def generate_launch_description():
         )
     )
 
+    hesai_lidar = Node(
+        package='hesai_ros_driver', 
+        executable='hesai_ros_driver_node', 
+        namespace='lidartengah', 
+        # output='screen'
+    )
+
+    gps = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [os.path.join(utils_config, "launch"), "/navsat.launch.py"]
+        )
+    )
+
     # =========================== Master ===========================
 
     master = Node(
@@ -183,18 +218,28 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            joint_state_publisher_node,
+            robot_state_publisher_node,
+
+            multilidar,
+            # multicamera,
+            hesai_lidar,
+            gps,
+
             # rosapi_node,
             # ui_server,
             # rosbridge_server, 
 
             # telemetry,
 
-            master,
+            # master,
 
-            keyboard_input,
+            # keyboard_input,
 
             # wifi_control,
-            CANBUS_HAL_node,
+            # CANBUS_HAL_node,
+
+            rviz2,
         ]
     )
 

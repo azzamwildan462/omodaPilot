@@ -12,7 +12,7 @@ def generate_launch_description():
     driver_share_dir = ament_index_python.packages.get_package_share_directory(
         "ros2_utils"
     )
-    driver_params_file = os.path.join(driver_share_dir, "config", "camera_driver.yaml")
+    driver_params_file = os.path.join(driver_share_dir, "configs", "camera_driver.yaml")
 
     camera_driver_node1 = launch_ros.actions.Node(
         package="v4l2_camera",

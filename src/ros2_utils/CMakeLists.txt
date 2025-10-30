@@ -61,4 +61,10 @@ install(DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
 )
 
+install(
+  DIRECTORY
+            configs
+            description
+  DESTINATION share/${PROJECT_NAME})
+
 ament_package()
