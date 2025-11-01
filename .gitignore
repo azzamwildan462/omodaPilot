@@ -1,4 +1,7 @@
 install/ 
 build/ 
 log/
+dependencies/
 *.mp4
+rtabmap/
+rtabmap_ros/

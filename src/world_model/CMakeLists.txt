@@ -6,9 +6,35 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # find dependencies
-find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
+set(var_dependencies
+    ament_cmake
+    rclcpp
+    std_msgs
+    nav_msgs
+    ros2_utils
+    geometry_msgs
+    tf2
+    tf2_geometry_msgs
+    tf2_sensor_msgs
+    pcl_conversions
+    pcl_ros
+    sensor_msgs
+    tf2_eigen
+    OpenCV
+    laser_geometry
+    yaml-cpp
+    tf2_ros)
+
+foreach(var_dependency ${var_dependencies})
+  find_package(${var_dependency} REQUIRED)
+endforeach()
+
+add_executable(pose_estimator src/pose_estimator.cpp)
+ament_target_dependencies(pose_estimator ${var_dependencies})
+
+install(
+  TARGETS pose_estimator
+  DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

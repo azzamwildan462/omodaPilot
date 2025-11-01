@@ -1,0 +1,207 @@
+# --- Filtering
+serial_no: ""                                                             # [string]  choose device by serial number
+ip_address: ""                                                            # [string]  choose device by ip address
+usb_port_id: ""                                                           # [string]  choose device by usb port id
+device_type: ""                                                           # [string]  choose device by type
+
+# ---Advanced
+json_file_path: ""                                                        # [string]  allows advanced configuration
+intial_reset: false                                                       # [bool]
+rosbag_filename: ""                                                       # [string]  a realsense bagfile to run from as a device
+
+# --- TF
+publish_tf: true                                                          # [bool]
+tf_publish_rate: 0.0                                                      # [double]
+
+# --- COLOR STREAM
+enable_color: true                                                        # [bool]    enable color stream
+rgb_camera.packet_size: 1500.0                                            # [double]  color stream packet size
+rgb_camera.inter_packet_delay: 13                                         # [int]     color stream inter packet delay
+rgb_camera.color_profile: 848x480x30                                      # [string]  (WIDTHxHEIGHTxFPS) color stream profile 
+rgb_camera.color_format: RGB8                                             # [string]  color stream format
+rgb_camera.enable_auto_exposure: true                                     # [bool]    enable/disable auto exposure
+rgb_camera.auto_exposure_priority: true                                   # [bool]    limit exposure time when auto-exposure is ON to preserve constant fps rate
+# rgb_camera.auto_exposure_roi.bottom: <H - 1>                            # [int]
+# rgb_camera.auto_exposure_roi.left: 0                                    # [int]
+# rgb_camera.auto_exposure_roi.right: <W - 1>                             # [int]
+# rgb_camera.auto_exposure_roi.top: 0                                     # [int]
+# rgb_camera.exposure: 166                                                # [int]     controls exposure time of color camera, setting any value will disable auto exposure
+rgb_camera.gain: 64                                                       # [int]     color image gain
+rgb_camera.brightness: 0                                                  # [int]     color image brightness
+rgb_camera.contrast: 50                                                   # [int]     color image contrast
+rgb_camera.gamma: 300                                                     # [int]     color image gamma
+rgb_camera.hue: 0                                                         # [int]     color image hue
+rgb_camera.saturation: 64                                                 # [int]     color image saturation
+rgb_camera.sharpness: 50                                                  # [int]     color image sharpness
+rgb_camera.enable_auto_white_balance: true                                # [bool]    enable/disable auto-white-balance
+# rgb_camera.white_balance: 4600                                          # [int]     controls white balance of color image, setting any value will disable auto-white-balance
+rgb_camera.backlight_compensation: false                                  # [bool]    enable/disable backlight compensation
+rgb_camera.rgb_led_toggle: true                                           # [bool]    toggles the RGB camera LED light
+rgb_camera.power_line_frequency: 1                                        # [int]     (0: Disabled, 1: 50Hz, 2: 60Hz, 3: Auto, 4: OutDoor) power line frequency 
+rgb_camera.inter_cam_sync_mode: 0                                         # [int]     (0: Default, 1: External Trigger, 2: External Trigger Burst) inter-camera synchronization mode 
+rgb_camera.ext_trigger_source: 1                                          # [int]     (1: Hardware, 2: Software) external trigger source 
+rgb_camera.external_event_burst_count: 1                                  # [int]     external event burst count
+rgb_camera.software_trigger: 1                                            # [int]     execute software trigger
+rgb_camera.frames_queue_size: 16                                          # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency and vice versa
+rgb_camera.global_time_enabled: true                                      # [bool]    enable/disable global timestamp
+
+# --- DEPTH STREAM                          
+enable_depth: true                                                        # [bool]    enable depth stream
+depth_module.packet_size: 1500.0                                          # [double]  depth stream packet size
+depth_module.inter_packet_delay: 13                                       # [int]     depth stream inter packet delay
+depth_module.depth_profile: 848x480x30                                    # [string]  (WIDTHxHEIGHTxFPS) depth stream profile 
+depth_module.depth_format: Z16                                            # [string]  depth stream format
+depth_module.metadata_toggle: false                                       # [bool]    toggles the metadata
+depth_module.enable_auto_exposure: true                                   # [bool]    enable/disable auto-exposure
+depth_module.auto_exposure_limit_toggle: false                            # [bool]    toggle auto-exposure limit
+depth_module.auto_exposure_limit: 33000                                   # [int]     (MIN: 1, MAX: 165000) exposure limit is in microseconds; default is 0 which means full exposure range; if the requested exposure limit is greater than frame time, it will be set to frame time at runtimem; setting will not take effect until next streaming session
+# depth_module.auto_exposure_roi.bottom: <H - 1>                          # [int]
+# depth_module.auto_exposure_roi.left: 0                                  # [int]
+# depth_module.auto_exposure_roi.right: <W - 1>                           # [int]
+# depth_module.auto_exposure_roi.top: 0                                   # [int]
+# depth_module.exposure: 33000                                            # [int]     (MIN: 1, MAX: 165000) depth exposure (usec)
+depth_module.auto_gain_limit_toggle: false                                # [bool]    toggle auto-gain limit
+depth_module.auto_gain_limit: 248                                         # [int]     (MIN: 16, MAX: 148) sets gain limit; default is 0 which means full gain; if the requested gain limit is less than 16, it will be set to 16; if the requested gain limit is greater than 248, it will be set to 248; setting will not take effect until next streaming session
+# depth_module.gain: 16                                                   # [int]     image gain  
+depth_module.visual_preset: 0                                             # [int]     (0: Custom, 1: Default, 2: Hand, 3: High Accuracy, 4: High Density, 5: Medium Density)
+depth_module.inter_cam_sync_mode: 0                                       # [int]     (0: Default, 1: Master, 2: Slave, 3: Full Slave, 4-258: Genlock with burst count of 1-255 frames for each trigger, 259: External Trigger, 260: External Trigger Burst)
+depth_module.ext_trigger_source: 1                                        # [int]     (1: Hardware, 2: Software) external trigger source
+depth_module.external_event_burst_count: 1                                # [int]     (MIN: 1, MAX: 1000000) external event burst count
+depth_module.software_trigger: 1                                          # [int]     execute software trigger
+depth_module.software_trigger_all_sensors: true                           # [bool]    forwards software trigger signall to all sensors
+depth_module.output_trigger_enabled: false                                # [bool]    output trigger enabled
+depth_module.user_output_level: 1                                         # [int]     (1: Low, 2: High) user output level
+depth_module.emitter_enabled: true                                        # [bool]    emmiter enabled
+depth_module.line_debouncer_time: 0                                       # [int]     line debouncer time (microseconds)
+depth_module.frames_queue_size: 16                                        # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+depth_module.global_time_enabled: true                                    # [bool]    enable/disable global timestamp
+
+# --- INFRA
+enable_infra1: false                                                      # [bool]    
+enable_infra2: false                                                      # [bool]
+depth_module.infra_profile: 848x480x30                                    # [string]  (WIDTHxHEIGHTxFPS) infra stream profile
+depth_module.infra1_format: Y8                                            # [string]  (Y8, Y16) infra1 stream format
+depth_module.infra2_format: Y8                                            # [string]  (Y8, Y16) infra1 stream format
+depth_module.laser_power: 150                                             # [int]     (MIN: 0, MAX: 360) laser power
+
+# --- ACCEL
+enable_accel: false                                                       # [bool]    enable accel
+accel_fps: 0                                                              # [int]     (63, 250) accel fps
+linear_accel_cov: 0.01                                                    # [double]
+
+# --- GYRO
+enable_gyro: false                                                        # [bool]    enable gyro
+gyro_fps: 0                                                               # [int]     (200, 400) gyro fps
+
+# --- MOTION MODULE
+motion_module.enable_motion_correction: true                              # [bool]    enable/disable automatic motion data correction
+motion_module.global_time_enabled: true                                   # [bool]    enable/disable global timestamp
+motion_module.frames_queue_size: 16                                       # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+
+# --- Pointcloud
+pointcloud.enable: false                                                  # [bool]
+pointcloud.ordered_pc: false                                              # [bool]
+pointcloud.stream_filter: 2                                               # [int]     (0: Any, 1: Depth, 2: Color, 3: Infrared, 4: Fisheye, 5: Gyro, 6: Accel, 7: Gpio, 8: Pose, 9: Confidence, 10: Motion) stream type
+pointcloud.stream_index_filter: 0                                         # [int]     (MIN: -1, MAX: 16) stream index
+pointcloud.stream_format_filter: 0                                        # [int]     (MIN: 0, MAX: 33) stream format
+pointcloud.allow_no_texture_points: true                                  # [bool]
+pointcloud.filter_magnitude: 2                                            # [int]     (1: Off, 2: On)
+pointcloud.frames_queue_size: 16                                          # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+
+# --- Colorizer
+colorizer.enable: false                                                   # [bool]
+colorizer.visual_preset: 0                                                # [int]     (0: Dynamic, 1: Fixed, 2: Near, 3: Far) preset depth colorization
+colorizer.color_scheme: 0                                                 # [int]     (0: Jet, 1: Classic, 2: WhiteToBlack, 3: BlackToWhite, 4: Bio, 5: Cold, 6: Warm, 7: Quantized, 8: Pattern, 9: Hue) color map
+colorizer.stream_filter: 1                                                # [int]     (0: Any, 1: Depth, 2: Color, 3: Infrared, 4: Fisheye, 5: Gyro, 6: Accel, 7: Gpio, 8: Pose, 9: Confidence, 10: Motion) stream type
+colorizer.stream_index_filter: -1                                         # [int]     (MIN: -1, MAX: 16) stream index
+colorizer.stream_format_filter: 0                                         # [int]     (MIN: 0, MAX: 33) stream format
+colorizer.min_distance: 0.0                                               # [double]  (MIN: 0.0, MAX: 16.0) min range in meters
+colorizer.max_distance: 6.0                                               # [double]  (MIN: 0.0, MAX: 16.0) max range in meters
+colorizer.histogram_equalization_enabled: true                            # [bool]    perform histogram equalization
+colorizer.frames_queue_size: 16                                           # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+
+# --- Sync & Align
+enable_sync: false                                                        # [bool]
+align_depth.enable: false                                                 # [bool]
+align_depth.frames_queue_size: 16                                         # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+
+# --- HDR
+depth_module.hdr_enabled: false                                           # [bool]    enable HDR
+hdr_merge.enable: false                                                   # [bool]  
+hdr_merge.frames_queue_size: 16                                           # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency and vice versa
+depth_module.sequence_id: 0                                               # [int]     (0: UVC, 1: 1, 2: 2) HDR option
+depth_module.sequence_name: 0                                             # [int]     (0, 1, 2, 3) HDR option
+depth_module.sequence_size: 2                                             # [int]     (2) HDR option
+
+# --- Decimation filter
+decimation_filter.enable: false                                           # [bool]
+decimation_filter.stream_filter: 1                                        # [int]     (0: Any, 1: Depth, 2: Color, 3: Infrared, 4: Fisheye, 5: Gyro, 6: Accel, 7: Gpio, 8: Pose, 9: Confidence, 10: Motion) stream type
+decimation_filter.stream_index_filter: -1                                 # [int]     (MIN: -1, MAX: 16) stream index
+decimation_filter.stream_format_filter: 1                                 # [int]     (MIN: 0, MAX: 33) stream format
+decimation_filter.filter_magnitude: 2                                     # [int]     (MIN: 1, MAX: 8) decimation scale
+decimation_filter.frames_queue_size: 16                                   # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+
+# --- Spatial filter
+spatial_filter.enable: false                                              # [bool]
+spatial_filter.stream_filter: 1                                           # [int]     (0: Any, 1: Depth, 2: Color, 3: Infrared, 4: Fisheye, 5: Gyro, 6: Accel, 7: Gpio, 8: Pose, 9: Confidence, 10: Motion) stream type
+spatial_filter.stream_index_filter: -1                                    # [int]     (MIN: -1, MAX: 16) stream index
+spatial_filter.stream_format_filter: 1                                    # [int]     (MIN: 0, MAX: 33) stream format
+spatial_filter.filter_smooth_alpha: 0.5                                   # [double]  (0: INFINITE FILTER, MIN: 0.25, MAX: 1.0, STEP: 0.01) alpha factor for exp. moving average
+spatial_filter.filter_smooth_delta: 20                                    # [int]     (MIN: 1, MAX: 50) edge-preserving treshold
+spatial_filter.holes_fill: 0                                              # [int]     (0: Disabled, 1: 2-pixel radius, 2: 4-pixel radius, 3: 8-pixel radius, 4: 16-pixel radius, 5: Unlimited) holes filling mode
+spatial_filter.filter_magnitude: 2                                        # [int]     (MIN: 1, MAX: 5) filtering iterations
+spatial_filter.frames_queue_size: 16                                      # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+
+# --- Temporal filter
+temporal_filter.enable: false                                             # [bool]
+temporal_filter.stream_filter: 1                                          # [int]     (0: Any, 1: Depth, 2: Color, 3: Infrared, 4: Fisheye, 5: Gyro, 6: Accel, 7: Gpio, 8: Pose, 9: Confidence, 10: Motion) stream type
+temporal_filter.stream_index_filter: -1                                   # [int]     (MIN: -1, MAX: 16) stream index
+temporal_filter.stream_format_filter: 1                                   # [int]     (MIN: 0, MAX: 33) stream format
+temporal_filter.filter_smooth_alpha: 0.4                                  # [double]  (0: INFINITE FILTER, MAX: 1.0, STEP: 0.01) alpha factor for exp. moving average
+temporal_filter.filter_smooth_delta: 20                                   # [int]     (MIN: 1, MAX: 100) edge-preserving (gradient) treshold
+temporal_filter.holes_fill: 3                                             # [int]     (0: Disabled, 1: Valid in 8/8, 2: Valid in 2/last 3, 3: Valid in 2/last 4, 4: Valid in 2/8, 5: Valid in 1/last 2, 6: Valid in 1/last 5, 7: Valid in 1/8, 8: Always On) persistency mode
+temporal_filter.frames_queue_size: 16                                     # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+
+# --- Hole Filling filter
+hole_filling_filter.enable: false                                         # [bool]
+hole_filling_filter.stream_filter: 1                                      # [int]     (0: Any, 1: Depth, 2: Color, 3: Infrared, 4: Fisheye, 5: Gyro, 6: Accel, 7: Gpio, 8: Pose, 9: Confidence, 10: Motion) stream type
+hole_filling_filter.stream_index_filter: -1                               # [int]     (MIN: -1, MAX: 16) stream index
+hole_filling_filter.stream_format_filter: 1                               # [int]     (MIN: 0, MAX: 33) stream format
+hole_filling_filter.holes_fill: 1                                         # [int]     (0: Fill from Left, 1: Farest from around, 2: Nearest from around)
+hole_filling_filter.frames_queue_size: 16                                 # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+
+# --- Filter by sequence ID
+filter_by_sequence_id.enable: false                                       # [bool]
+filter_by_sequence_id.sequence_id: 1                                      # [int]     (0: all, 1: 1, 2: 2) selected stream id for display
+filter_by_sequence_id.frames_queue_size: 16                               # [int]     (MIN: 0, MAX: 32) max number of frames you can hold at a given time; increasing this number will reduce frame drops but increase latency, and vice versa
+
+# --- Disparity
+disparity_filter.enable: false                                            # [bool]
+disparity_to_depth.enable: false                                          # [bool]
+
+# --- Timeout
+wait_for_device_timeout: -1.0                                             # [double]  timeout for waiting for device to connect (seconds)
+reconnect_timeout: 6.0                                                    # [double]  timeout in seconds between consequtive reconnection attempt
+
+# --- Other
+enable_rgbd: false                                                        # [bool]
+# use_sim_time: false                                                     # [bool]
+# base_frame_id: link                                                     # [string]
+# accel_qos: SENSOR_DATA                                                  # [string]
+# accel_info_qos: DEFAULT                                                 # [string]
+# gyro_qos: SENSOR_DATA                                                   # [string]
+# gyro_info_qos: DEFAULT                                                  # [string]
+# color_qos: SYSTEM_DEFAULT                                               # [string]
+# color_info_qos: DEFAULT                                                 # [string]
+# depth_qos: SYSTEM_DEFAULT                                               # [string]
+# depth_info_qos: DEFAULT                                                 # [string]
+# infra1_qos: SYSTEM_DEFAULT                                              # [string]
+# infra1_info_qos: DEFAULT                                                # [string]
+# infra2_qos: SYSTEM_DEFAULT                                              # [string]
+# infra2_info_qos: DEFAULT                                                # [string]
+# pointcloud.pointcloud_qos: DEFAULT                                      # [string]
+clip_distance: -2.0                                                       # [double]
+angular_velocity_cov: 0.01                                                # [double]
+unite_imu_method: 0                                                       # [int] (0: NONE, 1: COPY, 2: LINEAR_INTERPOLATION)
+hold_back_imu_for_frames: false                                           # [bool]
+diagnostics_period: 0.0                                                   # [double]

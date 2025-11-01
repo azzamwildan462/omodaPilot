@@ -79,6 +79,31 @@ def generate_launch_description():
         # fmt: on
     )
 
+    rs2_cam_main = Node(
+        package="realsense2_camera",
+        executable="realsense2_camera_node",
+        name="rs2_cam_main",
+        parameters=[
+            {
+                "camera_name": "camera",
+                "camera_namespace": "",
+                "enable_accel": False,
+                "enable_gyro": False,
+                "enable_depth": True,
+                "enable_color": True,
+                "enable_sync": True,
+                "unite_imu_method": 2,
+                "align_depth.enable": True,
+                "pointcloud.enable": True,
+                "initial_reset": False,
+                "rgb_camera.color_profile": "640x360x15",
+            }
+        ],
+        arguments=["--ros-args", "--log-level", "error"],
+        respawn=True,
+        output="screen",
+    )
+
     # =========================== Communication ===========================
 
     wifi_control = Node(
@@ -177,6 +202,22 @@ def generate_launch_description():
         )
     )
 
+    serial_imu = Node(
+        package="hardware",
+        executable="serial_imu",
+        name="serial_imu",
+        output="screen",
+        parameters=[
+            {
+                "port": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5069RR4-if00-port0",
+                "use_boost": False,
+                "is_riontech": True,
+                "baudrate": 115200,
+            }
+        ],
+        respawn=True,
+    )
+
     # =========================== Master ===========================
 
     master = Node(
@@ -215,16 +256,42 @@ def generate_launch_description():
 
     # =========================== World Model ===========================
 
+    pose_estimator = Node(
+        package="world_model",
+        executable="pose_estimator",
+        name="pose_estimator",
+        output="screen",
+        namespace='world_model',
+        parameters=[
+            {
+                "encoder_to_meter": 1.0,  
+                "offset_sudut_steering": -0.04,
+                "gyro_type": 0,
+                "timer_period": 20, # 50 hz
+                "use_encoder_pulse": False
+            }
+        ],
+        respawn=True,
+        # remappings=[('/hardware/imu', '/can/imu')],
+        ##        prefix='nice -n -9 chrt -f 60'
+    )
+
 
     return LaunchDescription(
         [
+            pose_estimator,
             joint_state_publisher_node,
             robot_state_publisher_node,
 
-            multilidar,
-            # multicamera,
-            hesai_lidar,
-            gps,
+            # multilidar,
+            # # multicamera,
+            # hesai_lidar,
+            # gps,
+
+            # rs2_cam_main,
+
+            serial_imu,
+
 
             # rosapi_node,
             # ui_server,
@@ -239,7 +306,7 @@ def generate_launch_description():
             # wifi_control,
             # CANBUS_HAL_node,
 
-            rviz2,
+            # rviz2,
         ]
     )
 

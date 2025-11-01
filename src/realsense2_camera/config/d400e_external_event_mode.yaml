@@ -1,0 +1,43 @@
+# --- Filtering
+serial_no: ""                                                             # [string]  choose device by serial number
+ip_address: ""                                                            # [string]  choose device by ip address
+usb_port_id: ""                                                           # [string]  choose device by usb port id
+device_type: ""                                                           # [string]  choose device by type
+
+
+
+# --- Camera setup
+enable_color: true                                                        # [bool]
+enable_depth: true                                                        # [bool]
+enable_infra1: false                                                      # [bool]    
+enable_infra2: false                                                      # [bool]
+enable_accel: false                                                       # [bool]
+enable_gyro: false                                                        # [bool]
+pointcloud.enable: false                                                  # [bool]
+
+
+
+# --- DEPTH stream setup
+depth_module.depth_profile: 848x480x30                                    # [string]  (WIDTHxHEIGHTxFPS) depth stream profile 
+depth_module.depth_format: Z16                                            # [string]  depth stream format
+depth_qos: SYSTEM_DEFAULT                                                 # [string]
+
+# --- COLOR stream setup
+rgb_camera.color_profile: 848x480x30                                      # [string]  (WIDTHxHEIGHTxFPS) color stream profile 
+rgb_camera.color_format: RGB8                                             # [string]  color stream format
+color_qos: SYSTEM_DEFAULT                                                 # [string]
+
+
+
+# --- Preparing camera for external event operating mode
+# (https://www.framos.com/framos3d/D400e/Documentation/Application%20Notes/Framos_D400e_External_Event_Camera_Synchronization_AppNote.pdf)
+depth_module.packet_size: 1500.0                                          # [double]  depth stream packet size
+depth_module.inter_packet_delay: 13                                       # [int]     depth stream inter packet delay
+depth_module.inter_cam_sync_mode: 259                                     # [int]     (0: Default, 1: Master, 2: Slave, 3: Full Slave, 4-258: Genlock with burst count of 1-255 frames for each trigger, 259: External Trigger, 260: External Trigger Burst)
+depth_module.ext_trigger_source: 2                                        # [int]     (1: Hardware, 2: Software) external trigger source
+depth_module.software_trigger_all_sensors: true                           # [bool]    forwards software trigger signall to all sensors
+
+rgb_camera.packet_size: 1500.0                                            # [double]  color stream packet size
+rgb_camera.inter_packet_delay: 13                                         # [int]     color stream inter packet delay
+rgb_camera.inter_cam_sync_mode: 1                                         # [int]     (0: Default, 1: External Trigger, 2: External Trigger Burst) inter-camera synchronization mode 
+rgb_camera.ext_trigger_source: 2                                          # [int]     (1: Hardware, 2: Software) external trigger source 
