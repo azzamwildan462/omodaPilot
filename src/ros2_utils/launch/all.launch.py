@@ -51,6 +51,17 @@ def generate_launch_description():
         arguments=[os.path.join(utils_config, "description", "omoda.urdf")],
     )
 
+    tf_map_empty = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="tf_map_empty",
+        # fmt: off
+        arguments=["0.00","0.00","0.00","0.00","0.00","0.00","map","odom",
+            "--ros-args","--log-level","error",],
+        # fmt: on
+        respawn=True,
+    )
+
     # =========================== Bawaan ROS ===========================
 
     rosbridge_server = Node(
@@ -92,6 +103,8 @@ def generate_launch_description():
                 "enable_depth": True,
                 "enable_color": True,
                 "enable_sync": True,
+                "enable_infra1": False,
+                "enable_infra2": False,
                 "unite_imu_method": 2,
                 "align_depth.enable": True,
                 "pointcloud.enable": True,
@@ -102,6 +115,264 @@ def generate_launch_description():
         arguments=["--ros-args", "--log-level", "error"],
         respawn=True,
         output="screen",
+    )
+
+    rtabmap_slam = Node(
+        package="rtabmap_slam",
+        executable="rtabmap",
+        name="rtabmap",
+        namespace="slam",
+        output="screen",
+        parameters=[{
+            "use_sim_time": False,
+            "frame_id": "base_link",
+            "map_frame_id": "map",
+            "odom_frame_id": "odom",
+
+            "subscribe_cloud": False,
+            "subscribe_scan_cloud": True,
+            "subscribe_scan": False,
+            "subscribe_imu": False,
+            "subscribe_odom": False,
+            "subscribe_stereo": False,
+            "subscribe_rgb": True,
+            "subscribe_rgbd": False,
+            "subscribe_depth": False,
+            "qos_scan": 1,
+            "wait_for_transform": 2.0,
+
+            "publish_tf": False,
+            "approx_sync": True,
+            "sync_queue_size": 30,
+            "topic_queue_size": 30,
+            'qos': 1,
+            "wait_for_transform": 2.0,
+            "icp_odometry": True, # Percobaan odom pake ICP gak dari hardware
+
+            "Rtabmap/DetectionRate": "5.0",  # Added by Azzam
+            "Rtabmap/CreateIntermediateNodes": "True",
+            "Rtabmap/LoopThr": "0.11",  # Routine period untuk cek loop closure
+
+            "Mem/STMSize": "20",  # Short-term memory size
+            "Mem/IncrementalMemory": "True",  #
+            "Mem/InitWMWithAllNodes": "True",  #
+            "Mem/RehearsalSimilaritys": "0.9",  #
+            "Mem/UseOdomFeatures": "False",  #
+            "Mem/NotLinkedNodesKept": "True",  # Keep unlinked nodes
+
+            "Kp/MaxFeatures": "2000",
+            "Kp/DetectorStrategy": "2", # Full ORB saja
+
+            "RGBD/Enabled": "True", #
+            "RGBD/OptimizeFromGraphEnd": "False",  # True agar robot tidak lompat
+            "RGBD/NeighborLinkRefining": "True",  # Added from documentation, ikut odom saja (false)
+            "RGBD/AngularUpdate": "0.3",  # Added from documentation
+            "RGBD/LinearUpdate": "0.3",  # Added from documentation
+            "RGBD/OptimizeMaxError": "4.0",  # Added from documentation
+            "RGBD/InvertedReg": "False",  # Added from documentation
+            "RGBD/ProximityPathMaxNeighbors": "5",
+            "RGBD/ProximityMaxGraphDepth": "20",
+            "RGBD/ProximityByTime": "False",
+            "RGBD/ProximityBySpace": "True",
+
+            "Optimizer/Strategy": "2",  # Added by Azzam
+            "Optimizer/Iterations": "10",  # Added by Azzam
+            "Optimizer/Epsilon": "0.00001",  # Added by Azzam
+            "Optimizer/Robust": "False",  # Added by Azzam
+            "Optimizer/GravitySigma": "0.3",
+            "Optimizer/VarianceIgnored": "False",
+            "Optimizer/LandmarksIgnored": "False",  # Added by Azzam
+            "Optimizer/PriorsIgnored": "True",  # Added by Azzam
+            "GTSAM/Incremental": "False",  # Added by Azzam
+            "Bayes/PredictionMargin": "0",  # Added by Azzam
+            "Bayes/FullPredictionUpdate": "False",  # Added by Azzam
+            "Bayes/PredictionLC": "0.1 0.36 0.30 0.16 0.062 0.0151 0.00255 0.000324 2.5e-05 1.3e-06 4.8e-08 1.2e-09 1.9e-11 2.2e-13 1.7e-15 8.5e-18 2.9e-20 6.9e-23",  # Added by Azzam
+            "Odom/Strategy": "0",  # Added by Azzam
+            "Odom/ResetCountdown": "0",  # Added by Azzam
+            "Odom/Holonomic": "False",  # Added by Azzam
+            "Odom/ScanKeyFrameThr": "0.9",  # Added by Azzam, semakin kecil semakin sering lidar update
+            "Odom/AlignWithGround": "True",  # Added by Azzam
+            "Odom/FilteringStrategy": "1",
+
+            "Reg/Strategy": "1",  # Added by Azzam
+            "Reg/Force3DoF": "True",  # Added by Azzam
+            "Icp/Strategy": "1",  # Added by Azzam
+            "Icp/MaxTranslation": "1.5",  # Added by Azzam
+            "Icp/MaxRotation": "0.7",  # Added by Azzam
+            "Icp/RangeMin": "0.0",  # Added by Azzam
+            "Icp/RangeMax": "25.0",  # Added by Azzam
+            "Icp/MaxCorrespondenceDistance": "1.0",  # Added by Azzam
+            "Icp/Iterations": "30",  # Added by Azzam
+            "Icp/PointToPlane": "True",  # Added by Azzam
+            "Icp/VoxelSize": "0.05",  # Added by Azzam
+            "Icp/PointToPlaneMinComplexity": "0.03",  # to be more robust to long corridors with low geometry
+            "Icp/PointToPlaneLowComplexityStrategy": "1",  # to be more robust to long corridors with low geometry
+            "Vis/MaxDepth": "20.0",
+            "Vis/MinInliers": "15",
+            "Vis/FeatureType": "2",
+            "Vis/EpipolarGeometryVar": "0.5",
+            "Grid/Sensor": "2",  # Added to suppress warning
+            "Grid/RangeMin": "0.0",  # Added by Azzam
+            "Grid/RangeMax": "150.0",  # Added by Azzam
+            "Grid/NormalsSegmentation": 'false', # Use passthrough filter to detect obstacles
+            "Grid/UpdateRate": "1.0",  # Update map every 1 second (default is often higher)
+            "Grid/CellSize": "0.3",  # Increase cell size to reduce map density
+            "Grid/FromDepth": "False",  # Added from documentation
+            "Grid/IncrementalMapping": "True",  # Added from documentation
+            "Grid/Scan2dUnknownSpaceFilled": "False",  # Added by Azzam
+            "GridGlobal/UpdateError": "0.04",  # Added by Azzam
+            "Grid/RayTracing": "False",  # Added by Azzam
+            'Grid/MaxObstacleHeight':'3.5',  # All points over 1 meter are ignored
+
+            # Depth dari lidar 
+            "gen_depth": True,
+            "gen_depth_decimation": 4,
+            "gen_depth_fill_holes_size": 2,
+            "gen_depth_fill_iterations": 1,
+            "gen_depth_fill_holes_error": 0.3,
+
+        }],
+        remappings=[
+            ("scan_cloud", "/lidartengah/lidar_points"),
+            ("rgb/image", "/camera/rs2_cam_main/color/image_raw"),
+            ("rgb/camera_info", "/camera/rs2_cam_main/color/camera_info"),
+            # ("depth/image", "/camera/rs2_cam_main/aligned_depth_to_color/image_raw"),
+        ],
+        arguments=["--ros-args", "--log-level", "info"],
+        respawn=True,
+    )
+
+    rtabmap_icp_odom = Node(
+        package="rtabmap_odom",
+        executable="icp_odometry",
+        name="icp_odometry",
+        output="screen",
+        namespace="icp_odom",
+        parameters=[{
+            "use_sim_time": False,
+            "frame_id": "base_link",
+
+            "subscribe_cloud": False,
+            "subscribe_scan_cloud": True,
+            "subscribe_scan": False,
+            "subscribe_imu": True,
+            "subscribe_odom": False,
+            "subscribe_stereo": False,
+            "subscribe_rgb": False,
+            "subscribe_rgbd": False,
+            "subscribe_depth": False,
+
+            "publish_tf": False,
+            "approx_sync": True,
+            "sync_queue_size": 30,
+            "topic_queue_size": 10,
+            'qos': 1,
+            "wait_for_transform": 2.0,
+
+            'Mem/IncrementalMemory':'False',
+            'Mem/InitWMWithAllNodes':'True',
+
+            "Reg/Force3DoF": "False",
+
+            "Odom/Strategy": "1",
+            "Odom/ResetCountdown": "0",
+            "Odom/ScanKeyFrameThr": "0.9",  # Added by Azzam, semakin kecil semakin sering lidar update
+            "Odom/GuessMotion": "True",  
+
+            "Icp/Strategy": "1",  # Added by Azzam
+            "Icp/MaxTranslation": "2.0", # Added by Azzam
+            "Icp/MaxRotation": "0.7", # Added by Azzam
+            "Icp/RangeMin": "0.0", # Added by Azzam
+            "Icp/RangeMax": "100.0", # Added by Azzam
+            "Icp/MaxCorrespondenceDistance": "1.2", # Added by Azzam
+            "Icp/Iterations": "30", # Added by Azzam
+            "Icp/PointToPlane": "True", # Added by Azzam
+            "Icp/VoxelSize": "0.10", # Added by Azzam
+            'Icp/PointToPlaneMinComplexity':'0.01254', 
+            'Icp/PointToPlaneLowComplexityStrategy':'1', 
+        }],
+        remappings=[
+            ("scan_cloud", "/lidartengah/lidar_points"),
+            ("imu", "/lidartengah/lidar_imu"),
+            # ("scan", "/disale_wtf_scan"),
+            # ("odom", "vo")
+        ],
+        arguments=["--ros-args", "--log-level", "warn"],
+        respawn=True,
+    )
+
+    ekf_icp_odom = Node(
+        package="robot_localization",
+        executable="ekf_node",
+        name="ekf_node",
+        namespace="icp_odom",
+        parameters=[{
+            "frequency": 50.0,
+            "two_d_mode": True,
+            "sensor_timeout": 0.2,
+            "map_frame": "map",
+            "odom_frame": "odom",
+            "base_link_frame": "base_link",
+            "world_frame": "odom",
+            "publish_tf": True,
+
+            "odom0": "/icp_odom/odom",
+            "odom0_config": [True, True, False,
+                             False, False, True,
+                             True,  True,  False,
+                             False, False, True,
+                             False, False, False],
+            "odom0_differential": False,
+            "odom0_relative": False,
+
+            "imu0": "/lidartengah/lidar_imu",
+            "imu0_config": [False, False, False,
+                            False,  False,  True,
+                            False, False, False,
+                            False,  False,  True,
+                            False, False, False],
+            "imu0_differential": False,
+            "imu0_relative": False,
+        }],
+        arguments=["--ros-args", "--log-level", "warn"],
+        respawn=True,
+    )
+
+    ekf_final_pose = Node(
+        package="robot_localization",
+        executable="ekf_node",
+        name="ekf_final_pose",
+        namespace="slam",
+        parameters=[{
+            "frequency": 50.0,
+            "two_d_mode": True,
+            "sensor_timeout": 0.2,
+            "map_frame": "map",
+            "odom_frame": "odom",
+            "base_link_frame": "base_link",
+            "world_frame": "odom",
+            "publish_tf": False,
+
+            "odom0": "/icp_odom/odometry/filtered",
+            "odom0_config": [True, True, False,
+                             False, False, True,
+                             False,  False,  False,
+                             False, False, False,
+                             False, False, False],
+            "odom0_differential": True,
+            "odom0_relative": True,
+
+            "imu0": "localization_pose",
+            "imu0_config": [True, True, False,
+                            False,  False,  True,
+                            False, False, False,
+                            False,  False,  False,
+                            False, False, False],
+            "imu0_differential": False,
+            "imu0_relative": False,
+        }],
+        arguments=["--ros-args", "--log-level", "warn"],
+        respawn=True,
     )
 
     # =========================== Communication ===========================
@@ -193,6 +464,11 @@ def generate_launch_description():
         package='hesai_ros_driver', 
         executable='hesai_ros_driver_node', 
         namespace='lidartengah', 
+        parameters=[{
+            "timestamp_type": "ros",
+            "use_lidar_time": False,
+            "use_gps_ts": False,
+        }]
         # output='screen'
     )
 
@@ -279,19 +555,25 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            pose_estimator,
+            tf_map_empty,
+            # pose_estimator,
             joint_state_publisher_node,
             robot_state_publisher_node,
 
-            # multilidar,
+            multilidar,
             # # multicamera,
-            # hesai_lidar,
-            # gps,
+            hesai_lidar,
+            gps,
 
-            # rs2_cam_main,
+            rs2_cam_main,
 
             serial_imu,
 
+            rtabmap_icp_odom,
+            ekf_icp_odom,
+
+            rtabmap_slam,
+            ekf_final_pose,
 
             # rosapi_node,
             # ui_server,
@@ -306,7 +588,7 @@ def generate_launch_description():
             # wifi_control,
             # CANBUS_HAL_node,
 
-            # rviz2,
+            rviz2,
         ]
     )
 
