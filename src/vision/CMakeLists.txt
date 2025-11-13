@@ -10,6 +10,11 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
+ament_python_install_package(models)
+
+install(PROGRAMS scripts/road_segmentation.py DESTINATION lib/${PROJECT_NAME})
+install(PROGRAMS scripts/dummy_video2ros.py DESTINATION lib/${PROJECT_NAME})
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
