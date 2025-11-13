@@ -14,6 +14,7 @@ set(var_dependencies
     ros2_utils
     geometry_msgs
     tf2
+    tf2_ros 
     tf2_geometry_msgs
     tf2_sensor_msgs
     pcl_conversions
@@ -23,6 +24,7 @@ set(var_dependencies
     OpenCV
     laser_geometry
     yaml-cpp
+    PCL
     tf2_ros)
 
 foreach(var_dependency ${var_dependencies})
@@ -32,8 +34,13 @@ endforeach()
 add_executable(pose_estimator src/pose_estimator.cpp)
 ament_target_dependencies(pose_estimator ${var_dependencies})
 
+add_executable(all_obstacle_filter src/all_obstacle_filter.cpp)
+ament_target_dependencies(all_obstacle_filter ${var_dependencies})
+
 install(
-  TARGETS pose_estimator
+  TARGETS 
+  pose_estimator 
+  all_obstacle_filter
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

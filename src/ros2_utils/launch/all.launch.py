@@ -515,6 +515,47 @@ def generate_launch_description():
     )
 
     # =========================== Vision ===========================
+
+    dummy_video2ros = Node(
+        package="vision",
+        executable="dummy_video2ros.py",
+        name="dummy_video2ros",
+        parameters=[{
+            "source": os.path.join(ws_path, "src/vision/scripts/3_rgb_output.mp4"),
+            "topic": "/camera/rs2_cam_main/color/image_raw",
+        }],
+        output="screen",
+        respawn=True,
+    )
+
+    road_segmentation = Node(
+        package="vision",
+        executable="road_segmentation.py",
+        name="road_segmentation",
+        parameters=[{
+            "weights": os.path.join(ws_path, "src/vision/models/200_nn.pth"),
+            "thr": 0.09,
+            "use_cuda": False,
+            "use_wb": True,
+            "use_clahe": True,
+            "use_adaptive_gamma": True,
+            "touch_bottom": False,
+            "min_area": 100,
+            "alpha_lp": 0.7, # INi low pass kayak biasanya (per waktu)
+            "crop_upper": 175,
+            "crop_lower": 100,
+            "reset_on_scene_cut": False,
+            "scene_cut_thresh": 0.35,
+
+            "image_topic": "/camera/rs2_cam_main/color/image_raw",
+            "mask_topic": "/road_seg/mask",
+            "publish_period": 0.0,
+            "publish_overlay": True, # Buat debug
+        }],
+        output="screen",
+        respawn=True,
+    )
+
     # =========================== Web UI ===========================
 
     ui_server = Node(
@@ -553,27 +594,66 @@ def generate_launch_description():
     )
 
 
+    all_obstacle_filter = Node(
+        package="world_model",
+        executable="all_obstacle_filter",
+        name="all_obstacle_filter",
+        output="screen",
+        namespace='world_model',
+        parameters=[
+            {
+                "lidar_kanan_topic": "/velodynekanan/velodyne_points",  
+                "lidar_kiri_topic": "/velodynekiri/velodyne_points",
+                "lidar_tengah_topic": "/lidartengah/lidar_points",
+                "lidar_kanan_frame_id": "velodynekanan",
+                "lidar_kiri_frame_id": "velodynekiri",
+                "lidar_tengah_frame_id": "lidartengah",
+                "exclude_x_min": -2.5,
+                "exclude_x_max": 2.5,
+                "exclude_y_min": -0.3,
+                "exclude_y_max": 0.3,
+                "exclude_z_min": -200.0,
+                "exclude_z_max": 200.0,
+                "pcl2laser_obs_x_min": -10.0,
+                "pcl2laser_obs_x_max": 10.0,
+                "pcl2laser_obs_y_min": -3.0,
+                "pcl2laser_obs_y_max": 3.0,
+                "pcl2laser_obs_z_min": 0.1,
+                "pcl2laser_obs_z_max": 1.0,
+            }
+        ],
+        respawn=True,
+        # remappings=[('/hardware/imu', '/can/imu')],
+        ##        prefix='nice -n -9 chrt -f 60'
+    )
+
+
     return LaunchDescription(
         [
+            # dummy_video2ros,
+
             tf_map_empty,
             # pose_estimator,
             joint_state_publisher_node,
             robot_state_publisher_node,
 
             multilidar,
-            # # multicamera,
+            # multicamera,
             hesai_lidar,
-            gps,
+            # gps,
 
-            rs2_cam_main,
+            all_obstacle_filter,
 
-            serial_imu,
+            # rs2_cam_main,
+            # road_segmentation,
 
-            rtabmap_icp_odom,
-            ekf_icp_odom,
+            # serial_imu,
 
-            rtabmap_slam,
-            ekf_final_pose,
+            # rtabmap_icp_odom,
+            # ekf_icp_odom,
+
+            # rtabmap_slam,
+            # ekf_final_pose,
 
             # rosapi_node,
             # ui_server,
