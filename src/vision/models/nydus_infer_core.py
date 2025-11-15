@@ -3,33 +3,11 @@
 """
 nydus_infer_core — backbone-only inference utilities for NydusNetwork
 ====================================================================
-Pure-Python module that wraps the *model + pre/post-processing* into a reusable
-class, **without any I/O, CLI, or ROS**. Suitable to be imported by a ROS 2
-node (or any other runtime) that handles message passing & scheduling.
-
-Exports
--------
-- `NydusInferCore` : stateful inference wrapper
-- `load_weights_flex(model, path, device, ...)` : checkpoint helper
-
-Usage (inside your ROS node)
-----------------------------
-from nydus_infer_core import NydusInferCore
-from nydus_network import make_nydus_network
-
-engine = NydusInferCore(make_nydus_network(num_classes=1),
-                        device="cuda", weights="/path/ckpt.pth",
-                        in_w=640, in_h=360, thr=0.45,
-                        use_wb=True, use_clahe=True, use_adaptive_gamma=True,
-                        tta_gamma=[0.9,1.1],
-                        touch_bottom=True, min_area=1500, ksize=7,
-                        lp_alpha=0.7, crop_upper=175, crop_lower=100,
-                        scene_cut=True, scene_cut_thresh=0.35)
-
-mask_u8, overlay_bgr, stats = engine(frame_bgr)
-
-You can also get raw probability map by calling `engine.forward_prob(rgb_or_bgr)`.
+CUDA-optimized version:
+- Automatic device selection (CPU / CUDA)
+- Optional mixed-precision inference (torch.cuda.amp.autocast)
 """
+
 from typing import Optional, List, Tuple, Dict
 import os
 import time
@@ -67,7 +45,7 @@ def _pick_state_dict(ckpt):
     raise ValueError("Tidak menemukan state_dict yang valid di checkpoint.")
 
 def load_weights_flex(model, path, device="cpu", strict=False, verbose=True):
-    # map_location aman di CPU
+    # map_location aman di CPU/GPU
     ckpt = torch.load(path, map_location=device)
     sd = _pick_state_dict(ckpt)
     sd = _strip_prefix_if_present(sd)
@@ -195,7 +173,7 @@ def largest_contour_filled(bin_mask, min_area=500, touch_bottom=True, ksize=5):
 
 
 # ------------------------------------------------------------
-# Nydus inference core (stateful, no I/O)
+# Nydus inference core (stateful, no I/O) — CUDA optimized
 # ------------------------------------------------------------
 class NydusInferCore:
     def __init__(self,
@@ -213,14 +191,35 @@ class NydusInferCore:
                  ksize: int = 5,
                  lp_alpha: float = 0.7,
                  crop_upper: int = 0, crop_lower: int = 0,
-                 scene_cut: bool = True, scene_cut_thresh: float = 0.35):
+                 scene_cut: bool = True, scene_cut_thresh: float = 0.35,
+                 use_amp: Optional[bool] = None):
         """Initialize the inference core.
 
-        Only holds parameters & state; it does not own any I/O.
+        - device: "cuda" / "cuda:0" / "cpu"
+        - use_amp: None -> True if CUDA available, else False
         """
-        self.model = model
+        # ----- device & AMP -----
+        requested_device = device
+        if device.startswith("cuda") and not torch.cuda.is_available():
+            print(f"[WARN] CUDA tidak tersedia, fallback ke CPU (request={requested_device})")
+            device = "cpu"
+
         self.device = torch.device(device)
-        self.model.to(self.device).eval()
+
+        if use_amp is None:
+            self.use_amp = (self.device.type == "cuda")
+        else:
+            self.use_amp = bool(use_amp) and (self.device.type == "cuda")
+
+        if self.device.type == "cuda":
+            torch.backends.cudnn.benchmark = True
+            print(f"[INFO] Using CUDA device: {self.device}, AMP={self.use_amp}")
+        else:
+            print(f"[INFO] Using CPU device: {self.device}, AMP={self.use_amp}")
+
+        # ----- model -----
+        self.model = model.to(self.device)
+        self.model.eval()
 
         # conservative negative bias (optional; harmless if missing)
         last = None
@@ -298,9 +297,16 @@ class NydusInferCore:
     def forward_prob(self, bgr_or_rgb: np.ndarray, assume_bgr: bool = True) -> torch.Tensor:
         """Return probability map tensor (1,1,h,w) in [0,1] without post-processing."""
         rgb = cv2.cvtColor(bgr_or_rgb, cv2.COLOR_BGR2RGB) if assume_bgr else bgr_or_rgb
-        x = self.preproc(image=rgb)["image"].unsqueeze(0).to(self.device)
-        logits, self.h_state = self.model(x, h=self.h_state, return_state=True)
-        return torch.sigmoid(logits)
+        x = self.preproc(image=rgb)["image"].unsqueeze(0).to(self.device, non_blocking=True)
+
+        if self.use_amp:
+            with torch.cuda.amp.autocast():
+                logits, self.h_state = self.model(x, h=self.h_state, return_state=True)
+        else:
+            logits, self.h_state = self.model(x, h=self.h_state, return_state=True)
+
+        prob = torch.sigmoid(logits)
+        return prob
 
     def __call__(self, frame_bgr: np.ndarray) -> Tuple[np.ndarray, np.ndarray, Dict]:
         """Process a single BGR frame and return (mask_u8{0,1}, overlay_bgr, stats)."""
@@ -312,24 +318,38 @@ class NydusInferCore:
         self._maybe_scene_cut(frame_bgr)
         frame_rgb = self._pre_light(frame_bgr)
 
-        # TTA gamma (optional)
+        # TTA gamma (optional) + CUDA/AMP
         with torch.no_grad():
             if self.tta:
                 probs = []
-                for g in self.tta:
-                    g_img = np.clip((frame_rgb.astype(np.float32)/255.0) ** g, 0, 1)
-                    g_img = (g_img*255).astype(np.uint8)
-                    x = self.preproc(image=g_img)["image"].unsqueeze(0).to(self.device)
-                    logits, self.h_state = self.model(x, h=self.h_state, return_state=True)
-                    probs.append(torch.sigmoid(logits))
+                if self.use_amp:
+                    with torch.cuda.amp.autocast():
+                        for g in self.tta:
+                            g_img = np.clip((frame_rgb.astype(np.float32)/255.0) ** g, 0, 1)
+                            g_img = (g_img*255).astype(np.uint8)
+                            x = self.preproc(image=g_img)["image"].unsqueeze(0).to(self.device, non_blocking=True)
+                            logits, self.h_state = self.model(x, h=self.h_state, return_state=True)
+                            probs.append(torch.sigmoid(logits))
+                else:
+                    for g in self.tta:
+                        g_img = np.clip((frame_rgb.astype(np.float32)/255.0) ** g, 0, 1)
+                        g_img = (g_img*255).astype(np.uint8)
+                        x = self.preproc(image=g_img)["image"].unsqueeze(0).to(self.device, non_blocking=True)
+                        logits, self.h_state = self.model(x, h=self.h_state, return_state=True)
+                        probs.append(torch.sigmoid(logits))
+
                 prob = torch.mean(torch.stack(probs, dim=0), dim=0)
             else:
-                x = self.preproc(image=frame_rgb)["image"].unsqueeze(0).to(self.device)
-                logits, self.h_state = self.model(x, h=self.h_state, return_state=True)
+                x = self.preproc(image=frame_rgb)["image"].unsqueeze(0).to(self.device, non_blocking=True)
+                if self.use_amp:
+                    with torch.cuda.amp.autocast():
+                        logits, self.h_state = self.model(x, h=self.h_state, return_state=True)
+                else:
+                    logits, self.h_state = self.model(x, h=self.h_state, return_state=True)
                 prob = torch.sigmoid(logits)
 
-        # binarize & resize
-        mask_small = (prob.squeeze().cpu().numpy() > self.thr).astype(np.uint8)
+        # binarize & resize (di CPU)
+        mask_small = (prob.squeeze().detach().cpu().numpy() > self.thr).astype(np.uint8)
         mask = cv2.resize(mask_small, (W0, H0), interpolation=cv2.INTER_NEAREST)
 
         # cut bridges & necks
@@ -350,10 +370,11 @@ class NydusInferCore:
         if self.prev_mask_f32 is None:
             self.prev_mask_f32 = mask.astype(np.float32)
         else:
-            mask = cv2.addWeighted(self.prev_mask_f32, self.lp_alpha, mask.astype(np.float32), 1-self.lp_alpha, 0)
+            mask = cv2.addWeighted(self.prev_mask_f32, self.lp_alpha,
+                                   mask.astype(np.float32), 1-self.lp_alpha, 0)
             self.prev_mask_f32 = mask.copy()
         mask = (mask > 0.5).astype(np.uint8)
 
         overlay = overlay_mask(frame_bgr, mask, alpha=0.35)
         t_ms = (time.time()-t0)*1000.0
-        return mask, overlay, {"t_ms": t_ms, "thr": self.thr}
+        return mask, overlay, {"t_ms": t_ms, "thr": self.thr, "device": str(self.device), "amp": self.use_amp}

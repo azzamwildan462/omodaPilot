@@ -16,6 +16,7 @@ from loguru import logger
 
 import torch
 import numpy as np
+import cv2
 
 # modulmu (pure-Py)
 from models.nydus_network import make_nydus_network
@@ -62,8 +63,8 @@ class NydusMaskNode(Node):
         # -------- Get params --------
         g = self.get_parameter
         weights = g("weights").get_parameter_value().string_value
-        in_w = int(g("in_width").value)
-        in_h = int(g("in_height").value)
+        self.in_w = int(g("in_width").value)
+        self.in_h = int(g("in_height").value)
         thr  = float(g("thr").value)
         use_cuda = bool(g("use_cuda").value)
 
@@ -106,7 +107,7 @@ class NydusMaskNode(Node):
             model=make_nydus_network(num_classes=1),
             device=device,
             weights=weights,
-            in_w=in_w, in_h=in_h, thr=thr,
+            in_w=self.in_w, in_h=self.in_h, thr=thr,
             use_wb=use_wb, use_clahe=use_clahe, use_adaptive_gamma=use_adg,
             tta_gamma=tta,
             touch_bottom=touch_bottom, min_area=min_area, ksize=ksize,
@@ -116,19 +117,19 @@ class NydusMaskNode(Node):
         logger.info(f"Nydus engine on device: {device}")
 
         # -------- ROS I/O --------
-        qos = QoSProfile(
-            reliability=ReliabilityPolicy.BEST_EFFORT,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=1
-        )
-        self.sub = self.create_subscription(Image, self.image_topic, self.cb_image, qos)
-        self.pub_mask = self.create_publisher(Image, self.mask_topic, 10)
+        # qos = QoSProfile(
+        #     reliability=ReliabilityPolicy.BEST_EFFORT,
+        #     history=HistoryPolicy.KEEP_LAST,
+        #     depth=1
+        # )
+        self.sub = self.create_subscription(Image, self.image_topic, self.cb_image, 1)
+        self.pub_mask = self.create_publisher(Image, self.mask_topic, 1)
 
         if self.publish_overlay:
-            self.pub_overlay = self.create_publisher(Image, self.mask_topic + "/overlay", 10)
+            self.pub_overlay = self.create_publisher(Image, self.mask_topic + "/overlay", 1)
         
         if self.do_mask2laserscan:
-            self.pub_laserscan = self.create_publisher(LaserScan, self.mask_topic + "/laserscan", 10)
+            self.pub_laserscan = self.create_publisher(LaserScan, self.mask_topic + "/laserscan", 1)
         
         # ring buffer of latest frame
         self.last_bgr = None
@@ -145,11 +146,13 @@ class NydusMaskNode(Node):
             return
         try:
             bgr = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+            bgr_resized = cv2.resize(bgr, (self.in_w, self.in_h))
+
         except Exception as e:
             logger.error(f"cv_bridge error: {e}")
             return
         with self.lock:
-            self.last_bgr = bgr
+            self.last_bgr = bgr_resized
             self.last_header = msg.header
 
     def on_timer(self):
