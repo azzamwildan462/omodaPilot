@@ -80,6 +80,14 @@ def generate_launch_description():
         respawn=True,
     )
 
+    web_video_server = Node(
+        package="web_video_server",
+        executable="web_video_server",
+        name="web_video_server",
+        output="screen",
+        respawn=True,
+    )
+
     rviz2 = Node(
         package="rviz2",
         executable="rviz2",
@@ -521,11 +529,20 @@ def generate_launch_description():
         executable="dummy_video2ros.py",
         name="dummy_video2ros",
         parameters=[{
-            "source": os.path.join(ws_path, "src/vision/scripts/3_rgb_output.mp4"),
+            "source": os.path.join(ws_path, "src/vision/scripts/2_rgb_output.mp4"),
             "topic": "/camera/rs2_cam_main/color/image_raw",
         }],
         output="screen",
         respawn=True,
+    )
+
+    camera_driver_node2 = Node(
+        package="v4l2_camera",
+        executable="v4l2_camera_node",
+        name="camera_node",
+        namespace="cameratengah",
+        output="both",
+        parameters=[os.path.join(utils_config, "configs", "camera_driver.yaml")],
     )
 
     road_segmentation = Node(
@@ -533,9 +550,9 @@ def generate_launch_description():
         executable="road_segmentation.py",
         name="road_segmentation",
         parameters=[{
+            "use_cuda": True,
             "weights": os.path.join(ws_path, "src/vision/models/200_nn.pth"),
             "thr": 0.09,
-            "use_cuda": False,
             "use_wb": True,
             "use_clahe": True,
             "use_adaptive_gamma": True,
@@ -543,14 +560,32 @@ def generate_launch_description():
             "min_area": 100,
             "alpha_lp": 0.7, # INi low pass kayak biasanya (per waktu)
             "crop_upper": 175,
-            "crop_lower": 100,
+            "crop_lower": 100, # 100 untuk realsense dalam mobil
+            # "crop_lower": 20, # 20 untuk kamera atas
             "reset_on_scene_cut": False,
             "scene_cut_thresh": 0.35,
 
             "image_topic": "/camera/rs2_cam_main/color/image_raw",
+            # "image_topic": "/cameratengah/image_raw",
             "mask_topic": "/road_seg/mask",
-            "publish_period": 0.0,
+            "publish_period": 0.001,
             "publish_overlay": True, # Buat debug
+        }],
+        output="screen",
+        respawn=True,
+    )
+
+    coco_object_detection = Node(
+        package="vision",
+        executable="coco_object_detection.py",
+        name="coco_object_detection",
+        parameters=[{
+            # "rgb_topic_sub": "/camera/rs2_cam_main/color/image_raw",
+            "rgb_topic_sub": "/cameratengah/image_raw",
+            "rgb_topic_pub": "/coco_object_detection/annotated_image",
+            "model_path": os.path.join(ws_path, "src/vision/models/yolov8m.pt"),
+            "conf_thresh": 0.4,
+            "imgsz": 640,
         }],
         output="screen",
         respawn=True,
@@ -637,15 +672,17 @@ def generate_launch_description():
             joint_state_publisher_node,
             robot_state_publisher_node,
 
-            multilidar,
-            # multicamera,
-            hesai_lidar,
-            # gps,
+            # multilidar,
+            # # multicamera,
+            # hesai_lidar,
+            # # gps,
 
-            all_obstacle_filter,
+            # all_obstacle_filter,
 
-            # rs2_cam_main,
-            # road_segmentation,
+            rs2_cam_main,
+            camera_driver_node2,
+            road_segmentation,
+            coco_object_detection,
 
             # serial_imu,
 
@@ -655,9 +692,10 @@ def generate_launch_description():
             # rtabmap_slam,
             # ekf_final_pose,
 
-            # rosapi_node,
-            # ui_server,
-            # rosbridge_server, 
+            rosapi_node,
+            ui_server,
+            rosbridge_server, 
+            web_video_server,
 
             # telemetry,
 
@@ -668,7 +706,7 @@ def generate_launch_description():
             # wifi_control,
             # CANBUS_HAL_node,
 
-            rviz2,
+            # rviz2,
         ]
     )
 
