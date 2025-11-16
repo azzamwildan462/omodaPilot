@@ -5,3 +5,6 @@ dependencies/
 *.mp4
 rtabmap/
 rtabmap_ros/
+aio_tr.py
+tr.py
+.vscode/

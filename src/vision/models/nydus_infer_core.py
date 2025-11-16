@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-nydus_infer_core — backbone-only inference utilities for NydusNetwork
-====================================================================
-CUDA-optimized version:
-- Automatic device selection (CPU / CUDA)
-- Optional mixed-precision inference (torch.cuda.amp.autocast)
-"""
 
 from typing import Optional, List, Tuple, Dict
 import os

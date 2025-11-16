@@ -18,9 +18,9 @@ import torch
 import numpy as np
 import cv2
 
-# modulmu (pure-Py)
 from models.nydus_network import make_nydus_network
 from models.nydus_infer_core import NydusInferCore
+from utils.mask2laserscan import Mask2LaserScan
 
 class NydusMaskNode(Node):
     def __init__(self):
@@ -59,6 +59,8 @@ class NydusMaskNode(Node):
         P("publish_period", 0.0)     # 0.0 = run setiap callback timer
         P("publish_overlay", False)     # buat debugging
         P("do_mask2laserscan", False)     # penting
+        P("mask2laserscan_px2m_strategy", 0)     # penting
+        P("mask2laserscan_scan_strategy", 0)     # penting
 
         # -------- Get params --------
         g = self.get_parameter
@@ -93,6 +95,9 @@ class NydusMaskNode(Node):
         period = float(g("publish_period").value)
         self.publish_overlay = bool(g("publish_overlay").value)
         self.do_mask2laserscan = bool(g("do_mask2laserscan").value)
+        m2ls_px2m_strategy = int(g("mask2laserscan_px2m_strategy").value)
+        m2ls_scan_strategy = int(g("mask2laserscan_scan_strategy").value)
+
 
         # -------- Logger --------
         logger.remove()
@@ -114,14 +119,12 @@ class NydusMaskNode(Node):
             lp_alpha=alpha_lp, crop_upper=crop_upper, crop_lower=crop_lower,
             scene_cut=reset_on, scene_cut_thresh=cut_thr
         )
+        if self.do_mask2laserscan:
+            self.m2ls = Mask2LaserScan(logger, m2ls_scan_strategy, m2ls_px2m_strategy)
+
         logger.info(f"Nydus engine on device: {device}")
 
         # -------- ROS I/O --------
-        # qos = QoSProfile(
-        #     reliability=ReliabilityPolicy.BEST_EFFORT,
-        #     history=HistoryPolicy.KEEP_LAST,
-        #     depth=1
-        # )
         self.sub = self.create_subscription(Image, self.image_topic, self.cb_image, 1)
         self.pub_mask = self.create_publisher(Image, self.mask_topic, 1)
 
@@ -170,6 +173,11 @@ class NydusMaskNode(Node):
         # if stats is not None:
         #     t_ms = stats.get("t_ms", 0.0)
         #     logger.info(f"Processed frame | t_ms: {t_ms:.6f}")
+
+        if self.do_mask2laserscan:
+            laser_scan = self.m2ls(mask_u8, header.stamp)
+            if laser_scan is not None:
+                self.pub_laserscan.publish(laser_scan)
 
         # Publish mask as mono8 (0/255)
         mask_img = (mask_u8 * 255).astype(np.uint8)

@@ -550,7 +550,10 @@ def generate_launch_description():
         executable="road_segmentation.py",
         name="road_segmentation",
         parameters=[{
-            "use_cuda": True,
+            "use_cuda": False,
+            "do_mask2laserscan": True,
+            "mask2laserscan_scan_strategy": 0,
+            "mask2laserscan_px2m_strategy": 0,
             "weights": os.path.join(ws_path, "src/vision/models/200_nn.pth"),
             "thr": 0.09,
             "use_wb": True,
@@ -665,12 +668,12 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            # dummy_video2ros,
+            dummy_video2ros,
 
-            tf_map_empty,
+            # tf_map_empty,
             # pose_estimator,
-            joint_state_publisher_node,
-            robot_state_publisher_node,
+            # joint_state_publisher_node,
+            # robot_state_publisher_node,
 
             # multilidar,
             # # multicamera,
@@ -679,10 +682,10 @@ def generate_launch_description():
 
             # all_obstacle_filter,
 
-            rs2_cam_main,
-            camera_driver_node2,
+            # rs2_cam_main,
+            # camera_driver_node2,
             road_segmentation,
-            coco_object_detection,
+            # coco_object_detection,
 
             # serial_imu,
 
@@ -692,10 +695,10 @@ def generate_launch_description():
             # rtabmap_slam,
             # ekf_final_pose,
 
-            rosapi_node,
-            ui_server,
-            rosbridge_server, 
-            web_video_server,
+            # rosapi_node,
+            # ui_server,
+            # rosbridge_server, 
+            # web_video_server,
 
             # telemetry,
 

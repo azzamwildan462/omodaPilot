@@ -10,7 +10,9 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
+# Install modeules
 ament_python_install_package(models)
+ament_python_install_package(utils)
 
 install(PROGRAMS scripts/road_segmentation.py DESTINATION lib/${PROJECT_NAME})
 install(PROGRAMS scripts/coco_object_detection.py DESTINATION lib/${PROJECT_NAME})

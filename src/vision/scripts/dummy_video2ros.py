@@ -49,12 +49,7 @@ class VideoFramePublisher(Node):
         self.get_logger().info(f'Video source: "{src_param}" | fps={fps:.2f} | period={self.period:.4f}s')
 
         # ===== Publisher =====
-        qos = QoSProfile(
-            reliability=ReliabilityPolicy.BEST_EFFORT,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=5
-        )
-        self.pub = self.create_publisher(Image, topic, qos)
+        self.pub = self.create_publisher(Image, topic, 1)
         self.bridge = CvBridge()
 
         # ===== Timer =====

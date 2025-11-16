@@ -1,32 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-nydus_network — VFast‑SCNN backbone + GRU temporal head (network‑only)
-=====================================================================
-Pure PyTorch module: no ROS, no OpenCV, no Albumentations. Import this in your
-own runtime (ROS node, CLI, etc.).
 
-Exports
--------
-- `NydusNetwork`: nn.Module implementing a compact road‑segmentation network
-  with a VFast‑SCNN style encoder and a lightweight GRU operating on a global
-  context vector.
-- `make_nydus_network(...)`: convenience factory with sensible defaults.
-
-Forward
--------
-- `forward(x, h: Optional[Tensor] = None, return_state: bool = False)`
-  * x: (B, 3, H, W)
-  * h: (1, B, C5) — optional GRU hidden state
-  * returns logits (B, num_classes, H, W) or (logits, h_new) if `return_state=True`
-
-Notes
------
-- To keep temporal continuity across frames, pass the returned `h_new` into the
-  next call.
-- For conservative initialization you can set the final conv bias to a negative
-  value externally (e.g., −2.884) before training/finetuning.
-"""
 from typing import Optional, Tuple
 import torch
 import torch.nn as nn
