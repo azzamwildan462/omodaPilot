@@ -550,8 +550,8 @@ def generate_launch_description():
         executable="road_segmentation.py",
         name="road_segmentation",
         parameters=[{
-            "use_cuda": False,
-            "do_mask2laserscan": True,
+            "use_cuda": True,
+            "do_mask2laserscan": False,
             "mask2laserscan_scan_strategy": 0,
             "mask2laserscan_px2m_strategy": 0,
             "weights": os.path.join(ws_path, "src/vision/models/200_nn.pth"),
@@ -627,8 +627,7 @@ def generate_launch_description():
             }
         ],
         respawn=True,
-        # remappings=[('/hardware/imu', '/can/imu')],
-        ##        prefix='nice -n -9 chrt -f 60'
+        remappings=[('/hardware/imu', '/lidartengah/lidar_imu')],
     )
 
 
@@ -648,16 +647,20 @@ def generate_launch_description():
                 "lidar_tengah_frame_id": "lidartengah",
                 "exclude_x_min": -2.5,
                 "exclude_x_max": 2.5,
-                "exclude_y_min": -0.3,
-                "exclude_y_max": 0.3,
+                "exclude_y_min": -1.35,
+                "exclude_y_max": 1.35,
                 "exclude_z_min": -200.0,
                 "exclude_z_max": 200.0,
-                "pcl2laser_obs_x_min": -10.0,
-                "pcl2laser_obs_x_max": 10.0,
-                "pcl2laser_obs_y_min": -3.0,
-                "pcl2laser_obs_y_max": 3.0,
+                "pcl2laser_obs_x_min": -50.0,
+                "pcl2laser_obs_x_max": 50.0,
+                "pcl2laser_obs_y_min": -35.0,
+                "pcl2laser_obs_y_max": 35.0,
                 "pcl2laser_obs_z_min": 0.1,
                 "pcl2laser_obs_z_max": 1.0,
+
+                "depth_cam_pub_color_dbg": False,
+                "camera_dalam_topic": "/camera/rs2_cam_main/color/camera_info",
+                "camera_dalam_frame_id": "camera_color_optical_frame",
             }
         ],
         respawn=True,
@@ -668,21 +671,21 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            dummy_video2ros,
+            # dummy_video2ros,
 
-            # tf_map_empty,
+            tf_map_empty,
             # pose_estimator,
-            # joint_state_publisher_node,
-            # robot_state_publisher_node,
+            joint_state_publisher_node,
+            robot_state_publisher_node,
 
-            # multilidar,
-            # # multicamera,
-            # hesai_lidar,
-            # # gps,
+            multilidar,
+            # multicamera,
+            hesai_lidar,
+            # gps,
 
-            # all_obstacle_filter,
+            all_obstacle_filter,
 
-            # rs2_cam_main,
+            rs2_cam_main,
             # camera_driver_node2,
             road_segmentation,
             # coco_object_detection,
@@ -709,7 +712,7 @@ def generate_launch_description():
             # wifi_control,
             # CANBUS_HAL_node,
 
-            # rviz2,
+            rviz2,
         ]
     )
 
