@@ -17,6 +17,9 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
 from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
 
+from launch_ros.substitutions import FindPackageShare
+
+
 path_config_buffer = os.getenv('AMENT_PREFIX_PATH', '')
 path_config_buffer_split = path_config_buffer.split(":")
 ws_path = path_config_buffer_split[0] + "/../../"
@@ -141,25 +144,30 @@ def generate_launch_description():
             "subscribe_scan_cloud": True,
             "subscribe_scan": False,
             "subscribe_imu": False,
-            "subscribe_odom": False,
+            "subscribe_Odometry": True,
             "subscribe_stereo": False,
-            "subscribe_rgb": True,
+            "subscribe_rgb": False,
             "subscribe_rgbd": False,
-            "subscribe_depth": False,
+            "subscribe_depth": True,
+            "subscribe_gps": False,
             "qos_scan": 1,
             "wait_for_transform": 2.0,
 
-            "publish_tf": False,
+            "publish_tf": True,
             "approx_sync": True,
             "sync_queue_size": 30,
             "topic_queue_size": 30,
             'qos': 1,
             "wait_for_transform": 2.0,
-            "icp_odometry": True, # Percobaan odom pake ICP gak dari hardware
+            "icp_odometry": False,
+            "visual_odometry": False,
+            "odom_tf_linear_variance": 0.0001,
+            "odom_tf_angular_variance": 0.0001,
 
             "Rtabmap/DetectionRate": "5.0",  # Added by Azzam
             "Rtabmap/CreateIntermediateNodes": "True",
             "Rtabmap/LoopThr": "0.11",  # Routine period untuk cek loop closure
+            "Rtabmap/LoopGPS": "True",  # Routine period untuk cek loop closure
 
             "Mem/STMSize": "20",  # Short-term memory size
             "Mem/IncrementalMemory": "True",  #
@@ -182,6 +190,7 @@ def generate_launch_description():
             "RGBD/ProximityMaxGraphDepth": "20",
             "RGBD/ProximityByTime": "False",
             "RGBD/ProximityBySpace": "True",
+            "RGBD/LocalRadius": "20.0",
 
             "Optimizer/Strategy": "2",  # Added by Azzam
             "Optimizer/Iterations": "10",  # Added by Azzam
@@ -206,10 +215,10 @@ def generate_launch_description():
             "Reg/Force3DoF": "True",  # Added by Azzam
             "Icp/Strategy": "1",  # Added by Azzam
             "Icp/MaxTranslation": "1.5",  # Added by Azzam
-            "Icp/MaxRotation": "0.7",  # Added by Azzam
+            "Icp/MaxRotation": "0.9",  # Added by Azzam
             "Icp/RangeMin": "0.0",  # Added by Azzam
             "Icp/RangeMax": "25.0",  # Added by Azzam
-            "Icp/MaxCorrespondenceDistance": "1.0",  # Added by Azzam
+            "Icp/MaxCorrespondenceDistance": "4.0",  # Added by Azzam
             "Icp/Iterations": "30",  # Added by Azzam
             "Icp/PointToPlane": "True",  # Added by Azzam
             "Icp/VoxelSize": "0.05",  # Added by Azzam
@@ -218,8 +227,8 @@ def generate_launch_description():
             "Vis/MaxDepth": "20.0",
             "Vis/MinInliers": "15",
             "Vis/FeatureType": "2",
-            "Vis/EpipolarGeometryVar": "0.5",
-            "Grid/Sensor": "2",  # Added to suppress warning
+            "Vis/EpipolarGeometryVar": "0.2",
+            "Grid/Sensor": "0",  # Added to suppress warning
             "Grid/RangeMin": "0.0",  # Added by Azzam
             "Grid/RangeMax": "150.0",  # Added by Azzam
             "Grid/NormalsSegmentation": 'false', # Use passthrough filter to detect obstacles
@@ -233,17 +242,21 @@ def generate_launch_description():
             'Grid/MaxObstacleHeight':'3.5',  # All points over 1 meter are ignored
 
             # Depth dari lidar 
-            "gen_depth": True,
-            "gen_depth_decimation": 4,
-            "gen_depth_fill_holes_size": 2,
-            "gen_depth_fill_iterations": 1,
-            "gen_depth_fill_holes_error": 0.3,
+            # "gen_depth": True,
+            # "gen_depth_decimation": 4,
+            # "gen_depth_fill_holes_size": 2,
+            # "gen_depth_fill_iterations": 1,
+            # "gen_depth_fill_holes_error": 0.3,
 
         }],
         remappings=[
+            ("gps/fix", "/fix"),
+            # ("scan", "/all_obstacle_filter/all_pcl2laserscan"),
+            # ("scan", "/road_seg/mask/laserscan"),
             ("scan_cloud", "/lidartengah/lidar_points"),
             ("rgb/image", "/camera/rs2_cam_main/color/image_raw"),
             ("rgb/camera_info", "/camera/rs2_cam_main/color/camera_info"),
+            ("depth/image", "/all_obstacle_filter/pcl2cam_dalam"),
             # ("depth/image", "/camera/rs2_cam_main/aligned_depth_to_color/image_raw"),
         ],
         arguments=["--ros-args", "--log-level", "info"],
@@ -292,7 +305,7 @@ def generate_launch_description():
             "Icp/MaxRotation": "0.7", # Added by Azzam
             "Icp/RangeMin": "0.0", # Added by Azzam
             "Icp/RangeMax": "100.0", # Added by Azzam
-            "Icp/MaxCorrespondenceDistance": "1.2", # Added by Azzam
+            "Icp/MaxCorrespondenceDistance": "4.0", # Added by Azzam
             "Icp/Iterations": "30", # Added by Azzam
             "Icp/PointToPlane": "True", # Added by Azzam
             "Icp/VoxelSize": "0.10", # Added by Azzam
@@ -301,9 +314,7 @@ def generate_launch_description():
         }],
         remappings=[
             ("scan_cloud", "/lidartengah/lidar_points"),
-            ("imu", "/lidartengah/lidar_imu"),
-            # ("scan", "/disale_wtf_scan"),
-            # ("odom", "vo")
+            ("imu", "/hardware/imu"),
         ],
         arguments=["--ros-args", "--log-level", "warn"],
         respawn=True,
@@ -343,6 +354,9 @@ def generate_launch_description():
             "imu0_relative": False,
         }],
         arguments=["--ros-args", "--log-level", "warn"],
+        remappings=[
+            ("odometry/filtered", "/odom"),
+        ],
         respawn=True,
     )
 
@@ -358,10 +372,11 @@ def generate_launch_description():
             "map_frame": "map",
             "odom_frame": "odom",
             "base_link_frame": "base_link",
-            "world_frame": "odom",
+            "world_frame": "map",
             "publish_tf": False,
 
-            "odom0": "/icp_odom/odometry/filtered",
+            # "odom0": "/icp_odom/odometry/filtered",
+            "odom0": "/odom",
             "odom0_config": [True, True, False,
                              False, False, True,
                              False,  False,  False,
@@ -370,18 +385,49 @@ def generate_launch_description():
             "odom0_differential": True,
             "odom0_relative": True,
 
-            "imu0": "localization_pose",
-            "imu0_config": [True, True, False,
+            "pose0": "localization_pose",
+            "pose0_config": [True, True, False,
                             False,  False,  True,
                             False, False, False,
                             False,  False,  False,
                             False, False, False],
-            "imu0_differential": False,
-            "imu0_relative": False,
+            "pose0_differential": False,
+            "pose0_relative": False,
         }],
         arguments=["--ros-args", "--log-level", "warn"],
         respawn=True,
     )
+
+    dlio_pkg = FindPackageShare('direct_lidar_inertial_odometry')
+    dlio_yaml_path = PathJoinSubstitution([dlio_pkg, 'cfg', 'dlio.yaml'])
+    dlio_params_yaml_path = PathJoinSubstitution([dlio_pkg, 'cfg', 'params.yaml'])
+
+    dlio_odom_node = Node(
+        package='direct_lidar_inertial_odometry',
+        executable='dlio_odom_node',
+        output='screen',
+        parameters=[dlio_yaml_path, dlio_params_yaml_path],
+        remappings=[
+            ('pointcloud', "/lidartengah/lidar_points"),
+            ('imu', "/hardware/imu"),
+            ('odom', '/odom'),
+            ('pose', 'dlio/odom_node/pose'),
+        ],
+    )
+
+    imu_filter_madgwick_node = Node(
+        package="imu_filter_madgwick",
+        executable="imu_filter_madgwick_node",
+        name="imu_filter_madgwick_node",
+        parameters=[{"use_mag": False}],
+        remappings=[
+            ("/imu/data_raw", "/hardware/imu"),
+            ("/imu/data", "/imu_filtered"),
+        ],
+        arguments=["--ros-args", "--log-level", "error"],
+        respawn=True,
+    )
+
 
     # =========================== Communication ===========================
 
@@ -434,8 +480,8 @@ def generate_launch_description():
         parameters=[{
             "can1_type": 0,
             "can2_type": 0,
-            "device1_name": "/dev/ttyACM1",
-            "device2_name": "/dev/ttyACM0", # String kosong untuk nonaktifkan
+            "device1_name": "/dev/serial/by-id/usb-Openlight_Labs_CANable2_b158aa7_github.com_normaldotcom_canable2.git_208733A43133-if00", # Ini mobil
+            "device2_name": "/dev/serial/by-id/usb-Openlight_Labs_CANable2_b158aa7_github.com_normaldotcom_canable2.git_2074306F5330-if00", # Ini adas
             "intercepted_ids_can": [CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID, 
                                     CHERY_CANFD_LKAS_STATE_FRAME_ID, 
                                     # CHERY_CANFD_SETTING_FRAME_ID, 
@@ -497,6 +543,7 @@ def generate_launch_description():
                 "use_boost": False,
                 "is_riontech": True,
                 "baudrate": 115200,
+                "use_thread_vanilla_cpp": False,
             }
         ],
         respawn=True,
@@ -551,11 +598,11 @@ def generate_launch_description():
         name="road_segmentation",
         parameters=[{
             "use_cuda": True,
-            "do_mask2laserscan": False,
-            "mask2laserscan_scan_strategy": 0,
+            "do_mask2laserscan": True,
+            "mask2laserscan_scan_strategy": 2,
             "mask2laserscan_px2m_strategy": 0,
-            "weights": os.path.join(ws_path, "src/vision/models/200_nn.pth"),
-            "thr": 0.09,
+            "weights": os.path.join(ws_path, "src/vision/models/last_hernanda_roboflow_belokan.pth"),
+            "thr": 0.5,
             "use_wb": True,
             "use_clahe": True,
             "use_adaptive_gamma": True,
@@ -569,7 +616,9 @@ def generate_launch_description():
             "scene_cut_thresh": 0.35,
 
             "image_topic": "/camera/rs2_cam_main/color/image_raw",
-            # "image_topic": "/cameratengah/image_raw",
+            "cam_info_topic": "/camera/rs2_cam_main/color/camera_info",
+            "depth_image_topic": "/all_obstacle_filter/pcl2cam_dalam",
+            "camera_frame_id": "camera_color_optical_frame",
             "mask_topic": "/road_seg/mask",
             "publish_period": 0.001,
             "publish_overlay": True, # Buat debug
@@ -619,15 +668,18 @@ def generate_launch_description():
         namespace='world_model',
         parameters=[
             {
-                "encoder_to_meter": 1.0,  
-                "offset_sudut_steering": -0.04,
+                "encoder_to_meter": 0.4,  
+                "offset_sudut_steering": -0.00,
                 "gyro_type": 0,
                 "timer_period": 20, # 50 hz
                 "use_encoder_pulse": False
             }
         ],
         respawn=True,
-        remappings=[('/hardware/imu', '/lidartengah/lidar_imu')],
+        remappings=[
+            # ('/hardware/imu', '/lidartengah/lidar_imu'),
+            ('odom', '/odom'),
+        ],
     )
 
 
@@ -655,8 +707,9 @@ def generate_launch_description():
                 "pcl2laser_obs_x_max": 50.0,
                 "pcl2laser_obs_y_min": -35.0,
                 "pcl2laser_obs_y_max": 35.0,
-                "pcl2laser_obs_z_min": 0.1,
+                "pcl2laser_obs_z_min": -0.9,
                 "pcl2laser_obs_z_max": 1.0,
+                "threshold_delta_z": 0.15,
 
                 "depth_cam_pub_color_dbg": False,
                 "camera_dalam_topic": "/camera/rs2_cam_main/color/camera_info",
@@ -673,15 +726,19 @@ def generate_launch_description():
         [
             # dummy_video2ros,
 
-            tf_map_empty,
+
+            # tf_map_empty,
             # pose_estimator,
+            dlio_odom_node,
+            # rtabmap_icp_odom,
+            # ekf_icp_odom,
             joint_state_publisher_node,
             robot_state_publisher_node,
 
             multilidar,
             # multicamera,
             hesai_lidar,
-            # gps,
+            gps,
 
             all_obstacle_filter,
 
@@ -690,13 +747,11 @@ def generate_launch_description():
             road_segmentation,
             # coco_object_detection,
 
-            # serial_imu,
+            serial_imu,
+            # imu_filter_madgwick_node,
 
-            # rtabmap_icp_odom,
-            # ekf_icp_odom,
-
-            # rtabmap_slam,
-            # ekf_final_pose,
+            rtabmap_slam,
+            ekf_final_pose,
 
             # rosapi_node,
             # ui_server,

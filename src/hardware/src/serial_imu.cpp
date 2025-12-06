@@ -13,6 +13,8 @@
 
 #include "boost/asio.hpp"
 
+#include <thread>
+
 #define READ_PROTOCOL 0x55
 #define WRITE_PROTOCOL 0xFF
 
@@ -40,7 +42,7 @@ private:
     int16_t recv_len;
 
 public:
-    rclcpp::TimerBase::SharedPtr tim_50hz;
+    rclcpp::TimerBase::SharedPtr tim_routine;
     rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr pub_imu;
 
     // Configs
@@ -49,9 +51,12 @@ public:
     std::string frame_id = "imu";
     bool use_boost = false;
     bool is_riontech = false;
+    bool use_thread_vanilla_cpp = false;
     int baudrate = 115200;
 
     HelpLogger logger;
+
+    std::thread thread_routine;
 
     // Vars
     // =======================================================
@@ -73,6 +78,12 @@ public:
 
         this->declare_parameter("baudrate", 115200);
         this->get_parameter("baudrate", baudrate);
+
+        this->declare_parameter("use_thread_vanilla_cpp", false);
+        this->get_parameter("use_thread_vanilla_cpp", use_thread_vanilla_cpp);
+
+        this->declare_parameter("frame_id", "imu_link");
+        this->get_parameter("frame_id", frame_id);
 
         if (!logger.init())
         {
@@ -101,12 +112,19 @@ public:
         pub_imu = this->create_publisher<sensor_msgs::msg::Imu>("/hardware/imu", 1);
 
         //----Timer
-        tim_50hz = this->create_wall_timer(std::chrono::milliseconds(1000), std::bind(&SerialIMU::callback_tim_50hz, this));
+        if (use_thread_vanilla_cpp)
+        {
+            thread_routine = std::thread(std::bind(&SerialIMU::callback_thread, this), this);
+        }
+        else
+        {
+            tim_routine = this->create_wall_timer(std::chrono::milliseconds(1000), std::bind(&SerialIMU::callback_thread, this));
+        }
 
         logger.info("Serial IMU init on %s (baudrate: %d)", port.c_str(), baudrate);
     }
 
-    void callback_tim_50hz()
+    void callback_thread()
     {
         while (rclcpp::ok())
         {
@@ -121,19 +139,8 @@ public:
             {
                 logger.error("Error: %s", e.what());
             }
-            // usleep(10000); // 100ms
+            // usleep(1000);
         }
-        // try
-        // {
-        //     if (!use_boost)
-        //         read_serial();
-        //     else
-        //         read_serial_asio();
-        // }
-        // catch (const std::exception &e)
-        // {
-        //     logger.error("Error: %s", e.what());
-        // }
     }
 
     int8_t init_serial_boost()
@@ -303,13 +310,16 @@ public:
             q_msg.y = q_tf2.y();
             q_msg.z = q_tf2.z();
             q_msg.w = q_tf2.w();
+            imu_msg.header.frame_id = frame_id;
             imu_msg.orientation = q_msg;
-            imu_msg.angular_velocity.x = gyro_x;
-            imu_msg.angular_velocity.y = gyro_y;
+            imu_msg.angular_velocity.x = 0;
+            imu_msg.angular_velocity.y = 0;
             imu_msg.angular_velocity.z = gyro_z;
-            imu_msg.linear_acceleration.x = acc_x;
-            imu_msg.linear_acceleration.y = acc_y;
-            imu_msg.linear_acceleration.z = acc_z;
+            imu_msg.linear_acceleration.x = 0;
+            imu_msg.linear_acceleration.y = 0;
+            imu_msg.linear_acceleration.z = 0;
+
+            imu_msg.header.stamp = this->now();
 
             // logger.info("%d %x %x %d %d Yaw: %f", recv_len, recv_buffer[0], recv_buffer[1], recv_buffer[recv_buffer[1] - 1], rion_checksum(&recv_buffer[1], recv_buffer[1] - 1), rion_parse(10, 0.01));
         }

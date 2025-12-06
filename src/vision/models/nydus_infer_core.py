@@ -351,7 +351,7 @@ class NydusInferCore:
 
         # optional crop bands
         if self.crop_lower > 0:
-            rect = np.ones_like(mask); rect[H0-self.crop_lower:H0,:] = 0; mask &= rect
+            rect = np.ones_like(mask); rect[H0-self.crop_lower:H0,:] = 1; mask &= rect
         if self.crop_upper > 0:
             rect = np.ones_like(mask); rect[:self.crop_upper,:] = 0; mask &= rect
 

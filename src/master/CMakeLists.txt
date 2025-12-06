@@ -22,7 +22,7 @@ endforeach()
 
 include_directories(include)
 
-add_executable(master src/master.cpp src/master_definition.cpp)
+add_executable(master src/master.cpp src/master_definition.cpp src/motion.cpp)
 ament_target_dependencies(master rclcpp std_msgs ros2_utils)
 
 install(TARGETS

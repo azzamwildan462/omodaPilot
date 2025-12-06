@@ -1,8 +1,8 @@
 ublox_gps_node:
   ros__parameters:
     dgnss_mode: 3
-    debug: 0                    # Range 0-4 (0 means no debug statements will print)
-    device: /dev/ttyACM0
+    debug: 0 # Range 0-4 (0 means no debug statements will print)
+    device: /dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00
     frame_id: gps
     uart1:
       baudrate: 38400
@@ -14,17 +14,18 @@ ublox_gps_node:
       galileo: false
       imes: false
     # TMODE3 Config
-    tmode3: 0                   # Survey-In Mode
+    tmode3: 0 # Survey-In Mode
     sv_in:
-      reset: True               # True: disables and re-enables survey-in (resets)
-                                # False: Disables survey-in only if TMODE3 is
-                                # disabled
-      min_dur: 300              # Survey-In Minimum Duration [s]
-      acc_lim: 3.0              # Survey-In Accuracy Limit [m]
- 
+      reset:
+        True # True: disables and re-enables survey-in (resets)
+        # False: Disables survey-in only if TMODE3 is
+        # disabled
+      min_dur: 300 # Survey-In Minimum Duration [s]
+      acc_lim: 3.0 # Survey-In Accuracy Limit [m]
+
     inf:
-      all: true                   # Whether to display all INF messages in console
- 
+      all: true # Whether to display all INF messages in console
+
     publish:
       all: false
       nav:

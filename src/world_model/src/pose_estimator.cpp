@@ -272,14 +272,14 @@ public:
         if (use_encoder_pulse)
         {
             d_gyro_steering = (sensor_left_encoder + sensor_right_encoder) / 2.0 * encoder_to_meter * tanf(steering_position) / wheelbase;
-            final_vel_dxdydo[0] = (sensor_left_encoder + sensor_right_encoder) / 2.0 * cosf(final_pose_xyo[2]) * encoder_to_meter / dt;
-            final_vel_dxdydo[1] = (sensor_left_encoder + sensor_right_encoder) / 2.0 * sinf(final_pose_xyo[2]) * encoder_to_meter / dt;
+            final_vel_dxdydo[0] = (sensor_left_encoder + sensor_right_encoder) / 2.0 * cosf(final_pose_xyo[2]) * encoder_to_meter * dt;
+            final_vel_dxdydo[1] = (sensor_left_encoder + sensor_right_encoder) / 2.0 * sinf(final_pose_xyo[2]) * encoder_to_meter * dt;
         }
         else
         {
             d_gyro_steering = vehicle_speed_ms * encoder_to_meter * tanf(steering_position) / wheelbase;
-            final_vel_dxdydo[0] = vehicle_speed_ms * cosf(final_pose_xyo[2]) * encoder_to_meter / dt;
-            final_vel_dxdydo[1] = vehicle_speed_ms * sinf(final_pose_xyo[2]) * encoder_to_meter / dt;
+            final_vel_dxdydo[0] = vehicle_speed_ms * cosf(final_pose_xyo[2]) * encoder_to_meter * dt;
+            final_vel_dxdydo[1] = vehicle_speed_ms * sinf(final_pose_xyo[2]) * encoder_to_meter * dt;
         }
 
         if (gyro_type == 0)
@@ -292,14 +292,16 @@ public:
         while (final_vel_dxdydo[2] < -M_PI)
             final_vel_dxdydo[2] += 2 * M_PI;
 
-        final_pose_xyo[0] += final_vel_dxdydo[0] * dt;
-        final_pose_xyo[1] += final_vel_dxdydo[1] * dt;
+        final_pose_xyo[0] += final_vel_dxdydo[0];
+        final_pose_xyo[1] += final_vel_dxdydo[1];
         final_pose_xyo[2] += final_vel_dxdydo[2];
 
         while (final_pose_xyo[2] > M_PI)
             final_pose_xyo[2] -= 2 * M_PI;
         while (final_pose_xyo[2] < -M_PI)
             final_pose_xyo[2] += 2 * M_PI;
+
+        logger.info("POse: %.2f %.2f %.2f || %.2f", final_pose_xyo[0], final_pose_xyo[1], final_pose_xyo[2], gyro);
 
         tf2::Quaternion q;
         q.setRPY(0, 0, final_pose_xyo[2]);
@@ -320,8 +322,8 @@ public:
         msg_odom.pose.covariance[21] = 1e6;
         msg_odom.pose.covariance[28] = 1e6;
         msg_odom.pose.covariance[35] = 1e-2;
-        msg_odom.twist.twist.linear.x = final_vel_dxdydo[0];
-        msg_odom.twist.twist.linear.y = final_vel_dxdydo[1];
+        msg_odom.twist.twist.linear.x = final_vel_dxdydo[0] / dt;
+        msg_odom.twist.twist.linear.y = final_vel_dxdydo[1] / dt;
         msg_odom.twist.twist.angular.z = final_vel_dxdydo[2] / dt;
         msg_odom.twist.covariance[0] = 1e-2;
         msg_odom.twist.covariance[7] = 1e-2;
