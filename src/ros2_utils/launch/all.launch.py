@@ -788,6 +788,7 @@ def generate_launch_description():
             {
                 "gps_topic": "/fix",
                 "timer_period": 1.0,
+                "destinations_file": os.path.join(ws_path, "src/world_model/waypoints/destinations/rc_robotik.csv"),
             }
         ],
         respawn=True,
