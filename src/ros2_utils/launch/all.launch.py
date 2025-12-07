@@ -778,6 +778,27 @@ def generate_launch_description():
         ##        prefix='nice -n -9 chrt -f 60'
     )
 
+    waypoint_router = Node(
+        package="world_model",
+        executable="waypoint_router.py",
+        name="waypoint_router",
+        output="screen",
+        namespace='world_model',
+        parameters=[
+            {
+                "gps_topic": "/fix",
+                "timer_period": 1.0,
+            }
+        ],
+        respawn=True,
+    )
+
+    return LaunchDescription(
+        [
+            waypoint_router
+        ]
+    )
+
 
     return LaunchDescription(
         [
