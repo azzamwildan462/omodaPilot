@@ -73,7 +73,7 @@ global_costmap:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         observation_sources: scan
         scan:
-          topic: /laserscan # sesuaikan dengan topic LIDAR kamu
+          topic: /road_seg/mask/laserscan # sesuaikan dengan topic LIDAR kamu
           data_type: LaserScan
           marking: true
           clearing: true

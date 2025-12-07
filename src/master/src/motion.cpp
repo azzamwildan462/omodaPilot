@@ -167,7 +167,7 @@ void Master::manual_motion(float vx, float vy, float wz)
      * Set aktuasi motion omoda
      */
     cmd_target_velocity = fmaxf(0, vx_buffer);
-    cmd_target_steering_angle = fb_steering_angle + target_wz_velocity;
+    cmd_target_steering_angle = wz_buffer * roda2steering_ratio;
 
     /**
      * Safety clipping setir
