@@ -22,11 +22,7 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         chery_canfd_steer_angle_sensor_unpack(&angle_sensor, frame->data, frame->dlc);
         this->fb_steering_angle = chery_canfd_steer_angle_sensor_steer_angle_decode(angle_sensor.steer_angle) * 3.141592653589793 / 180.0; // deg to rad
     }
-    else if (frame->id == CHERY_CANFD_STEER_SENSOR_FRAME_ID)
-    {
-        bzero(&steer_sensor, sizeof(steer_sensor));
-        chery_canfd_steer_sensor_unpack(&steer_sensor, frame->data, frame->dlc);
-    }
+
     else if (frame->id == CHERY_CANFD_WHEEL_SPEED_REAR_FRAME_ID)
     {
         bzero(&wheel_speed_rear, sizeof(wheel_speed_rear));
@@ -34,6 +30,7 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         this->wheel_speed_rl = chery_canfd_wheel_speed_rear_wheel_speed_rl_decode(wheel_speed_rear.wheel_speed_rl);
         this->wheel_speed_rr = chery_canfd_wheel_speed_rear_wheel_speed_rr_decode(wheel_speed_rear.wheel_speed_rr);
     }
+
     else if (frame->id == CHERY_CANFD_WHEEL_SPEED_FRNT_FRAME_ID)
     {
         bzero(&wheel_speed_front, sizeof(wheel_speed_front));
@@ -126,8 +123,67 @@ int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
         bzero(&setting_cmd_from_adas, sizeof(setting_cmd_from_adas));
         chery_canfd_setting_unpack(&setting_cmd_from_adas, frame->data, frame->dlc);
         this->speed_cc = chery_canfd_setting_cc_speed_decode(setting_cmd_from_adas.cc_speed);
+        this->acc_avail = chery_canfd_setting_acc_available_decode(setting_cmd_from_adas.acc_available);
 
         // logger->info("cc_speed: %f", this->speed_cc);
+    }
+
+    else if (frame->id == CHERY_CANFD_BCM_SIGNAL_1_FRAME_ID)
+    {
+        bzero(&bcm_signal_1, sizeof(bcm_signal_1));
+        chery_canfd_bcm_signal_1_unpack(&bcm_signal_1, frame->data, frame->dlc);
+        this->bcm_door_lock = chery_canfd_bcm_signal_1_door_lock_decode(bcm_signal_1.door_lock);
+        this->bcm_rl_door_open = chery_canfd_bcm_signal_1_rl_door_open_decode(bcm_signal_1.rl_door_open);
+        this->bcm_rr_door_open = chery_canfd_bcm_signal_1_rr_door_open_decode(bcm_signal_1.rr_door_open);
+        this->bcm_fl_door_open = chery_canfd_bcm_signal_1_fl_door_open_decode(bcm_signal_1.fl_door_open);
+        this->bcm_fr_door_open = chery_canfd_bcm_signal_1_fr_door_open_decode(bcm_signal_1.fr_door_open);
+        this->bcm_sign_signal = chery_canfd_bcm_signal_1_sign_signal_decode(bcm_signal_1.sign_signal);
+
+        // logger->info("BCM Door Lock: %d, RL Door Open: %d, RR Door Open: %d, FL Door Open: %d, FR Door Open: %d, Sign Signal: %d",
+        //              this->bcm_door_lock, this->bcm_rl_door_open, this->bcm_rr_door_open,
+        //              this->bcm_fl_door_open, this->bcm_fr_door_open, this->bcm_sign_signal);
+    }
+
+    else if (frame->id == CHERY_CANFD_BCM_SIGNAL_2_FRAME_ID)
+    {
+        bzero(&bcm_signal_2, sizeof(bcm_signal_2));
+        chery_canfd_bcm_signal_2_unpack(&bcm_signal_2, frame->data, frame->dlc);
+        this->bcm_left_sign = chery_canfd_bcm_signal_2_left_sign_decode(bcm_signal_2.left_sign);
+        this->bcm_right_sign = chery_canfd_bcm_signal_2_right_sign_decode(bcm_signal_2.right_sign);
+        this->bcm_door_lock_open = chery_canfd_bcm_signal_2_door_lock_open_decode(bcm_signal_2.door_lock_open);
+        this->bcm_high_beam = chery_canfd_bcm_signal_2_high_beam_decode(bcm_signal_2.high_beam);
+        this->bcm_left_sign_pressed = chery_canfd_bcm_signal_2_left_sign_pressed_decode(bcm_signal_2.left_sign_pressed);
+        this->bcm_right_sign_pressed = chery_canfd_bcm_signal_2_right_sign_pressed_decode(bcm_signal_2.right_sign_pressed);
+        this->bcm_wiper_button = chery_canfd_bcm_signal_2_wiper_button_decode(bcm_signal_2.wiper_button);
+
+        // logger->info("BCM Left Sign: %d, Right Sign: %d, Door Lock Open: %d, High Beam: %d, Left Sign Pressed: %d, Right Sign Pressed: %d, Wiper Button: %d",
+        //              this->bcm_left_sign, this->bcm_right_sign, this->bcm_door_lock_open,
+        //              this->bcm_high_beam, this->bcm_left_sign_pressed, this->bcm_right_sign_pressed,
+        //              this->bcm_wiper_button);
+    }
+
+    else if (frame->id == CHERY_CANFD_STEER_SENSOR_2_FRAME_ID)
+    {
+        bzero(&steer_sensor_2, sizeof(steer_sensor_2));
+        chery_canfd_steer_sensor_2_unpack(&steer_sensor_2, frame->data, frame->dlc);
+        this->fb_steering_torq_drv = chery_canfd_steer_sensor_2_torque_driver_decode(steer_sensor_2.torque_driver);
+        // logger->info("Steering Torque Driver: %f", this->fb_steering_torq_drv);
+    }
+
+    else if (frame->id == CHERY_CANFD_BSM_RIGHT_FRAME_ID)
+    {
+        bzero(&bsm_right, sizeof(bsm_right));
+        chery_canfd_bsm_right_unpack(&bsm_right, frame->data, frame->dlc);
+        this->bsm_right_detect = chery_canfd_bsm_right_bsm_right_detect_decode(bsm_right.bsm_right_detect);
+        // logger->info("BSM Right Detect: %d", this->bsm_right_detect);
+    }
+
+    else if (frame->id == CHERY_CANFD_BSM_LEFT_FRAME_ID)
+    {
+        bzero(&bsm_left, sizeof(bsm_left));
+        chery_canfd_bsm_left_unpack(&bsm_left, frame->data, frame->dlc);
+        this->bsm_left_detect = chery_canfd_bsm_left_bsm_left_detect_decode(bsm_left.bsm_left_detect);
+        // logger->info("BSM Left Detect: %d", this->bsm_left_detect);
     }
 
     else
@@ -564,9 +620,6 @@ int CANable2_SLCAN::update()
     case CHERY_CANFD_ENGINE_DATA_GEAR_D_CHOICE:
         this->gear_status = "D";
         break;
-    default:
-        this->gear_status = "Unknown";
-        break;
     }
     // GEAR_BUTTON 1 "Park Pressed" 3 "Netral Pressed" 4 "Drive Pressed" 2 "Reverse Pressed";
     switch (this->engine_gear_button)
@@ -583,39 +636,7 @@ int CANable2_SLCAN::update()
     case CHERY_CANFD_ENGINE_DATA_GEAR_BUTTON_DRIVE__PRESSED_CHOICE:
         this->gear_button_status = "Drive Pressed";
         break;
-    default:
-        this->gear_button_status = "Unknown";
-        break;
     }
-
-    //     chery_canfd_engine_data_t engine_data;
-    // uint16_t engine_gas_pos;
-    // uint16_t engine_gas;
-    // uint8_t engine_gear;
-    // uint8_t engine_gear_button;
-    // uint8_t engine_brake_press;
-    // uint8_t engine_switch_to_p;
-
-    // std::string gear_status;
-    // std::string gear_button_status;
-
-    // chery_canfd_steer_button_t steer_button;
-    // uint8_t btn_acc;
-    // uint8_t btn_cc;
-    // uint8_t btn_res_plus;
-    // uint8_t btn_res_minus;
-    // uint8_t btn_gap_adjust_up;
-    // uint8_t btn_gap_adjust_down;
-
-    // chery_canfd_brake_data_t brake_data;
-    // int16_t data_brake_pos;
-
-    // logger->info("%d %d %s %.2lf || %.2f %.2f %.2f %.2f || %.2f %.2f %d %d || %d %d %d %d %d || %.2f",
-    //              this->engine_gear, this->engine_gear_button, this->gear_status.c_str(), this->engine_gas,
-    //              this->fb_steering_angle, this->wheel_speed_fl, this->wheel_speed_fr, this->wheel_speed_rl, this->wheel_speed_rr,
-    //              this->fb_current_velocity, this->btn_acc, this->btn_cc, this->btn_res_plus,
-    //              this->btn_res_minus, this->btn_gap_adjust_up, this->btn_gap_adjust_down, this->data_brake_pos,
-    //              this->target_steering_angle);
 
     return 0;
 }
@@ -627,4 +648,31 @@ int CANable2_SLCAN::init_update_as_new_thread()
 
 void CANable2_SLCAN::shutdown()
 {
+    if (fd > 0)
+    {
+        const char *cmd = "C\r\n";
+        ssize_t w = write(fd, cmd, std::strlen(cmd));
+        if (w < 0)
+        {
+            logger->warn("Failed to send SLCAN close command: %s", strerror(errno));
+        }
+        else
+        {
+            // Wait for command to be sent
+            tcdrain(fd);
+        }
+
+        // Close file descriptor
+        if (close(fd) < 0)
+        {
+            logger->warn("Failed to close fd: %s", strerror(errno));
+        }
+        else
+        {
+            logger->info("CANable2_SLCAN shutdown successfully");
+        }
+
+        fd = -1; // Mark as closed
+    }
+    logger->info("CANable2_SLCAN shutdown");
 }
