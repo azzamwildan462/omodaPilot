@@ -90,6 +90,7 @@ public:
     float profile_max_braking = 3;
     float profile_max_braking_acceleration = 2000;
     float profile_max_braking_jerk = 3000;
+    float wheelbase = 2.63;
     std::vector<double> pid_terms;
     float roda2steering_ratio = 17.5; // Rasio roda ke setir
 

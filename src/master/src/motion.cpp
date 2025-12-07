@@ -385,7 +385,7 @@ void Master::local_traj2velocity_steering(float *pvelocity, float *psteering_ang
     float desired_velocity = fminf(profile_max_velocity, distance_to_target / 1.0); // 1.0 second to reach target
 
     float angle_to_target = atan2f(dy, dx);
-    float steering_angle = angle_to_target * roda2steering_ratio;
+    float steering_angle = atan2(2 * wheelbase * sinf(angle_to_target), distance_to_target);
 
     *pvelocity = desired_velocity;
     *psteering_angle = steering_angle;
