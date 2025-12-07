@@ -381,41 +381,52 @@ class waypoint_router(Node):
         self.car_orientation_rad = yaw
 
     def timer_callback(self):
-        logger.info(f"Timer triggered at GPS: lat={self.gps_lat:.6f}, lon={self.gps_lon:.6f}")
+        # logger.info(f"Timer triggered at GPS: lat={self.gps_lat:.6f}, lon={self.gps_lon:.6f}")
 
-        if self.dst_idx >= self.destinations[0].shape[0]:
-            logger.info("All destinations have been processed.")
-            self.timer.cancel()
-            return
-        else:
-            logger.info(f"Processing destination {self.dst_idx + 1} of {self.destinations[0].shape[0]}")
-            self.dst_lat = self.destinations[0][self.dst_idx]
-            self.dst_lon = self.destinations[1][self.dst_idx]
+        # if self.dst_idx >= self.destinations[0].shape[0]:
+        #     logger.info("All destinations have been processed.")
+        #     self.timer.cancel()
+        #     return
+        # else:
+        #     logger.info(f"Processing destination {self.dst_idx + 1} of {self.destinations[0].shape[0]}")
+        #     self.dst_lat = self.destinations[0][self.dst_idx]
+        #     self.dst_lon = self.destinations[1][self.dst_idx]
 
-            if self.has_arrived(self.gps_lat, self.gps_lon, self.dst_lat, self.dst_lon, threshold_meters=5.0):
-                logger.info(f"Arrived at destination {self.dst_idx + 1}: lat={self.dst_lat:.6f}, lon={self.dst_lon:.6f}")
-                self.dst_idx += 1
-                self.got_final_wps = 0
-                self.final_wps = []
-                return
+        #     if self.has_arrived(self.gps_lat, self.gps_lon, self.dst_lat, self.dst_lon, threshold_meters=5.0):
+        #         logger.info(f"Arrived at destination {self.dst_idx + 1}: lat={self.dst_lat:.6f}, lon={self.dst_lon:.6f}")
+        #         self.dst_idx += 1
+        #         self.got_final_wps = 0
+        #         self.final_wps = []
+        #         return
             
-            if self.got_final_wps == 0:
-                current_segment, wp_idx, d = self.find_nearest_segment(self.segments, self.gps_lat, self.gps_lon)
-                goal_segment, _, _ = self.find_nearest_segment(self.segments, self.dst_lat, self.dst_lon)
-                START = current_segment
-                GOAL = goal_segment
-                route, total_cost = self.dijkstra(self.segments, self.graph, START, GOAL)
-                logger.info(f"Route to destination {self.dst_idx + 1}: {route} with total cost {total_cost:.2f}")
+        #     if self.got_final_wps == 0:
+        #         current_segment, wp_idx, d = self.find_nearest_segment(self.segments, self.gps_lat, self.gps_lon)
+        #         goal_segment, _, _ = self.find_nearest_segment(self.segments, self.dst_lat, self.dst_lon)
+        #         START = current_segment
+        #         GOAL = goal_segment
+        #         route, total_cost = self.dijkstra(self.segments, self.graph, START, GOAL)
+        #         logger.info(f"Route to destination {self.dst_idx + 1}: {route} with total cost {total_cost:.2f}")
 
-                if route is None:
-                    logger.error(f"No route found to destination {self.dst_idx + 1}: lat={self.dst_lat:.6f}, lon={self.dst_lon:.6f}")
-                    return
+        #         if route is None:
+        #             logger.error(f"No route found to destination {self.dst_idx + 1}: lat={self.dst_lat:.6f}, lon={self.dst_lon:.6f}")
+        #             return
 
-                self.final_wps = self.generate_waypoints_from_route(self.segments, route, current_segment, wp_idx, self.dst_lat, self.dst_lon)
-                logger.info(f"Generated final waypoints to destination {self.dst_idx + 1}: {len(self.final_wps)} points")
-                self.got_final_wps = 1
-        
-        crop_wps = self.crop_waypoints_by_distance(self.final_wps, self.gps_lat, self.gps_lon, max_distance=30.0)
+        #         self.final_wps = self.generate_waypoints_from_route(self.segments, route, current_segment, wp_idx, self.dst_lat, self.dst_lon)
+        #         logger.info(f"Generated final waypoints to destination {self.dst_idx + 1}: {len(self.final_wps)} points")
+        #         self.got_final_wps = 1
+
+        self.dst_lat = self.destinations[0][self.dst_idx]
+        self.dst_lon = self.destinations[1][self.dst_idx]
+
+        current_segment, wp_idx, d = self.find_nearest_segment(self.segments, self.gps_lat, self.gps_lon)
+        goal_segment, _, _ = self.find_nearest_segment(self.segments, self.dst_lat, self.dst_lon)
+
+        START = current_segment
+        GOAL = goal_segment
+
+        route, total_cost = self.dijkstra(self.segments, self.graph, START, GOAL)
+        self.final_wps = self.generate_waypoints_from_route(self.segments, route, current_segment, wp_idx, self.dst_lat, self.dst_lon)
+        crop_wps = self.crop_waypoints_by_distance(self.final_wps, self.gps_lat, self.gps_lon, max_distance=100.0)
 
         path_msg = Path()
         path_msg.header.frame_id = "base_link"
@@ -444,7 +455,7 @@ class waypoint_router(Node):
             pose_stamped.pose.orientation.w = 1.0
             path_msg.poses.append(pose_stamped)
         
-        logger.info(f"Published {len(crop_wps)} waypoints (cropped)")
+        # logger.info(f"Published {len(crop_wps)} waypoints (cropped)")
         self.path_pub.publish(path_msg)
 
     # ============================
