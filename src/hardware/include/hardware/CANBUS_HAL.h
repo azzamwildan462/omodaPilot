@@ -27,17 +27,13 @@ class CANBUS_HAL
      */
 public:
     float target_steering_angle; // rad
-    // float target_velocity;       // m/s
-    // float target_brake;
-    // uint32_t acc_setting;
-    // uint32_t hud_alert;
+
+    float cmd_target_steering_angle = 0;
+    float cmd_target_velocity = 0;
+    uint8_t cmd_hw_flag = 0;
 
     float fb_steering_angle;   // rad
     float fb_current_velocity; // m/s
-    // float fb_brake;
-    // float fb_throttle;
-    // uint32_t fb_buttons_bus1;
-    // uint32_t fb_buttons_bus2;
 
     /**
      * Data data interface can bus hal
@@ -52,7 +48,10 @@ public:
     chery_canfd_acc_t acc_data;
 
     chery_canfd_steer_angle_sensor_t angle_sensor;
-    chery_canfd_steer_sensor_t steer_sensor;
+
+    chery_canfd_steer_sensor_2_t steer_sensor_2;
+    float fb_steering_torq_drv;
+
     chery_canfd_wheel_speed_rear_t wheel_speed_rear;
     chery_canfd_wheel_speed_frnt_t wheel_speed_front;
 
@@ -62,6 +61,7 @@ public:
     float wheel_speed_fr; // km/h
 
     float speed_cc;
+    uint8_t acc_avail;
 
     HelpLogger *logger;
 
@@ -86,6 +86,29 @@ public:
 
     chery_canfd_brake_data_t brake_data;
     int16_t data_brake_pos;
+
+    chery_canfd_bcm_signal_1_t bcm_signal_1;
+    uint8_t bcm_door_lock;
+    uint8_t bcm_rl_door_open;
+    uint8_t bcm_rr_door_open;
+    uint8_t bcm_fl_door_open;
+    uint8_t bcm_fr_door_open;
+    uint8_t bcm_sign_signal;
+
+    chery_canfd_bcm_signal_2_t bcm_signal_2;
+    uint8_t bcm_left_sign;
+    uint8_t bcm_right_sign;
+    uint8_t bcm_door_lock_open;
+    uint8_t bcm_high_beam;
+    uint8_t bcm_left_sign_pressed;
+    uint8_t bcm_right_sign_pressed;
+    uint8_t bcm_wiper_button;
+
+    chery_canfd_bsm_right_t bsm_right;
+    uint8_t bsm_right_detect;
+
+    chery_canfd_bsm_left_t bsm_left;
+    uint8_t bsm_left_detect;
 
     uint8_t is_can_to_adas = 0;
 
