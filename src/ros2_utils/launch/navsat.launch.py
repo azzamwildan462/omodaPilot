@@ -25,7 +25,7 @@ def generate_launch_description():
          PushRosNamespace('/gps'),
          ublox,
       ]
-   )
+    )
 
     return LaunchDescription(
         [

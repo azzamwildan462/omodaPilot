@@ -1456,21 +1456,21 @@ public:
         pcl::PointCloud<pcl::PointXYZ> pcl2laser_obs_lidar_kanan_in_base_link;
         pcl::PointCloud<pcl::PointXYZ> pcl2laser_obs_lidar_tengah_in_base_link;
 
-        mtx_lidar_kiri.lock();
-        if (pcl_lidar_kiri_raw.size() > 0)
-        {
-            pcl::transformPointCloud(pcl_lidar_kiri_raw, pcl2laser_obs_lidar_kiri_in_base_link, T_lidar_kiri2_base_link_4f);
-            all_obstacle_points += pcl2laser_obs_lidar_kiri_in_base_link;
-        }
-        mtx_lidar_kiri.unlock();
+        // mtx_lidar_kiri.lock();
+        // if (pcl_lidar_kiri_raw.size() > 0)
+        // {
+        //     pcl::transformPointCloud(pcl_lidar_kiri_raw, pcl2laser_obs_lidar_kiri_in_base_link, T_lidar_kiri2_base_link_4f);
+        //     all_obstacle_points += pcl2laser_obs_lidar_kiri_in_base_link;
+        // }
+        // mtx_lidar_kiri.unlock();
 
-        mtx_lidar_kanan.lock();
-        if (pcl_lidar_kanan_raw.size() > 0)
-        {
-            pcl::transformPointCloud(pcl_lidar_kanan_raw, pcl2laser_obs_lidar_kanan_in_base_link, T_lidar_kanan2_base_link_4f);
-            all_obstacle_points += pcl2laser_obs_lidar_kanan_in_base_link;
-        }
-        mtx_lidar_kanan.unlock();
+        // mtx_lidar_kanan.lock();
+        // if (pcl_lidar_kanan_raw.size() > 0)
+        // {
+        //     pcl::transformPointCloud(pcl_lidar_kanan_raw, pcl2laser_obs_lidar_kanan_in_base_link, T_lidar_kanan2_base_link_4f);
+        //     all_obstacle_points += pcl2laser_obs_lidar_kanan_in_base_link;
+        // }
+        // mtx_lidar_kanan.unlock();
 
         mtx_lidar_tengah.lock();
         if (pcl_lidar_tengah_raw.size() > 0)

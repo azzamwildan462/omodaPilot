@@ -55,6 +55,7 @@ private:
 
   void callbackPointCloud(const sensor_msgs::msg::PointCloud2::SharedPtr pc);
   void callbackImu(const sensor_msgs::msg::Imu::SharedPtr imu);
+  void callbackEncoderOdom(const nav_msgs::msg::Odometry::SharedPtr msg);
 
   void publishPose();
 
@@ -115,6 +116,7 @@ private:
   // Subscribers
   rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr lidar_sub;
   rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr imu_sub;
+  rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr encoder_sub_;
   rclcpp::CallbackGroup::SharedPtr lidar_cb_group, imu_cb_group;
 
   // Publishers
@@ -203,6 +205,10 @@ private:
   std::condition_variable submap_build_cv;
   bool main_loop_running;
   std::mutex main_loop_running_mutex;
+
+  Eigen::Vector3f encoder_vel_b_;
+  rclcpp::Time encoder_stamp_;
+  bool encoder_available_ = false;
 
   // Timestamps
   rclcpp::Time scan_header_stamp;
@@ -331,6 +337,8 @@ private:
   int num_threads_;
 
   bool deskew_;
+
+  bool is_debug;
 
   double gravity_;
 

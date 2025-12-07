@@ -9,8 +9,10 @@ endif()
 set(var_dependencies
     ament_cmake
     rclcpp
+    rclcpp_action
     std_msgs
     nav_msgs
+    nav2_msgs
     ros2_utils
     ros2_interface
     tf2_geometry_msgs
@@ -23,7 +25,7 @@ endforeach()
 include_directories(include)
 
 add_executable(master src/master.cpp src/master_definition.cpp src/motion.cpp)
-ament_target_dependencies(master rclcpp std_msgs ros2_utils)
+ament_target_dependencies(master ${var_dependencies})
 
 install(TARGETS
   master

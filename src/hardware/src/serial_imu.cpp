@@ -312,12 +312,12 @@ public:
             q_msg.w = q_tf2.w();
             imu_msg.header.frame_id = frame_id;
             imu_msg.orientation = q_msg;
-            imu_msg.angular_velocity.x = 0;
-            imu_msg.angular_velocity.y = 0;
+            imu_msg.angular_velocity.x = gyro_x;
+            imu_msg.angular_velocity.y = gyro_y;
             imu_msg.angular_velocity.z = gyro_z;
-            imu_msg.linear_acceleration.x = 0;
-            imu_msg.linear_acceleration.y = 0;
-            imu_msg.linear_acceleration.z = 0;
+            imu_msg.linear_acceleration.x = acc_x;
+            imu_msg.linear_acceleration.y = acc_y;
+            imu_msg.linear_acceleration.z = acc_z;
 
             imu_msg.header.stamp = this->now();
 
