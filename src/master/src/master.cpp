@@ -45,6 +45,9 @@ Master::Master()
     this->declare_parameter("disable_nav2", disable_nav2);
     this->get_parameter("disable_nav2", disable_nav2);
 
+    this->declare_parameter("wheelbase", wheelbase);
+    this->get_parameter("wheelbase", wheelbase);
+
     if (!logger.init())
     {
         RCLCPP_ERROR(this->get_logger(), "Failed to initialize logger");

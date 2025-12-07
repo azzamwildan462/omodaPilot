@@ -21,6 +21,7 @@ public:
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr pub_odom;
     rclcpp::Publisher<std_msgs::msg::Int16>::SharedPtr pub_error_code;
     rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr pub_encoder_meter;
+    rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr pub_odom_base_link;
     rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr sub_encoder;
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr sub_current_velocity;
     rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr sub_gyro;
@@ -73,6 +74,8 @@ public:
 
     bool is_gyro_recvd = false;
 
+    bool is_publish_only_odom = false;
+
     //=======================================================
     // Vars
     // =========================================================
@@ -99,6 +102,9 @@ public:
         this->declare_parameter("use_encoder_pulse", true);
         this->get_parameter("use_encoder_pulse", use_encoder_pulse);
 
+        this->declare_parameter("is_publish_only_odom", false);
+        this->get_parameter("is_publish_only_odom", is_publish_only_odom);
+
         if (!logger.init())
         {
             RCLCPP_ERROR(this->get_logger(), "Failed to initialize logger");
@@ -112,6 +118,7 @@ public:
         tim_routine = this->create_wall_timer(std::chrono::milliseconds(timer_period), std::bind(&PoseEstimator::callback_routine, this));
 
         //----Publisher
+        pub_odom_base_link = this->create_publisher<nav_msgs::msg::Odometry>("odom_base_link", 1);
         pub_odom = this->create_publisher<nav_msgs::msg::Odometry>("odom", 10);
         pub_error_code = this->create_publisher<std_msgs::msg::Int16>("error_code", 10);
         pub_encoder_meter = this->create_publisher<std_msgs::msg::Float32>("encoder_meter", 1);
@@ -252,10 +259,13 @@ public:
 
         rclcpp::Duration dt_gyro = current_time - last_time_gyro_update;
         static rclcpp::Duration prev_dt_gyro = dt_gyro;
-        if ((prev_dt_gyro.seconds() > 0.5 && dt_gyro.seconds() <= 0.5) || !is_gyro_recvd)
+        if (!is_publish_only_odom)
         {
-            logger.warn("Gyro restarted");
-            d_gyro = 0;
+            if ((prev_dt_gyro.seconds() > 0.5 && dt_gyro.seconds() <= 0.5) || !is_gyro_recvd)
+            {
+                logger.warn("Gyro restarted");
+                d_gyro = 0;
+            }
         }
         prev_dt_gyro = dt_gyro;
 
@@ -301,49 +311,67 @@ public:
         while (final_pose_xyo[2] < -M_PI)
             final_pose_xyo[2] += 2 * M_PI;
 
-        logger.info("POse: %.2f %.2f %.2f || %.2f", final_pose_xyo[0], final_pose_xyo[1], final_pose_xyo[2], gyro);
+        if (is_publish_only_odom)
+        {
+            float vx = vehicle_speed_ms * encoder_to_meter;
+            float vy = 0;
+            float vz = 0;
 
-        tf2::Quaternion q;
-        q.setRPY(0, 0, final_pose_xyo[2]);
+            nav_msgs::msg::Odometry msg_odom_base_link;
+            msg_odom_base_link.header.stamp = time_now;
+            msg_odom_base_link.header.frame_id = "base_link";
+            msg_odom_base_link.child_frame_id = "base_link";
+            msg_odom_base_link.twist.twist.linear.x = vx;
+            msg_odom_base_link.twist.twist.linear.y = vy;
+            msg_odom_base_link.twist.twist.linear.z = vz;
+            pub_odom_base_link->publish(msg_odom_base_link);
+        }
+        else
+        {
+            logger.info("POse: %.2f %.2f %.2f || %.2f", final_pose_xyo[0], final_pose_xyo[1], final_pose_xyo[2], gyro);
 
-        nav_msgs::msg::Odometry msg_odom;
-        msg_odom.header.stamp = time_now;
-        msg_odom.header.frame_id = "odom";
-        msg_odom.child_frame_id = "base_link";
-        msg_odom.pose.pose.position.x = final_pose_xyo[0];
-        msg_odom.pose.pose.position.y = final_pose_xyo[1];
-        msg_odom.pose.pose.orientation.x = q.x();
-        msg_odom.pose.pose.orientation.y = q.y();
-        msg_odom.pose.pose.orientation.z = q.z();
-        msg_odom.pose.pose.orientation.w = q.w();
-        msg_odom.pose.covariance[0] = 1e-2;
-        msg_odom.pose.covariance[7] = 1e-2;
-        msg_odom.pose.covariance[14] = 1e6;
-        msg_odom.pose.covariance[21] = 1e6;
-        msg_odom.pose.covariance[28] = 1e6;
-        msg_odom.pose.covariance[35] = 1e-2;
-        msg_odom.twist.twist.linear.x = final_vel_dxdydo[0] / dt;
-        msg_odom.twist.twist.linear.y = final_vel_dxdydo[1] / dt;
-        msg_odom.twist.twist.angular.z = final_vel_dxdydo[2] / dt;
-        msg_odom.twist.covariance[0] = 1e-2;
-        msg_odom.twist.covariance[7] = 1e-2;
-        msg_odom.twist.covariance[14] = 1e6;
-        msg_odom.twist.covariance[21] = 1e6;
-        msg_odom.twist.covariance[28] = 1e6;
-        msg_odom.twist.covariance[35] = 1e-2;
-        pub_odom->publish(msg_odom);
+            tf2::Quaternion q;
+            q.setRPY(0, 0, final_pose_xyo[2]);
 
-        geometry_msgs::msg::TransformStamped tf;
-        tf.header.stamp = time_now;
-        tf.header.frame_id = "odom";
-        tf.child_frame_id = "base_link";
-        tf.transform.translation.x = final_pose_xyo[0];
-        tf.transform.translation.y = final_pose_xyo[1];
-        tf.transform.rotation.x = q.x();
-        tf.transform.rotation.y = q.y();
-        tf.transform.rotation.z = q.z();
-        tf.transform.rotation.w = q.w();
-        tf_broadcaster->sendTransform(tf);
+            nav_msgs::msg::Odometry msg_odom;
+            msg_odom.header.stamp = time_now;
+            msg_odom.header.frame_id = "odom";
+            msg_odom.child_frame_id = "base_link";
+            msg_odom.pose.pose.position.x = final_pose_xyo[0];
+            msg_odom.pose.pose.position.y = final_pose_xyo[1];
+            msg_odom.pose.pose.orientation.x = q.x();
+            msg_odom.pose.pose.orientation.y = q.y();
+            msg_odom.pose.pose.orientation.z = q.z();
+            msg_odom.pose.pose.orientation.w = q.w();
+            msg_odom.pose.covariance[0] = 1e-2;
+            msg_odom.pose.covariance[7] = 1e-2;
+            msg_odom.pose.covariance[14] = 1e6;
+            msg_odom.pose.covariance[21] = 1e6;
+            msg_odom.pose.covariance[28] = 1e6;
+            msg_odom.pose.covariance[35] = 1e-2;
+            msg_odom.twist.twist.linear.x = final_vel_dxdydo[0] / dt;
+            msg_odom.twist.twist.linear.y = final_vel_dxdydo[1] / dt;
+            msg_odom.twist.twist.angular.z = final_vel_dxdydo[2] / dt;
+            msg_odom.twist.covariance[0] = 1e-2;
+            msg_odom.twist.covariance[7] = 1e-2;
+            msg_odom.twist.covariance[14] = 1e6;
+            msg_odom.twist.covariance[21] = 1e6;
+            msg_odom.twist.covariance[28] = 1e6;
+            msg_odom.twist.covariance[35] = 1e-2;
+            pub_odom->publish(msg_odom);
+
+            geometry_msgs::msg::TransformStamped tf;
+            tf.header.stamp = time_now;
+            tf.header.frame_id = "odom";
+            tf.child_frame_id = "base_link";
+            tf.transform.translation.x = final_pose_xyo[0];
+            tf.transform.translation.y = final_pose_xyo[1];
+            tf.transform.rotation.x = q.x();
+            tf.transform.rotation.y = q.y();
+            tf.transform.rotation.z = q.z();
+            tf.transform.rotation.w = q.w();
+            tf_broadcaster->sendTransform(tf);
+        }
 
         std_msgs::msg::Int16 msg_error_code;
         msg_error_code.data = error_code;

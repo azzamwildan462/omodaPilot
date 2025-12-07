@@ -153,7 +153,7 @@ def generate_launch_description():
             "qos_scan": 1,
             "wait_for_transform": 2.0,
 
-            "publish_tf": False,
+            "publish_tf": True,
             "approx_sync": True,
             "sync_queue_size": 30,
             "topic_queue_size": 30,
@@ -421,6 +421,7 @@ def generate_launch_description():
         remappings=[
             ('pointcloud', "/lidartengah/lidar_points"),
             ('imu', "/hardware/imu"),
+            ('encoder_odom', '/odom_base_link'),
             ('odom', '/odom'),
             ('pose', 'dlio/odom_node/pose'),
         ],
@@ -439,7 +440,7 @@ def generate_launch_description():
         respawn=True,
     )
 
-    params_file = os.path.join(ws_path2,"src/raisa_bringup/config/nav2_params.yaml")
+    params_file = os.path.join(path_config,"nav2_params.yaml")
 
     planner_server = Node(
         package='nav2_planner', 
@@ -613,7 +614,7 @@ def generate_launch_description():
             "lookahead_distance_global": 10.0, 
             "lookahead_distance_local": 5.0,
             "disable_nav2": True,
-        }]
+        }],
         remappings=[
             ("fb_steering_angle", "/hardware/fb_steering_angle"),
             ("fb_current_velocity", "/hardware/fb_current_velocity"),
@@ -729,12 +730,36 @@ def generate_launch_description():
                 "offset_sudut_steering": -0.00,
                 "gyro_type": 0,
                 "timer_period": 20, # 50 hz
-                "use_encoder_pulse": False
+                "use_encoder_pulse": False,
+                "is_publish_only_odom": False,
             }
         ],
         respawn=True,
         remappings=[
             # ('/hardware/imu', '/lidartengah/lidar_imu'),
+            ('odom', '/odom'),
+        ],
+    )
+
+    pose_estimator_base_link = Node(
+        package="world_model",
+        executable="pose_estimator",
+        name="pose_estimator_base_link",
+        output="screen",
+        namespace='world_model',
+        parameters=[
+            {
+                "encoder_to_meter": 0.4,  
+                "offset_sudut_steering": -0.00,
+                "gyro_type": 0,
+                "timer_period": 20, # 50 hz
+                "use_encoder_pulse": False,
+                "is_publish_only_odom": True,
+            }
+        ],
+        respawn=True,
+        remappings=[
+            ('odom_base_link', '/odom_base_link'),
             ('odom', '/odom'),
         ],
     )
@@ -782,7 +807,7 @@ def generate_launch_description():
         package="world_model",
         executable="waypoint_router.py",
         name="waypoint_router",
-        output="screen",
+        output="log",
         namespace='world_model',
         parameters=[
             {
@@ -796,42 +821,41 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            waypoint_router
-        ]
-    )
-
-
-    return LaunchDescription(
-        [
             # dummy_video2ros,
 
 
             # tf_map_empty,
             # pose_estimator,
             dlio_odom_node,
+            pose_estimator_base_link,
             # rtabmap_icp_odom,
             # ekf_icp_odom,
             joint_state_publisher_node,
             robot_state_publisher_node,
 
-            # multilidar,
+            multilidar,
             # multicamera,
             hesai_lidar,
-            # gps,
+            gps,
 
-            # all_obstacle_filter,
+            all_obstacle_filter,
 
-            # rs2_cam_main,
+            rs2_cam_main,
             # camera_driver_node2,
-            # road_segmentation,
+            road_segmentation,
             # coco_object_detection,
 
             serial_imu,
             # imu_filter_madgwick_node,
 
+            TimerAction(
+                period=20.0,
+                actions=[
+                    waypoint_router,
+                ],
+            ),
 
-
-            # rtabmap_slam,
+            rtabmap_slam,
             # TimerAction(
             #     period=20.0,
             #     actions=[
@@ -839,14 +863,14 @@ def generate_launch_description():
             #     ],
             # ),
 
-            TimerAction(
-                period=20.0,
-                actions=[
-                    global_costmap_node,
-                    planner_node,
-                    lifecycle_manager
-                ],
-            ),
+            # TimerAction(
+            #     period=20.0,
+            #     actions=[
+            #         global_costmap_node,
+            #         planner_node,
+            #         lifecycle_manager
+            #     ],
+            # ),
 
             # rosapi_node,
             # ui_server,
@@ -862,7 +886,7 @@ def generate_launch_description():
             # wifi_control,
             # CANBUS_HAL_node,
 
-            # rviz2,
+            rviz2,
         ]
     )
 
