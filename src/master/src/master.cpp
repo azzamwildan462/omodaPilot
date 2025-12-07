@@ -36,6 +36,15 @@ Master::Master()
     this->declare_parameter("roda2steering_ratio", roda2steering_ratio);
     this->get_parameter("roda2steering_ratio", roda2steering_ratio);
 
+    this->declare_parameter("lookahead_distance_global", lookahead_distance_global);
+    this->get_parameter("lookahead_distance_global", lookahead_distance_global);
+
+    this->declare_parameter("lookahead_distance_local", lookahead_distance_local);
+    this->get_parameter("lookahead_distance_local", lookahead_distance_local);
+
+    this->declare_parameter("disable_nav2", disable_nav2);
+    this->get_parameter("disable_nav2", disable_nav2);
+
     if (!logger.init())
     {
         RCLCPP_ERROR(this->get_logger(), "Failed to initialize logger");
@@ -46,6 +55,10 @@ Master::Master()
     pub_target_velocity = this->create_publisher<std_msgs::msg::Float32>("cmd_target_velocity", 1);
     pub_hw_flag = this->create_publisher<std_msgs::msg::UInt8>("cmd_hw_flag", 1);
     pub_global_fsm = this->create_publisher<std_msgs::msg::Int16>("global_fsm", 1);
+    pub_dbg_curr_traj_optimized = this->create_publisher<nav_msgs::msg::Path>("dbg_curr_traj_optimized", 1);
+    pub_dbg_curr_traj_raw = this->create_publisher<nav_msgs::msg::Path>("dbg_curr_traj_raw", 1);
+    pub_dbg_prev_traj = this->create_publisher<nav_msgs::msg::Path>("dbg_prev_traj", 1);
+    pub_dbg_prev_prev_traj = this->create_publisher<nav_msgs::msg::Path>("dbg_prev_prev_traj", 1);
 
     sub_fb_steering_angle = this->create_subscription<std_msgs::msg::Float32>(
         "fb_steering_angle", 1, std::bind(&Master::callback_sub_fb_steering_angle, this, std::placeholders::_1));
@@ -61,6 +74,10 @@ Master::Master()
         "fb_steer_torque", 1, std::bind(&Master::callback_sub_steer_torque, this, std::placeholders::_1));
     sub_key_pressed = this->create_subscription<std_msgs::msg::Int16>(
         "/key_pressed", 1, std::bind(&Master::callback_sub_key_pressed, this, std::placeholders::_1));
+    sub_global_traj = this->create_subscription<nav_msgs::msg::Path>(
+        "waypoint_router/path", 1, std::bind(&Master::callback_sub_global_traj, this, std::placeholders::_1));
+
+    nav2_client = rclcpp_action::create_client<ComputePathToPose>(this, "compute_path_to_pose");
 
     tim_routine = this->create_wall_timer(std::chrono::milliseconds(20), std::bind(&Master::callback_routine, this));
 
@@ -69,6 +86,10 @@ Master::Master()
 
 Master::~Master()
 {
+}
+void Master::callback_sub_global_traj(const nav_msgs::msg::Path::SharedPtr msg)
+{
+    third_party_global_traj = *msg;
 }
 
 void Master::callback_sub_fb_steering_angle(const std_msgs::msg::Float32::SharedPtr msg)
@@ -224,15 +245,15 @@ void Master::callback_routine()
         break;
 
     case FSM_GLOBAL_OP_3:
-        manual_motion(target_vel_x_dummy, target_vel_y_dummy, target_pos_theta_dummy);
+        full_control_mode();
         break;
 
     case FSM_GLOBAL_OP_4:
-        manual_motion(target_vel_x_dummy, target_vel_y_dummy, 0);
+        steer_manual_control();
         break;
 
     case FSM_GLOBAL_OP_5:
-        manual_motion(0, target_vel_y_dummy, target_pos_theta_dummy);
+        gas_manual_control();
         break;
     }
 

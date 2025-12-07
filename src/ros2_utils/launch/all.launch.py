@@ -153,7 +153,7 @@ def generate_launch_description():
             "qos_scan": 1,
             "wait_for_transform": 2.0,
 
-            "publish_tf": True,
+            "publish_tf": False,
             "approx_sync": True,
             "sync_queue_size": 30,
             "topic_queue_size": 30,
@@ -161,8 +161,8 @@ def generate_launch_description():
             "wait_for_transform": 2.0,
             "icp_odometry": False,
             "visual_odometry": False,
-            "odom_tf_linear_variance": 0.0001,
-            "odom_tf_angular_variance": 0.0001,
+            "odom_tf_linear_variance": 0.0000000001,
+            "odom_tf_angular_variance": 0.0000000001,
 
             "Rtabmap/DetectionRate": "5.0",  # Added by Azzam
             "Rtabmap/CreateIntermediateNodes": "True",
@@ -259,7 +259,7 @@ def generate_launch_description():
             ("depth/image", "/all_obstacle_filter/pcl2cam_dalam"),
             # ("depth/image", "/camera/rs2_cam_main/aligned_depth_to_color/image_raw"),
         ],
-        arguments=["--ros-args", "--log-level", "info"],
+        arguments=["--ros-args", "--log-level", "warn"],
         respawn=True,
     )
 
@@ -366,31 +366,42 @@ def generate_launch_description():
         name="ekf_final_pose",
         namespace="slam",
         parameters=[{
-            "frequency": 50.0,
-            "two_d_mode": True,
-            "sensor_timeout": 0.2,
             "map_frame": "map",
             "odom_frame": "odom",
             "base_link_frame": "base_link",
             "world_frame": "map",
+            "two_d_mode": True,
+            "smooth_lagged_data": True,
+            "history_length": 1.0,
+            "frequency": 20.0,
             "publish_tf": False,
 
             # "odom0": "/icp_odom/odometry/filtered",
             "odom0": "/odom",
-            "odom0_config": [True, True, False,
-                             False, False, True,
-                             False,  False,  False,
-                             False, False, False,
-                             False, False, False],
+            # fmt: off
+            "odom0_config": [
+                True,True,False,
+                False,False,True,
+                False,False,False,
+                False,False,False,
+                False,False,False,
+            ],
+            # fmt: on
             "odom0_differential": True,
             "odom0_relative": True,
-
-            "pose0": "localization_pose",
-            "pose0_config": [True, True, False,
-                            False,  False,  True,
-                            False, False, False,
-                            False,  False,  False,
-                            False, False, False],
+            # "odom0_noise_covariance":    [0.0004, 0.0,    0.0,
+            #                             0.0,    0.0004, 0.0,
+            #                             0.0,    0.0,    0.05],
+            "pose0": "localization_pose",  # Ini untuk rtabmap
+            # fmt: off
+            "pose0_config":[
+                True,True,False,
+                False,False,True,
+                False,False,False,
+                False,False,False,
+                False,False,False,
+            ],
+            # fmt: on
             "pose0_differential": False,
             "pose0_relative": False,
         }],
@@ -426,6 +437,47 @@ def generate_launch_description():
         ],
         arguments=["--ros-args", "--log-level", "error"],
         respawn=True,
+    )
+
+    params_file = os.path.join(ws_path2,"src/raisa_bringup/config/nav2_params.yaml")
+
+    planner_server = Node(
+        package='nav2_planner', 
+        executable='planner_server', 
+        name='planner_server',
+        output='screen', 
+        parameters=[params_file],
+        respawn=True, respawn_delay=2.0
+    )
+
+    global_costmap_node = Node(
+        package="nav2_costmap_2d",
+        executable="costmap_2d",
+        name="global_costmap",
+        output="screen",
+        parameters=[params_file],
+        remappings=[
+          ("global_costmap/costmap", "global_costmap/costmap"),
+          ("global_costmap/costmap_raw", "global_costmap/costmap_raw"),
+          ("global_costmap/footprint", "global_costmap/footprint"),
+        ],
+        respawn=True, respawn_delay=2.0
+    )
+
+    lifecycle_manager = Node(
+        package="nav2_lifecycle_manager",
+        executable="lifecycle_manager",
+        name="lifecycle_manager_planner",
+        output="screen",
+        parameters=[{
+            "use_sim_time": False,
+            "autostart": True,
+            "bond_timeout": 0.0,
+            "node_names": [
+                "planner_server",
+                "global_costmap"
+            ]
+        }]
     )
 
 
@@ -557,6 +609,11 @@ def generate_launch_description():
         name='master',
         namespace='master',
         output='screen',
+        parameters=[{
+            "lookahead_distance_global": 10.0, 
+            "lookahead_distance_local": 5.0,
+            "disable_nav2": True,
+        }]
         remappings=[
             ("fb_steering_angle", "/hardware/fb_steering_angle"),
             ("fb_current_velocity", "/hardware/fb_current_velocity"),
@@ -735,23 +792,39 @@ def generate_launch_description():
             joint_state_publisher_node,
             robot_state_publisher_node,
 
-            multilidar,
+            # multilidar,
             # multicamera,
             hesai_lidar,
-            gps,
+            # gps,
 
-            all_obstacle_filter,
+            # all_obstacle_filter,
 
-            rs2_cam_main,
+            # rs2_cam_main,
             # camera_driver_node2,
-            road_segmentation,
+            # road_segmentation,
             # coco_object_detection,
 
             serial_imu,
             # imu_filter_madgwick_node,
 
-            rtabmap_slam,
-            ekf_final_pose,
+
+
+            # rtabmap_slam,
+            # TimerAction(
+            #     period=20.0,
+            #     actions=[
+            #         ekf_final_pose,
+            #     ],
+            # ),
+
+            TimerAction(
+                period=20.0,
+                actions=[
+                    global_costmap_node,
+                    planner_node,
+                    lifecycle_manager
+                ],
+            ),
 
             # rosapi_node,
             # ui_server,
@@ -767,7 +840,7 @@ def generate_launch_description():
             # wifi_control,
             # CANBUS_HAL_node,
 
-            rviz2,
+            # rviz2,
         ]
     )
 
