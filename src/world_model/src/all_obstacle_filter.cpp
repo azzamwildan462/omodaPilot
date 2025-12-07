@@ -31,15 +31,23 @@
 #include <tf2_eigen/tf2_eigen.hpp>
 #include <future>
 #include <boost/thread/mutex.hpp>
+#include <opencv2/opencv.hpp>
+
+#include <nanoflann.hpp>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+#include "world_model/fast_normals_nanoflann.hpp"
 
 using namespace std::chrono_literals;
+using std::placeholders::_1;
+using KDTree = FastNormalEstimator::KDTree;
 
 class AllObstacleFilter : public rclcpp::Node
 {
 public:
     rclcpp::TimerBase::SharedPtr tim_routine;
 
-    rclcpp::Subscription<std_msgs::msg::Float32MultiArray>::SharedPtr sub_scan_box;
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_lidar_kanan_points;
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_lidar_kiri_points;
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_lidar_tengah_points;
@@ -47,10 +55,12 @@ public:
     rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr sub_caminfo_kamera_tengah;
     rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr sub_caminfo_kamera_kiri;
     rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr sub_caminfo_kamera_kanan;
+    rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_roadseg_mask;
 
     rclcpp::CallbackGroup::SharedPtr cb_lidar_kanan_points;
     rclcpp::CallbackGroup::SharedPtr cb_lidar_kiri_points;
     rclcpp::CallbackGroup::SharedPtr cb_lidar_tengah_points;
+    rclcpp::CallbackGroup::SharedPtr cb_sub_roadseg;
 
     rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr pub_result_all_obstacle;
     rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr pub_all_pcl2laserscan;
@@ -65,12 +75,6 @@ public:
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_pcl2cam_kanan_depth_color;
 
     // Configs
-    float scan_box_x_min = 0.0;
-    float scan_box_y_min = -0.5;
-    float scan_box_x_max = 2.5;
-    float scan_box_y_max = 0.5;
-    float scan_box_z_min = -1.0;
-    float scan_box_z_max = 1.0;
     float pcl2laser_obs_x_min = 0.0;
     float pcl2laser_obs_y_min = -0.5;
     float pcl2laser_obs_x_max = 2.5;
@@ -90,6 +94,7 @@ public:
     std::string camera_tengah_topic = "";
     std::string camera_kiri_topic = "";
     std::string camera_kanan_topic = "";
+    std::string roadseg_topic = "";
     std::string lidar_kanan_frame_id = "lidar_kanan_link";
     std::string lidar_kiri_frame_id = "lidar_kiri_link";
     std::string lidar_tengah_frame_id = "lidar_tengah_link";
@@ -98,6 +103,10 @@ public:
     std::string camera_kiri_frame_id = "";
     std::string camera_kanan_frame_id = "";
     bool depth_cam_pub_color_dbg = true;
+    bool using_normal_to_laserscan = false;
+    bool hitung_roadseg2laserscan = false;
+    float threshold_delta_z = 0.3;
+    float max_range_gap = 0.9;
 
     //----Variables
     float result_lidar_kanan = 0.0;
@@ -109,13 +118,6 @@ public:
     pcl::PointCloud<pcl::PointXYZ> pcl_lidar_kiri_raw;
     pcl::PointCloud<pcl::PointXYZ> pcl_lidar_kanan_raw;
     pcl::PointCloud<pcl::PointXYZ> pcl_lidar_tengah_raw;
-
-    geometry_msgs::msg::PointStamped scan_box_kiri_belakang_lidar_kanan;
-    geometry_msgs::msg::PointStamped scan_box_kanan_depan_lidar_kanan;
-    geometry_msgs::msg::PointStamped scan_box_kiri_belakang_lidar_kiri;
-    geometry_msgs::msg::PointStamped scan_box_kanan_depan_lidar_kiri;
-    geometry_msgs::msg::PointStamped scan_box_kiri_belakang_lidar_tengah;
-    geometry_msgs::msg::PointStamped scan_box_kanan_depan_lidar_tengah;
 
     geometry_msgs::msg::PointStamped pcl2laser_obs_kiri_belakang_lidar_kanan;
     geometry_msgs::msg::PointStamped pcl2laser_obs_kanan_depan_lidar_kanan;
@@ -178,6 +180,8 @@ public:
     boost::mutex mtx_lidar_kiri;
     boost::mutex mtx_lidar_tengah;
 
+    rclcpp::Time last_stamp_lidar_tengah;
+
     // Tambahan
     // ---------
     sensor_msgs::msg::CameraInfo::SharedPtr caminfo_kamera_dalam;
@@ -188,24 +192,6 @@ public:
     AllObstacleFilter()
         : Node("obstacle_filter")
     {
-        this->declare_parameter("scan_box_x_min", 0.0);
-        this->get_parameter("scan_box_x_min", scan_box_x_min);
-
-        this->declare_parameter("scan_box_x_max", 5.5);
-        this->get_parameter("scan_box_x_max", scan_box_x_max);
-
-        this->declare_parameter("scan_box_y_min", -4.5);
-        this->get_parameter("scan_box_y_min", scan_box_y_min);
-
-        this->declare_parameter("scan_box_y_max", 4.5);
-        this->get_parameter("scan_box_y_max", scan_box_y_max);
-
-        this->declare_parameter("scan_box_z_min", 0.1);
-        this->get_parameter("scan_box_z_min", scan_box_z_min);
-
-        this->declare_parameter("scan_box_z_max", 2.0);
-        this->get_parameter("scan_box_z_max", scan_box_z_max);
-
         this->declare_parameter("pcl2laser_obs_x_min", -10.0);
         this->get_parameter("pcl2laser_obs_x_min", pcl2laser_obs_x_min);
 
@@ -287,12 +273,33 @@ public:
         this->declare_parameter("depth_cam_pub_color_dbg", true);
         this->get_parameter("depth_cam_pub_color_dbg", depth_cam_pub_color_dbg);
 
+        this->declare_parameter("using_normal_to_laserscan", false);
+        this->get_parameter("using_normal_to_laserscan", using_normal_to_laserscan);
+
+        this->declare_parameter("hitung_roadseg2laserscan", false);
+        this->get_parameter("hitung_roadseg2laserscan", hitung_roadseg2laserscan);
+
+        this->declare_parameter("roadseg_topic", "");
+        this->get_parameter("roadseg_topic", roadseg_topic);
+
+        this->declare_parameter("threshold_delta_z", 0.3);
+        this->get_parameter("threshold_delta_z", threshold_delta_z);
+
+        this->declare_parameter("max_range_gap", 0.9);
+        this->get_parameter("max_range_gap", max_range_gap);
+
         //----Logger
         if (!logger.init())
         {
             RCLCPP_ERROR(this->get_logger(), "Failed to initialize logger");
             rclcpp::shutdown();
         }
+
+#ifdef _OPENMP
+        logger.info("OpenMP enabled, threads=%d", omp_get_max_threads());
+#else
+        logger.warn("OpenMP not enabled");
+#endif
 
         init_sub_cam_info();
 
@@ -333,6 +340,7 @@ public:
         cb_lidar_kanan_points = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
         cb_lidar_kiri_points = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
         cb_lidar_tengah_points = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+        cb_sub_roadseg = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
 
         // HEHE
         geometry_msgs::msg::PointStamped point_exclude_kiri_belakang;
@@ -344,6 +352,8 @@ public:
         sub_lidar_kiri_options.callback_group = cb_lidar_kiri_points;
         auto sub_lidar_tengah_options = rclcpp::SubscriptionOptions();
         sub_lidar_tengah_options.callback_group = cb_lidar_tengah_points;
+        auto sub_roadseg_options = rclcpp::SubscriptionOptions();
+        sub_roadseg_options.callback_group = cb_sub_roadseg;
 
         //----Subscriber
         sub_lidar_kanan_points = this->create_subscription<sensor_msgs::msg::PointCloud2>(
@@ -352,8 +362,12 @@ public:
             lidar_kiri_topic, 1, std::bind(&AllObstacleFilter::callback_sub_lidar_kiri_points, this, std::placeholders::_1), sub_lidar_kiri_options);
         sub_lidar_tengah_points = this->create_subscription<sensor_msgs::msg::PointCloud2>(
             lidar_tengah_topic, 1, std::bind(&AllObstacleFilter::callback_sub_lidar_tengah_points, this, std::placeholders::_1), sub_lidar_tengah_options);
-        sub_scan_box = this->create_subscription<std_msgs::msg::Float32MultiArray>(
-            "/master/obstacle_scan_box", 1, std::bind(&AllObstacleFilter::callback_sub_scan_box, this, std::placeholders::_1));
+
+        if (hitung_roadseg2laserscan)
+        {
+            sub_roadseg_mask = this->create_subscription<sensor_msgs::msg::Image>(
+                roadseg_topic, 1, std::bind(&AllObstacleFilter::callback_sub_roadseg_mask, this, std::placeholders::_1), sub_roadseg_options);
+        }
 
         //----Publisher
         pub_result_all_obstacle = this->create_publisher<std_msgs::msg::Float32MultiArray>(
@@ -580,7 +594,7 @@ public:
 
     void process_depth_images(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud_lidar)
     {
-        rclcpp::Time stamp = this->now();
+        rclcpp::Time stamp = last_stamp_lidar_tengah;
         // Persetan dengan mutex
         rclcpp::Time time_camera_dalam = stamp;
         rclcpp::Time time_camera_tengah = stamp;
@@ -1080,57 +1094,214 @@ public:
         return true;
     }
 
-    sensor_msgs::msg::LaserScan calc_all_pcl2laserscan(std::string target_frame, pcl::PointCloud<pcl::PointXYZ> &pcl_cloud)
+    void pre_calc_all_pcl2laserscan(pcl::PointCloud<pcl::PointXYZ> &cloud_in, pcl::PointCloud<pcl::PointXYZ> &cloud_out)
+    {
+        if (cloud_in.size() <= 0)
+        {
+            return;
+        }
+
+        static const float density_radius_ = 0.25;
+        static const float min_neighbors_ = 7;
+
+        /* Filter Z */
+        std::vector<Point3D> roi_pts;
+        roi_pts.reserve(cloud_in.size());
+
+        for (const auto &p : cloud_in.points)
+        {
+            if (!std::isfinite(p.x) || !std::isfinite(p.y) || !std::isfinite(p.z))
+                continue;
+
+            // x depan, y kiri, z atas
+            if (p.x < pcl2laser_obs_x_min || p.x > pcl2laser_obs_x_max)
+                continue;
+
+            if (p.y < pcl2laser_obs_y_min || p.y > pcl2laser_obs_y_max)
+                continue;
+
+            // range tinggi trotoar (relatif ground)
+            if (p.z < pcl2laser_obs_z_min || p.z > pcl2laser_obs_z_max)
+                continue;
+
+            roi_pts.push_back({p.x, p.y, p.z});
+        }
+
+        const size_t N = roi_pts.size();
+        if (N == 0)
+        {
+            RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 2000,
+                                 "No ROI points for sidewalk");
+            return;
+        }
+
+        /* Buat kdtree pakaei nanoflann */
+        PointCloudAdaptor adaptor(roi_pts);
+        KDTree index(3, adaptor,
+                     nanoflann::KDTreeSingleIndexAdaptorParams(10));
+        index.buildIndex();
+        const float radius_sq = static_cast<float>(density_radius_ * density_radius_);
+        std::vector<uint8_t> is_trotoar(N, 0);
+
+        /* Radius search by nanoflann */
+#ifdef _OPENMP
+#pragma omp parallel for
+#endif
+        for (int i = 0; i < static_cast<int>(N); ++i)
+        {
+            const Point3D &p = roi_pts[i];
+            const float query_pt[3] = {p.x, p.y, p.z};
+
+            using Result = nanoflann::ResultItem<unsigned int, float>;
+            std::vector<Result> matches;
+            nanoflann::SearchParameters params;
+            params.sorted = false;
+
+            size_t found = index.radiusSearch(query_pt, radius_sq, matches, params);
+            if (static_cast<int>(found) >= min_neighbors_)
+            {
+                is_trotoar[i] = 1;
+            }
+        }
+
+        /* Masukkan ke output ptr */
+        cloud_out.reserve(N);
+        for (size_t i = 0; i < N; ++i)
+        {
+            if (!is_trotoar[i])
+                continue;
+            const auto &pt = roi_pts[i];
+            cloud_out.emplace_back(pt.x, pt.y, pt.z);
+        }
+    }
+
+    sensor_msgs::msg::LaserScan calc_all_pcl2laserscan(const std::string &target_frame, pcl::PointCloud<pcl::PointXYZ> &pcl_cloud)
     {
         sensor_msgs::msg::LaserScan laser_scan_msg;
 
-        laser_scan_msg.header.stamp = this->now();
-        laser_scan_msg.header.frame_id = target_frame;
-        laser_scan_msg.angle_min = -3.14;              // -90 degrees
-        laser_scan_msg.angle_max = 3.14;               // 90 degrees
-        laser_scan_msg.angle_increment = 0.0174532925; // 1 degree
-        laser_scan_msg.range_min = 0.05;
-        laser_scan_msg.range_max = 15.0;
-
-        // Hitung jumlah range
-        uint32_t num_ranges = static_cast<uint32_t>((laser_scan_msg.angle_max - laser_scan_msg.angle_min) / laser_scan_msg.angle_increment) + 1;
-
-        // Convert pcl ke range + angle
-        std::vector<std::vector<float>> angle_ranges;
-        angle_ranges.resize(num_ranges);
-
-        // Convert pcl ke range + angle
-        for (const auto &point : pcl_cloud.points)
+        if (pcl_cloud.empty())
         {
-            float range = std::sqrt(point.x * point.x + point.y * point.y);
-            if (range < laser_scan_msg.range_min || range > laser_scan_msg.range_max)
-            {
-                continue; // Skip points outside valid range
-            }
-
-            float angle = std::atan2(point.y, point.x);
-            if (angle < laser_scan_msg.angle_min || angle > laser_scan_msg.angle_max)
-            {
-                continue; // Skip points outside valid angle
-            }
-
-            uint32_t index = static_cast<uint32_t>((angle - laser_scan_msg.angle_min) / laser_scan_msg.angle_increment);
-            if (index >= num_ranges)
-            {
-                continue; // Safety check
-            }
-            angle_ranges[index].push_back(range);
+            return laser_scan_msg;
         }
 
-        // Iterasi untuk setiap angle, dicari range minimum
-        laser_scan_msg.ranges.resize(num_ranges, std::numeric_limits<float>::infinity());
-        for (uint32_t i = 0; i < num_ranges; i++)
+        // --- parameter scan (bisa dijadikan param ROS) ---
+        const float angle_min = -3.14f;
+        const float angle_max = 3.14f;
+        const float angle_inc = 0.0174532925f; // 1 derajat
+        const float range_min = 0.05f;
+        const float range_max = 30.0f;
+
+        laser_scan_msg.header.stamp = this->now();
+        laser_scan_msg.header.frame_id = target_frame;
+        laser_scan_msg.angle_min = angle_min;
+        laser_scan_msg.angle_max = angle_max;
+        laser_scan_msg.angle_increment = angle_inc;
+        laser_scan_msg.range_min = range_min;
+        laser_scan_msg.range_max = range_max;
+
+        const uint32_t num_ranges =
+            static_cast<uint32_t>((angle_max - angle_min) / angle_inc) + 1;
+
+        // ----------------------------------------------------------
+        // 1. Binning titik ke dalam sudut (beam)
+        // ----------------------------------------------------------
+        struct BeamPoint
         {
-            if (!angle_ranges[i].empty())
+            float r;
+            float z;
+            float x;
+            float y;
+        };
+
+        std::vector<std::vector<BeamPoint>> beams(num_ranges);
+
+        for (const auto &point : pcl_cloud.points)
+        {
+            const float x = point.x;
+            const float y = point.y;
+            const float z = point.z;
+
+            const float r = std::sqrt(x * x + y * y);
+            if (!std::isfinite(r) || r < range_min || r > range_max)
+                continue;
+
+            const float angle = std::atan2(y, x);
+            if (angle < angle_min || angle > angle_max)
+                continue;
+
+            const uint32_t index = static_cast<uint32_t>(
+                (angle - angle_min) / angle_inc);
+            if (index >= num_ranges)
+                continue;
+
+            beams[index].push_back({r, z, x, y});
+        }
+
+        // ----------------------------------------------------------
+        // 2. Deteksi step trotoar di tiap beam (PARALEL dengan OpenMP)
+        // ----------------------------------------------------------
+        laser_scan_msg.ranges.assign(
+            num_ranges, std::numeric_limits<float>::infinity());
+
+        const int num_bins = static_cast<int>(num_ranges);
+
+#ifdef _OPENMP
+#pragma omp parallel for
+#endif
+        for (int i = 0; i < num_bins; ++i)
+        {
+            auto &vec = beams[i];
+            if (vec.size() < 2)
             {
-                float min_range = *std::min_element(angle_ranges[i].begin(), angle_ranges[i].end());
-                laser_scan_msg.ranges[i] = min_range;
+                continue;
             }
+
+            // sort dari dekat ke jauh
+            std::sort(vec.begin(), vec.end(),
+                      [](const BeamPoint &a, const BeamPoint &b)
+                      {
+                          return a.r < b.r;
+                      });
+
+            // kandidat trotoar: pilih yang r paling kecil
+            float best_step_range = std::numeric_limits<float>::infinity();
+
+            float prev_r = vec[0].r;
+            float prev_z = vec[0].z;
+
+            for (size_t j = 1; j < vec.size(); ++j)
+            {
+                const float curr_r = vec[j].r;
+                const float curr_z = vec[j].z;
+
+                // kalau jarak beda jauh, anggap permukaan beda, reset referensi
+                if ((curr_r - prev_r) > max_range_gap)
+                {
+                    prev_r = curr_r;
+                    prev_z = curr_z;
+                    continue;
+                }
+
+                const float delta_z = curr_z - prev_z;
+                prev_r = curr_r;
+                prev_z = curr_z;
+
+                // cek "perbedaan h besar"
+                if (delta_z >= threshold_delta_z)
+                {
+                    // jadikan kandidat, tapi jangan langsung break
+                    if (curr_r < best_step_range)
+                    {
+                        best_step_range = curr_r;
+                    }
+                }
+            }
+
+            if (std::isfinite(best_step_range))
+            {
+                laser_scan_msg.ranges[i] = best_step_range;
+            }
+            // kalau tidak ada kandidat, biarkan tetap infinity
         }
 
         return laser_scan_msg;
@@ -1163,15 +1334,8 @@ public:
 
     // ================================================================================================
 
-    void callback_sub_scan_box(const std_msgs::msg::Float32MultiArray::SharedPtr msg)
+    void callback_sub_roadseg_mask(const sensor_msgs::msg::Image::SharedPtr msg)
     {
-        if (msg->data.size() >= 4)
-        {
-            scan_box_x_min = msg->data[0];
-            scan_box_y_min = msg->data[1];
-            scan_box_x_max = msg->data[2];
-            scan_box_y_max = msg->data[3];
-        }
     }
 
     void callback_sub_lidar_kanan_points(const sensor_msgs::msg::PointCloud2::SharedPtr msg)
@@ -1239,6 +1403,8 @@ public:
             return;
         }
         counter_pembagi = 0;
+
+        last_stamp_lidar_tengah = msg->header.stamp;
 
         last_time_lidar_tengah_update_ms = wall_time_ms;
 
@@ -1348,15 +1514,22 @@ public:
         // Publish debug pcl2laser
         sensor_msgs::msg::PointCloud2 debug_pcl2laser_msg;
         pcl::toROSMsg(final_obstacle_points_cropped, debug_pcl2laser_msg);
-        debug_pcl2laser_msg.header.stamp = this->now();
+        debug_pcl2laser_msg.header.stamp = last_stamp_lidar_tengah;
         debug_pcl2laser_msg.header.frame_id = "base_link";
         pub_debug_pcl2laser->publish(debug_pcl2laser_msg);
 
         // Membuat laser scan
-        if (final_obstacle_points_cropped.size() > 0)
+        if (using_normal_to_laserscan)
+        {
+            pcl::PointCloud<pcl::PointXYZ> pcl_trotoar;
+            pre_calc_all_pcl2laserscan(all_obstacle_points_exclude, pcl_trotoar);
+            all_obstacle_laserscan = calc_all_pcl2laserscan("base_link", pcl_trotoar);
+        }
+        else
         {
             all_obstacle_laserscan = calc_all_pcl2laserscan("base_link", final_obstacle_points_cropped);
         }
+        all_obstacle_laserscan.header.stamp = last_stamp_lidar_tengah;
 
         // Publish result
         // ===============================================

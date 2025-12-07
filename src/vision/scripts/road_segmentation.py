@@ -9,7 +9,7 @@ from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 
 from sensor_msgs.msg import LaserScan
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Header
 from cv_bridge import CvBridge
 from loguru import logger
@@ -18,9 +18,47 @@ import torch
 import numpy as np
 import cv2
 
+import tf2_ros
+from rclpy.time import Time
+
 from models.nydus_network import make_nydus_network
 from models.nydus_infer_core import NydusInferCore
 from utils.mask2laserscan import Mask2LaserScan
+
+def transform_to_matrix(transform_msg) -> np.ndarray:
+    """
+    Convert geometry_msgs/Transform (or TransformStamped.transform)
+    to 4x4 homogeneous matrix.
+    """
+    t = transform_msg.translation
+    q = transform_msg.rotation
+
+    x, y, z, w = q.x, q.y, q.z, q.w
+
+    # Quaternion -> rotation matrix
+    # sumber rumus standard
+    xx = x * x
+    yy = y * y
+    zz = z * z
+    xy = x * y
+    xz = x * z
+    yz = y * z
+    wx = w * x
+    wy = w * y
+    wz = w * z
+
+    R = np.array([
+        [1.0 - 2.0 * (yy + zz),     2.0 * (xy - wz),         2.0 * (xz + wy)],
+        [2.0 * (xy + wz),           1.0 - 2.0 * (xx + zz),   2.0 * (yz - wx)],
+        [2.0 * (xz - wy),           2.0 * (yz + wx),         1.0 - 2.0 * (xx + yy)]
+    ], dtype=float)
+
+    T = np.eye(4, dtype=float)
+    T[0:3, 0:3] = R
+    T[0, 3] = t.x
+    T[1, 3] = t.y
+    T[2, 3] = t.z
+    return T
 
 class NydusMaskNode(Node):
     def __init__(self):
@@ -55,6 +93,10 @@ class NydusMaskNode(Node):
 
         # topics & timer
         P("image_topic", "/camera/image_raw")
+        P("cam_info_topic", "/camera/camera_info")
+        P("depth_image_topic", "/camera/camera_depth")
+        P("camera_frame_id", "camera_link")
+        P("base_frame_id", "base_link")
         P("mask_topic", "/road_seg/mask")
         P("publish_period", 0.0)     # 0.0 = run setiap callback timer
         P("publish_overlay", False)     # buat debugging
@@ -91,13 +133,16 @@ class NydusMaskNode(Node):
         cut_thr = float(g("scene_cut_thresh").value)
 
         self.image_topic = g("image_topic").get_parameter_value().string_value
+        self.cam_info_topic = g("cam_info_topic").get_parameter_value().string_value
+        self.depth_image_topic = g("depth_image_topic").get_parameter_value().string_value
+        self.camera_frame_id = g("camera_frame_id").get_parameter_value().string_value
+        self.base_frame_id   = g("base_frame_id").get_parameter_value().string_value
         self.mask_topic  = g("mask_topic").get_parameter_value().string_value
         period = float(g("publish_period").value)
         self.publish_overlay = bool(g("publish_overlay").value)
         self.do_mask2laserscan = bool(g("do_mask2laserscan").value)
         m2ls_px2m_strategy = int(g("mask2laserscan_px2m_strategy").value)
         m2ls_scan_strategy = int(g("mask2laserscan_scan_strategy").value)
-
 
         # -------- Logger --------
         logger.remove()
@@ -120,12 +165,22 @@ class NydusMaskNode(Node):
             scene_cut=reset_on, scene_cut_thresh=cut_thr
         )
         if self.do_mask2laserscan:
-            self.m2ls = Mask2LaserScan(logger, m2ls_scan_strategy, m2ls_px2m_strategy)
+            self.m2ls = Mask2LaserScan(logger, m2ls_scan_strategy, m2ls_px2m_strategy, base_frame="base_link")
+
+            # TF buffer & listener (listen T base_link <- camera_frame_id)
+            self.tf_buffer = tf2_ros.Buffer()
+            self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
 
         logger.info(f"Nydus engine on device: {device}")
 
         # -------- ROS I/O --------
         self.sub = self.create_subscription(Image, self.image_topic, self.cb_image, 1)
+        self.sub_cam_info = self.create_subscription(CameraInfo, self.cam_info_topic, self._cb_camera_info, 1)
+
+        if m2ls_px2m_strategy == 0:
+            self.sub_depth = self.create_subscription(Image, self.depth_image_topic, self._cb_depth_image, 1)
+
+         # Publishers
         self.pub_mask = self.create_publisher(Image, self.mask_topic, 1)
 
         if self.publish_overlay:
@@ -144,6 +199,38 @@ class NydusMaskNode(Node):
         self.has_init = True
         logger.info("nydus_mask_node initialized. Waiting for images…")
 
+        self.is_camera_info_set = False # ahhahhahahahahah
+        self.has_extrinsic = False  # sudah pernah set T_cam2base? aooasoksaosadoasdasnd
+        self.has_extrinsic_updated = False
+    
+    def _cb_depth_image(self, msg: Image):
+        if not self.has_init or not self.is_camera_info_set or not self.do_mask2laserscan:
+            return
+        try:
+            depth_frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+            if depth_frame.dtype == np.uint16:
+                depth_frame = depth_frame.astype(np.float32) * 0.001  # mm to meter
+            elif depth_frame.dtype == np.float32:
+                pass  # sudah meter
+            else:
+                logger.error(f"Depth image has unsupported dtype: {depth_frame.dtype}")
+                return
+        except Exception as e:
+            logger.error(f"cv_bridge error (depth): {e}")
+            return
+
+        self.m2ls.px2m_converter.set_depth_frame(depth_frame)
+    
+    def _cb_camera_info(self, msg: CameraInfo):
+        if not self.has_init or not self.do_mask2laserscan:
+            return
+        if not self.is_camera_info_set:
+            # Kalau kamu melakukan resize sebelum infer, idealnya CameraInfo juga di-scale
+            # ke (in_w, in_h). Untuk sekarang, langsung pakai apa adanya.
+            self.m2ls.px2m_converter.set_camera_info(msg)
+            self.is_camera_info_set = True
+            logger.info(f"CameraInfo set from topic {self.cam_info_topic}")
+        
     def cb_image(self, msg: Image):
         if not self.has_init:
             return
@@ -174,9 +261,30 @@ class NydusMaskNode(Node):
         #     t_ms = stats.get("t_ms", 0.0)
         #     logger.info(f"Processed frame | t_ms: {t_ms:.6f}")
 
-        if self.do_mask2laserscan:
-            laser_scan = self.m2ls(mask_u8, header.stamp)
-            if laser_scan is not None:
+        if self.do_mask2laserscan and self.tf_buffer is not None:
+            try:
+                # Lookup transform base <- camera_frame_id
+                # target: base_frame, source: camera_frame
+                tf_msg = self.tf_buffer.lookup_transform(
+                    self.base_frame_id,
+                    self.camera_frame_id,
+                    Time()  # latest available
+                )
+                if self.has_extrinsic_updated is False:
+                    T_cam2base = transform_to_matrix(tf_msg.transform)
+                    self.m2ls.px2m_converter.set_extrinsic_cam_to_base(T_cam2base)
+                    self.has_extrinsic_updated = True
+                self.has_extrinsic = True
+            except Exception as e:
+                if not self.has_extrinsic:
+                    logger.warning(f"TF lookup failed (base={self.base_frame_id}, cam={self.camera_frame_id}): {e}")
+                # kalau belum ada TF, skip mask2laserscan dulu
+
+        # -------- Optional: mask -> LaserScan --------
+        if self.do_mask2laserscan and self.has_extrinsic and self.is_camera_info_set:
+            # Mask2LaserScan.__call__(mask, header: Optional[Header])
+            laser_scan = self.m2ls(mask_u8, header)
+            if laser_scan is not None and self.pub_laserscan is not None:
                 self.pub_laserscan.publish(laser_scan)
 
         # Publish mask as mono8 (0/255)

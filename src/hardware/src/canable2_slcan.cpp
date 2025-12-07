@@ -556,6 +556,7 @@ int CANable2_SLCAN::update()
         break;
     case CHERY_CANFD_ENGINE_DATA_GEAR_R_CHOICE:
         this->gear_status = "R";
+        this->fb_current_velocity *= -1;
         break;
     case CHERY_CANFD_ENGINE_DATA_GEAR_N_CHOICE:
         this->gear_status = "N";

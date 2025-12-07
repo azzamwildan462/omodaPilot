@@ -3,6 +3,39 @@
 Master::Master()
     : Node("master")
 {
+    this->declare_parameter("profile_max_acceleration", profile_max_acceleration);
+    this->get_parameter("profile_max_acceleration", profile_max_acceleration);
+
+    this->declare_parameter("profile_max_decceleration", profile_max_decceleration);
+    this->get_parameter("profile_max_decceleration", profile_max_decceleration);
+
+    this->declare_parameter("profile_max_velocity", profile_max_velocity);
+    this->get_parameter("profile_max_velocity", profile_max_velocity);
+
+    this->declare_parameter("profile_max_accelerate_jerk", profile_max_accelerate_jerk);
+    this->get_parameter("profile_max_accelerate_jerk", profile_max_accelerate_jerk);
+
+    this->declare_parameter("profile_max_decelerate_jerk", profile_max_decelerate_jerk);
+    this->get_parameter("profile_max_decelerate_jerk", profile_max_decelerate_jerk);
+
+    this->declare_parameter("profile_max_braking", profile_max_braking);
+    this->get_parameter("profile_max_braking", profile_max_braking);
+
+    this->declare_parameter("profile_max_braking_acceleration", profile_max_braking_acceleration);
+    this->get_parameter("profile_max_braking_acceleration", profile_max_braking_acceleration);
+
+    this->declare_parameter("profile_max_braking_jerk", profile_max_braking_jerk);
+    this->get_parameter("profile_max_braking_jerk", profile_max_braking_jerk);
+
+    this->declare_parameter<std::vector<double>>("pid_terms", {0.0070, 0.000000, 0, 0.02, -0.04, 0.4, -0.0005, 0.0005});
+    this->get_parameter("pid_terms", pid_terms);
+
+    this->declare_parameter("offset_sudut_steering", offset_sudut_steering);
+    this->get_parameter("offset_sudut_steering", offset_sudut_steering);
+
+    this->declare_parameter("roda2steering_ratio", roda2steering_ratio);
+    this->get_parameter("roda2steering_ratio", roda2steering_ratio);
+
     if (!logger.init())
     {
         RCLCPP_ERROR(this->get_logger(), "Failed to initialize logger");
@@ -12,6 +45,7 @@ Master::Master()
     pub_target_steering_angle = this->create_publisher<std_msgs::msg::Float32>("cmd_target_steering_angle", 1);
     pub_target_velocity = this->create_publisher<std_msgs::msg::Float32>("cmd_target_velocity", 1);
     pub_hw_flag = this->create_publisher<std_msgs::msg::UInt8>("cmd_hw_flag", 1);
+    pub_global_fsm = this->create_publisher<std_msgs::msg::Int16>("global_fsm", 1);
 
     sub_fb_steering_angle = this->create_subscription<std_msgs::msg::Float32>(
         "fb_steering_angle", 1, std::bind(&Master::callback_sub_fb_steering_angle, this, std::placeholders::_1));
@@ -73,12 +107,6 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
 
     switch (current_key_pressed)
     {
-    case 'a':
-        cmd_target_steering_angle += 0.1;
-        break;
-    case 'd':
-        cmd_target_steering_angle -= 0.1;
-        break;
 
     case 'q':
         cmd_target_steering_angle = 4.8;
@@ -95,10 +123,16 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
         break;
 
     case 'w':
-        cmd_target_velocity += 0.1;
+        target_vel_x_dummy = 1.0;
         break;
     case 's':
-        cmd_target_velocity -= 0.1;
+        target_vel_x_dummy = -1.0;
+        break;
+    case 'a':
+        target_pos_theta_dummy = 0.5;
+        break;
+    case 'd':
+        target_pos_theta_dummy = -0.5;
         break;
 
     case 'z':
@@ -106,23 +140,23 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
         break;
 
     case '1':
-        cmd_target_velocity = 1.0;
+        global_fsm.value = FSM_GLOBAL_PREOP;
         break;
 
     case '2':
-        cmd_target_velocity = 2.0;
+        global_fsm.value = FSM_GLOBAL_SAFEOP;
         break;
 
     case '3':
-        cmd_target_velocity = 3.0;
+        global_fsm.value = FSM_GLOBAL_OP_3;
         break;
 
     case '4':
-        cmd_target_velocity = 4.0;
+        global_fsm.value = FSM_GLOBAL_OP_4;
         break;
 
     case '5':
-        cmd_target_velocity = 5.0;
+        global_fsm.value = FSM_GLOBAL_OP_5;
         break;
 
     case 'l':
@@ -171,24 +205,6 @@ void Master::callback_sub_key_pressed(const std_msgs::msg::Int16::SharedPtr msg)
 void Master::callback_routine()
 {
     time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
-    // static uint16_t counter_steer_dipegang = 0;
-
-    // if (steer_torque > 18)
-    // {
-    //     counter_steer_dipegang++;
-    //     if (counter_steer_dipegang > 150)
-    //         counter_steer_dipegang = 150;
-    // }
-
-    // if (counter_steer_dipegang > 5)
-    // {
-    //     cmd_hw_flag &= ~CMD_STEER_ACTIVE;
-    // }
-
-    // if ((cmd_hw_flag & CMD_STEER_ACTIVE) == 0)
-    // {
-    //     counter_steer_dipegang = 0;
-    // }
 
     // last_time_steer_button_press - time_now > 2 second
     if ((cmd_hw_flag & CMD_ACC_BTN_PRESS) != 0 && (time_now - last_time_steer_button_press).seconds() > 1.0)
@@ -196,7 +212,31 @@ void Master::callback_routine()
         cmd_hw_flag &= ~CMD_ACC_BTN_PRESS;
     }
 
-    process_transmitter();
+    switch (global_fsm.value)
+    {
+    case FSM_GLOBAL_INIT:
+        break;
+
+    case FSM_GLOBAL_PREOP:
+        break;
+
+    case FSM_GLOBAL_SAFEOP:
+        break;
+
+    case FSM_GLOBAL_OP_3:
+        manual_motion(target_vel_x_dummy, target_vel_y_dummy, target_pos_theta_dummy);
+        break;
+
+    case FSM_GLOBAL_OP_4:
+        manual_motion(target_vel_x_dummy, target_vel_y_dummy, 0);
+        break;
+
+    case FSM_GLOBAL_OP_5:
+        manual_motion(0, target_vel_y_dummy, target_pos_theta_dummy);
+        break;
+    }
+
+    transmit_all();
 }
 
 int main(int argc, char **argv)
@@ -205,7 +245,7 @@ int main(int argc, char **argv)
 
     auto node_master = std::make_shared<Master>();
 
-    rclcpp::executors::SingleThreadedExecutor executor;
+    rclcpp::executors::MultiThreadedExecutor executor;
     executor.add_node(node_master);
     executor.spin();
 

@@ -46,7 +46,7 @@
     <joint name="base_joint" type="fixed">
         <parent link="base_link" />
         <child link="base_lidar" />
-        <origin xyz="0.0 0.0 1.5" rpy="0.0 0.0 0.0" />
+        <origin xyz="0.0 0.0 1.60" rpy="0.0 0.0 0.0" />
     </joint>
 
     <joint name="radar_joint" type="fixed">
@@ -64,13 +64,13 @@
     <joint name="velodyne1_joint" type="fixed">
         <parent link="base_lidar" />
         <child link="velodynekanan" />
-        <origin xyz="0.0 -0.45 0.231" rpy="0.78 0.0 0.0" />
+        <origin xyz="0.0 -0.45 0.231" rpy="0.78 0.008 0.0" />
     </joint>
 
     <joint name="velodyne2_joint" type="fixed">
         <parent link="base_lidar" />
         <child link="velodynekiri" />
-        <origin xyz="0.0 0.45 0.231" rpy="-0.7789 0.0 0.0" />
+        <origin xyz="0.0 0.45 0.231" rpy="-0.78 0.006 0.0" />
     </joint>
 
     <joint name="velodyne3_joint" type="fixed">
@@ -82,7 +82,7 @@
     <joint name="lidartengah_joint" type="fixed">
         <parent link="base_lidar" />
         <child link="lidartengah" />
-        <origin xyz="0.0 0.0 0.43" rpy="0.0 0.0 0.0" />
+        <origin xyz="0.0 0.0 0.43" rpy="0.0 0.020 0.0" />
     </joint>
 
 </robot>

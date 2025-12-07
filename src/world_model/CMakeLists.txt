@@ -25,17 +25,24 @@ set(var_dependencies
     laser_geometry
     yaml-cpp
     PCL
-    tf2_ros)
+    tf2_ros
+    OpenMP)
 
 foreach(var_dependency ${var_dependencies})
   find_package(${var_dependency} REQUIRED)
 endforeach()
+
+include_directories(include)
 
 add_executable(pose_estimator src/pose_estimator.cpp)
 ament_target_dependencies(pose_estimator ${var_dependencies})
 
 add_executable(all_obstacle_filter src/all_obstacle_filter.cpp)
 ament_target_dependencies(all_obstacle_filter ${var_dependencies})
+
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(all_obstacle_filter OpenMP::OpenMP_CXX)
+endif()
 
 install(
   TARGETS 
