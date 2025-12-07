@@ -286,7 +286,6 @@ class waypoint_router(Node):
         self.destinations = self.load_destinations_csv(self.DST_FILE)
 
         logger.info(f"Loaded {len(self.segments)} segments from {self.WPS_FOLDER}")
-        logger.info(f"Loaded {self.destinations[0].shape[0]} destinations from {self.DST_FILE}")
 
         self.graph = self.build_graph(self.segments, threshold_meters=5.0)
         logger.info(f"Graph built with {len(self.graph)} nodes")
@@ -314,15 +313,18 @@ class waypoint_router(Node):
         # ============================
         self.declare_parameter("gps_topic", "/fix")
         self.declare_parameter("timer_period", 1.0)
+        self.declare_parameter("destinations_file", self.DST_FILE)
 
         # Ambil nilai parameter
         self.gps_topic: str = self.get_parameter("gps_topic").value
         self.period: float = self.get_parameter("timer_period").value
+        self.DST_FILE: str = self.get_parameter("destinations_file").value
 
         self.get_logger().info(
             f"Params:\n"
             f"  gps_topic = {self.gps_topic}\n"
             f"  timer_period = {self.period}\n"
+            f"  destinations_file = {self.DST_FILE}\n"
         )
 
         # ============================
