@@ -15,8 +15,20 @@
 
 int CANable2_SLCAN::parse_incoming_data(can_frame_t *frame)
 {
+    frame->timestamp = this->tick;
+    // // logger->info("frame: id=0x%03X, dlc=%d,", frame->id, frame->dlc);
+    // // for (int i = 0; i < frame->dlc; i++)
+    // // {
+    // //     logger->info(" data[%d]=0x%02X,", i, frame->data[i]);
+    // // }
+    if (frame->id == 0x065)
+    {
+        fb_relay_state = frame->data[0];
+        fb_key_state = frame->data[1];
+        // logger->info("Relay State: %d, Key State: %d, data2: %d, counter: %d, crc: %d", fb_relay_state, fb_key_state, frame->data[2], frame->data[3], frame->data[4]);
+    }
 
-    if (frame->id == CHERY_CANFD_STEER_ANGLE_SENSOR_FRAME_ID)
+    else if (frame->id == CHERY_CANFD_STEER_ANGLE_SENSOR_FRAME_ID)
     {
         bzero(&angle_sensor, sizeof(angle_sensor));
         chery_canfd_steer_angle_sensor_unpack(&angle_sensor, frame->data, frame->dlc);
@@ -598,8 +610,11 @@ std::vector<can_frame_t> CANable2_SLCAN::recv_msgs()
     return frames;
 }
 
-int CANable2_SLCAN::update()
+int CANable2_SLCAN::update(uint64_t tick)
 {
+    // Update tick diri saya sendiri
+    this->tick = tick;
+
     // Hitung speed
     float raw_kmh_longitudinal = (this->wheel_speed_rl + this->wheel_speed_rr) / 2.0f;
     this->fb_current_velocity = raw_kmh_longitudinal / 3.6f;

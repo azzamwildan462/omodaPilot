@@ -25,14 +25,14 @@
     odom/gravity: 9.80665
     odom/computeTimeOffset: true
 
-    odom/imu/approximateGravity: false
+    odom/imu/approximateGravity: true
     odom/imu/calibration/gyro: true
     odom/imu/calibration/accel: true
-    odom/imu/calibration/time: 7.0
+    odom/imu/calibration/time: 5.0
     odom/imu/bufferSize: 5000
 
     odom/preprocessing/cropBoxFilter/size: 2.0
-    odom/preprocessing/voxelFilter/res: 0.25
+    odom/preprocessing/voxelFilter/res: 0.60
 
     odom/keyframe/threshD: 1.0
     odom/keyframe/threshR: 5.0
@@ -43,18 +43,30 @@
 
     odom/gicp/minNumPoints: 64
     odom/gicp/kCorrespondences: 16
-    odom/gicp/maxCorrespondenceDistance: 4.0
+    odom/gicp/maxCorrespondenceDistance: 1.0
     odom/gicp/maxIterations: 32
     odom/gicp/transformationEpsilon: 0.01
     odom/gicp/rotationEpsilon: 0.01
     odom/gicp/initLambdaFactor: 1e-9
+    odom/gicp/maxFitnessScore: 1.0
+    odom/gicp/ransacIterations: 12
+    odom/gicp/ransacOutliersRejectionThreshold: 0.1
 
-    odom/geo/Kp: 2.0
-    odom/geo/Kv: 4.0
-    odom/geo/Kq: 3.0
-    odom/geo/Kab: 2.0
+    odom/geo/Kp: 4.5
+    odom/geo/Kv: 11.25
+    odom/geo/Kq: 4.0
+    odom/geo/Kab: 2.25
     odom/geo/Kgb: 1.0
-    odom/geo/abias_max: 20.0
-    odom/geo/gbias_max: 2.0
+    odom/geo/abias_max: 5.0
+    odom/geo/gbias_max: 0.5
 
-    is_debug: true
+    # odom/geo/Kp: 0.0
+    # odom/geo/Kv: 0.0
+    # odom/geo/Kq: 0.0
+    # odom/geo/Kab: 2.0
+    # odom/geo/Kgb: 1.0
+    # odom/geo/abias_max: 2.0
+    # odom/geo/gbias_max: 0.000001
+
+    rate_publish_odometry: 25.0
+    is_debug: false

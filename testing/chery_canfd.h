@@ -33,7 +33,8 @@
 #define CHERY_CANFD_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdint.h>
@@ -41,7 +42,7 @@ extern "C" {
 #include <stddef.h>
 
 #ifndef EINVAL
-#    define EINVAL 22
+#define EINVAL 22
 #endif
 
 /* Frame ids. */
@@ -204,7 +205,6 @@ extern "C" {
 #define CHERY_CANFD_NEW_MSG_537_IS_EXTENDED (0)
 
 /* Frame cycle times in milliseconds. */
-
 
 /* Signal choices. */
 #define CHERY_CANFD_ENGINE_DATA_GEAR_P_CHOICE (1u)
@@ -567,11562 +567,11612 @@ extern "C" {
 #define CHERY_CANFD_NEW_MSG_537_DRIVE_MODE_NAME "DRIVE_MODE"
 #define CHERY_CANFD_NEW_MSG_537_EPB_PRESSED_NAME "EPB_PRESSED"
 
-/**
- * Signals in message ENGINE_DATA.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_engine_data_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Signals in message ENGINE_DATA.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_engine_data_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_4;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_8;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int16_t accel;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 600..727 (0..127 -)
+         * Scale: 1
+         * Offset: -600
+         */
+        uint16_t gas_pos;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_9;
+
+        /**
+         * Range: 0..32767 (0..32767 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_7;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_13;
+
+        /**
+         * Range: 0..32767 (0..32767 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_6;
+
+        /**
+         * Range: 0..65535 (0..65535 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_15;
+
+        /**
+         * Range: 0..127 (0..127 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_11;
+
+        /**
+         * Range: 0..127 (0..127 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_12;
+
+        /**
+         * Range: 0..327670 (0..32767 -)
+         * Scale: 0.1
+         * Offset: 0
+         */
+        uint16_t gas;
+
+        /**
+         * Range: 0..63 (0..63 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t gear;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t gear_button;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t brake_press;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t cc_state;
+
+        /**
+         * Range: 0..63 (0..63 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t cruize_speed;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t switch_to_p;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..32767 (0..32767 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_14;
+    };
+
+    /**
+     * Signals in message STEER_SENSOR.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_steer_sensor_t
+    {
+        /**
+         * Range: 0..32767 (0..32767 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t angle;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t fraction;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int8_t torque;
+
+        /**
+         * Range: 0..127 (0..127 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int8_t torque_driver;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+    };
+
+    /**
+     * Signals in message NEW_MSG_127.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_127_t
+    {
+        /**
+         * Range: 0..63 (0..63 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..65535 (0..65535 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message NEW_MSG_128.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_128_t
+    {
+        /**
+         * Range: 0..4095 (0..4095 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_1;
+    };
+
+    /**
+     * Signals in message STEER_ANGLE_SENSOR.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_steer_angle_sensor_t
+    {
+        /**
+         * Range: 7800..171630 (0..16383 -)
+         * Scale: 0.1
+         * Offset: -780
+         */
+        uint16_t steer_angle;
+
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int8_t torque;
+
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t counter;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t checksum;
+    };
+
+    /**
+     * Signals in message LKAS.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_lkas_t
+    {
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int8_t new_signal_7;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..2047 (0..2047 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int16_t lkas_cmd;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t counter;
+
+        /**
+         * Range: 0..4095 (0..4095 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t checksum;
+    };
+
+    /**
+     * Signals in message NEW_MSG_260.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_260_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..1023 (0..1023 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_3;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t brake_press;
+
+        /**
+         * Range: 0..127 (0..127 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..65535 (0..65535 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..4095 (0..4095 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int16_t new_signal_1;
+    };
+
+    /**
+     * Signals in message NEW_MSG_287.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_287_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t epb_status;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t seatbelt_lock;
+    };
+
+    /**
+     * Signals in message BRAKE_DATA.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_brake_data_t
+    {
+        /**
+         * Range: 0..63 (0..63 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 100..611 (0..511 -)
+         * Scale: 1
+         * Offset: -100
+         */
+        int16_t brake_pos;
+    };
+
+    /**
+     * Signals in message NEW_MSG_2E9.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_2_e9_t
+    {
+        /**
+         * Dummy signal in empty message.
+         */
+        uint8_t dummy;
+    };
+
+    /**
+     * Signals in message DOOR.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_door_t
+    {
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message NEW_MSG_305.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_305_t
+    {
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message LKAS_STATE.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_lkas_state_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t state;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t lka_active;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t counter;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t checksum;
+    };
+
+    /**
+     * Signals in message WHEEL_SPEED_REAR.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_wheel_speed_rear_t
+    {
+        /**
+         * Range: 0..3957367 (0..32767 -)
+         * Scale: 0.00828
+         * Offset: 0
+         */
+        uint16_t wheel_speed_rr;
+
+        /**
+         * Range: 0..3957367 (0..32767 -)
+         * Scale: 0.00828
+         * Offset: 0
+         */
+        uint16_t wheel_speed_rl;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message WHEEL_SPEED_FRNT.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_wheel_speed_frnt_t
+    {
+        /**
+         * Range: -241255..3952593 (-2000..32767 kmh)
+         * Scale: 0.00829
+         * Offset: 0
+         */
+        int16_t wheel_speed_fr;
+
+        /**
+         * Range: 0..3952593 (0..32767 -)
+         * Scale: 0.00829
+         * Offset: 0
+         */
+        int16_t wheel_speed_fl;
+
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t stopped;
+    };
+
+    /**
+     * Signals in message NEW_MSG_319.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_319_t
+    {
+        /**
+         * Dummy signal in empty message.
+         */
+        uint8_t dummy;
+    };
+
+    /**
+     * Signals in message LKAS_CAM_CMD_345.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_lkas_cam_cmd_345_t
+    {
+        /**
+         * Range: 7800..89710 (0..8191 -)
+         * Scale: 0.1
+         * Offset: -780
+         */
+        uint16_t cmd;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t lka_active;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t set_x0;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int8_t new_signal_5;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_7;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t checksum;
+    };
+
+    /**
+     * Signals in message STEER_BUTTON.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_steer_button_t
+    {
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t checksum;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t counter;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t res_plus;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t cc_btn;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t acc;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t res_minus;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t gap_adjust_up;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t gap_adjust_down;
+    };
+
+    /**
+     * Signals in message SETTING.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_setting_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t cancel_alert;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t show_aeb;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t gap;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t acc_available;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t acc_active;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t aeb_active;
+
+        /**
+         * Range: 0..1023 (0..1023 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t cc_speed;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t counter;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t checksum;
+    };
+
+    /**
+     * Signals in message BCM_SIGNAL_2.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_bcm_signal_2_t
+    {
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t high_beam;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t left_sign;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t right_sign;
+
+        /**
+         * Range: 0..63 (0..63 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t status;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t door_lock_open;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_8;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_11;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t right_sign_pressed;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t left_sign_pressed;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t wiper_button;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_9;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+    };
+
+    /**
+     * Signals in message BCM_SIGNAL_1.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_bcm_signal_1_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t sign_signal;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t door_lock;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t rl_door_open;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t rr_door_open;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t fl_door_open;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t fr_door_open;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message STEER_SENSOR_2.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_steer_sensor_2_t
+    {
+        /**
+         * Range: 0..4262 (0..1023 -)
+         * Scale: 0.24
+         * Offset: 0
+         */
+        int16_t torque_driver;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message ACC_CMD.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_acc_cmd_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t accel_on;
+
+        /**
+         * Range: 0..127 (0..127 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int16_t cmd;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t acc_state_2;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t stopped;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t acc_state;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t stopping;
+
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_9;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_12;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_8;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_13;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_10;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int8_t new_signal_4;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t gas_pressed;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t counter;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_11;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t checksum;
+    };
+
+    /**
+     * Signals in message ACC.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_acc_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_7;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_10;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_8;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_9;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_11;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t gas_pressed;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t acc_active;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_12;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t aeb_active;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t counter;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t checksum;
+    };
+
+    /**
+     * Signals in message NEW_MSG_3A7.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_3_a7_t
+    {
+        /**
+         * Dummy signal in empty message.
+         */
+        uint8_t dummy;
+    };
+
+    /**
+     * Signals in message NEW_MSG_3AF.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_3_af_t
+    {
+        /**
+         * Range: 0..16383 (0..16383 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_3;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..16383 (0..16383 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_1;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..4095 (0..4095 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t checksum;
+    };
+
+    /**
+     * Signals in message NEW_MSG_3DC.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_3_dc_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_8;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_7;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t aeb_maybe;
+
+        /**
+         * Range: 0..8191 (0..8191 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_4;
+
+        /**
+         * Range: 0..8191 (0..8191 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..63 (0..63 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..65535 (0..65535 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_2;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t counter;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t checksum;
+    };
+
+    /**
+     * Signals in message NEW_MSG_3DE.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_3_de_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_7;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_3;
+    };
+
+    /**
+     * Signals in message NEW_MSG_3E2.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_3_e2_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..1023 (0..1023 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int16_t new_signal_1;
+    };
+
+    /**
+     * Signals in message LEAD_FRONT.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_lead_front_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_7;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t valid_signal;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..8191 (0..8191 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t lead_distance;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..2047 (0..2047 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_9;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_8;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message NEW_MSG_3F0.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_3_f0_t
+    {
+        /**
+         * Dummy signal in empty message.
+         */
+        uint8_t dummy;
+    };
+
+    /**
+     * Signals in message LEAD_RIGHT_LEFT.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_lead_right_left_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_9;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_8;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t valid_signal;
+
+        /**
+         * Range: 0..511 (0..511 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t lead_left;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_7;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t valid_signal_2;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t lead_right;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..4095 (0..4095 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint16_t new_signal_1;
+    };
+
+    /**
+     * Signals in message HUD_ALERT.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_hud_alert_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_7;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t ica_warning;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t steer_warning;
+
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t take_over_warning;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        int8_t new_signal_3;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+    };
+
+    /**
+     * Signals in message NEW_MSG_40F.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_40_f_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+    };
+
+    /**
+     * Signals in message NEW_MSG_427.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_427_t
+    {
+        /**
+         * Range: 0..31 (0..31 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+    };
+
+    /**
+     * Signals in message NEW_MSG_430.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_430_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_9;
+
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..127 (0..127 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_6;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_8;
+
+        /**
+         * Range: 0..7 (0..7 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_7;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_5;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t seatbelt;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+    };
+
+    /**
+     * Signals in message NEW_MSG_435.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_435_t
+    {
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message NEW_MSG_45A.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_45_a_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t avm_pressed;
+    };
+
+    /**
+     * Signals in message BSM_LEFT.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_bsm_left_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t bsm_left_detect;
+    };
+
+    /**
+     * Signals in message BSM_RIGHT.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_bsm_right_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t bsm_right_detect;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message NEW_MSG_4DD.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_4_dd_t
+    {
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..255 (0..255 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message NEW_MSG_4E3.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_4_e3_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+    };
+
+    /**
+     * Signals in message BRAKE_SENSOR.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_brake_sensor_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t drive_mode;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t epb_release;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_3;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t brake_press;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_4;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t charge_status;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t brake_request;
+    };
+
+    /**
+     * Signals in message carlinko.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_carlinko_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+    };
+
+    /**
+     * Signals in message EPB.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_epb_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t epb_signal;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t epb_active;
+    };
+
+    /**
+     * Signals in message Window_Command.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_window_command_t
+    {
+        /**
+         * Range: 0..15 (0..15 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_1;
+    };
+
+    /**
+     * Signals in message AEB_COMMAND.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_aeb_command_t
+    {
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t aeb_active;
+    };
+
+    /**
+     * Signals in message NEW_MSG_51B.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_51_b_t
+    {
+        /**
+         * Dummy signal in empty message.
+         */
+        uint8_t dummy;
+    };
+
+    /**
+     * Signals in message NEW_MSG_51D.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_51_d_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t new_signal_2;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t hdc_active;
+    };
+
+    /**
+     * Signals in message NEW_MSG_535.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_535_t
+    {
+        /**
+         * Dummy signal in empty message.
+         */
+        uint8_t dummy;
+    };
+
+    /**
+     * Signals in message NEW_MSG_537.
+     *
+     * All signal values are as on the CAN bus.
+     */
+    struct chery_canfd_new_msg_537_t
+    {
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t traksi_command;
+
+        /**
+         * Range: 0..3 (0..3 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t drive_mode;
+
+        /**
+         * Range: 0..1 (0..1 -)
+         * Scale: 1
+         * Offset: 0
+         */
+        uint8_t epb_pressed;
+    };
+
+    /**
+     * Pack message ENGINE_DATA.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_engine_data_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_engine_data_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message ENGINE_DATA.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_engine_data_unpack(
+        struct chery_canfd_engine_data_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from ENGINE_DATA.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_engine_data_init(struct chery_canfd_engine_data_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_new_signal_5_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_5_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_5_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_engine_data_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_4_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_4_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_new_signal_8_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_8_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_8_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int16_t chery_canfd_engine_data_accel_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_accel_decode(int16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_accel_is_in_range(int16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_engine_data_gas_pos_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_gas_pos_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_gas_pos_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_new_signal_9_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_9_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_9_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_engine_data_new_signal_7_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_7_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_7_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_new_signal_13_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_13_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_13_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_engine_data_new_signal_6_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_6_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_6_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_engine_data_new_signal_15_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_15_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_15_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_new_signal_11_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_11_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_11_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_new_signal_12_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_12_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_12_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_engine_data_gas_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_gas_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_gas_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_gear_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_gear_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_gear_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_gear_button_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_gear_button_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_gear_button_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_brake_press_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_brake_press_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_brake_press_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_cc_state_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_cc_state_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_cc_state_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_cruize_speed_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_cruize_speed_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_cruize_speed_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_switch_to_p_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_switch_to_p_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_switch_to_p_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_engine_data_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_3_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_3_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_engine_data_new_signal_14_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_engine_data_new_signal_14_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_engine_data_new_signal_14_is_in_range(uint16_t value);
+
+    /**
+     * Pack message STEER_SENSOR.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_steer_sensor_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_steer_sensor_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message STEER_SENSOR.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_steer_sensor_unpack(
+        struct chery_canfd_steer_sensor_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from STEER_SENSOR.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_steer_sensor_init(struct chery_canfd_steer_sensor_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_steer_sensor_angle_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_sensor_angle_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_sensor_angle_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_steer_sensor_fraction_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_sensor_fraction_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_sensor_fraction_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int8_t chery_canfd_steer_sensor_torque_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_sensor_torque_decode(int8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_sensor_torque_is_in_range(int8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int8_t chery_canfd_steer_sensor_torque_driver_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_sensor_torque_driver_decode(int8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_sensor_torque_driver_is_in_range(int8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_steer_sensor_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_sensor_new_signal_3_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_sensor_new_signal_3_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_127.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_127_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_127_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_127.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_127_unpack(
+        struct chery_canfd_new_msg_127_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_127.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_127_init(struct chery_canfd_new_msg_127_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_127_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_127_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_127_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_127_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_127_new_signal_4_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_127_new_signal_4_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_127_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_127_new_signal_3_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_127_new_signal_3_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int8_t chery_canfd_new_msg_127_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_127_new_signal_1_decode(int8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_127_new_signal_1_is_in_range(int8_t value);
+
+    /**
+     * Pack message NEW_MSG_128.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_128_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_128_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_128.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_128_unpack(
+        struct chery_canfd_new_msg_128_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_128.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_128_init(struct chery_canfd_new_msg_128_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_new_msg_128_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_128_new_signal_1_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_128_new_signal_1_is_in_range(uint16_t value);
+
+    /**
+     * Pack message STEER_ANGLE_SENSOR.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_steer_angle_sensor_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_steer_angle_sensor_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message STEER_ANGLE_SENSOR.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_steer_angle_sensor_unpack(
+        struct chery_canfd_steer_angle_sensor_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from STEER_ANGLE_SENSOR.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_steer_angle_sensor_init(struct chery_canfd_steer_angle_sensor_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_steer_angle_sensor_steer_angle_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_angle_sensor_steer_angle_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_angle_sensor_steer_angle_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int8_t chery_canfd_steer_angle_sensor_torque_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_angle_sensor_torque_decode(int8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_angle_sensor_torque_is_in_range(int8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_steer_angle_sensor_counter_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_angle_sensor_counter_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_angle_sensor_counter_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_steer_angle_sensor_checksum_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_angle_sensor_checksum_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_angle_sensor_checksum_is_in_range(uint8_t value);
+
+    /**
+     * Pack message LKAS.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_lkas_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_lkas_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message LKAS.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_lkas_unpack(
+        struct chery_canfd_lkas_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from LKAS.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_lkas_init(struct chery_canfd_lkas_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int8_t chery_canfd_lkas_new_signal_7_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_new_signal_7_decode(int8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_new_signal_7_is_in_range(int8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_new_signal_5_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_new_signal_5_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_new_signal_5_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int16_t chery_canfd_lkas_lkas_cmd_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_lkas_cmd_decode(int16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_lkas_cmd_is_in_range(int16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_new_signal_3_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_new_signal_3_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_new_signal_4_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_new_signal_4_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_counter_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_counter_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_counter_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_checksum_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_checksum_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_checksum_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_260.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_260_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_260_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_260.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_260_unpack(
+        struct chery_canfd_new_msg_260_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_260.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_260_init(struct chery_canfd_new_msg_260_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_260_new_signal_6_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_260_new_signal_6_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_260_new_signal_6_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_new_msg_260_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_260_new_signal_3_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_260_new_signal_3_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_260_new_signal_5_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_260_new_signal_5_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_260_new_signal_5_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_260_brake_press_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_260_brake_press_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_260_brake_press_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_260_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_260_new_signal_4_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_260_new_signal_4_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_260_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_260_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_260_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int16_t chery_canfd_new_msg_260_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_260_new_signal_1_decode(int16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_260_new_signal_1_is_in_range(int16_t value);
+
+    /**
+     * Pack message NEW_MSG_287.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_287_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_287_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_287.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_287_unpack(
+        struct chery_canfd_new_msg_287_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_287.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_287_init(struct chery_canfd_new_msg_287_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_287_epb_status_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_287_epb_status_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_287_epb_status_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_287_seatbelt_lock_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_287_seatbelt_lock_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_287_seatbelt_lock_is_in_range(uint8_t value);
+
+    /**
+     * Pack message BRAKE_DATA.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_brake_data_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_brake_data_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message BRAKE_DATA.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_brake_data_unpack(
+        struct chery_canfd_brake_data_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from BRAKE_DATA.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_brake_data_init(struct chery_canfd_brake_data_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_data_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_data_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_data_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int16_t chery_canfd_brake_data_brake_pos_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_data_brake_pos_decode(int16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_data_brake_pos_is_in_range(int16_t value);
+
+    /**
+     * Pack message NEW_MSG_2E9.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_2_e9_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_2_e9_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_2E9.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_2_e9_unpack(
+        struct chery_canfd_new_msg_2_e9_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_2E9.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_2_e9_init(struct chery_canfd_new_msg_2_e9_t *msg_p);
+
+    /**
+     * Pack message DOOR.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_door_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_door_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message DOOR.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_door_unpack(
+        struct chery_canfd_door_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from DOOR.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_door_init(struct chery_canfd_door_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_door_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_door_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_door_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_door_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_door_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_door_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_305.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_305_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_305_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_305.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_305_unpack(
+        struct chery_canfd_new_msg_305_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_305.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_305_init(struct chery_canfd_new_msg_305_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_305_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_305_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_305_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_305_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_305_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_305_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Pack message LKAS_STATE.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_lkas_state_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_lkas_state_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message LKAS_STATE.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_lkas_state_unpack(
+        struct chery_canfd_lkas_state_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from LKAS_STATE.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_lkas_state_init(struct chery_canfd_lkas_state_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_state_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_state_new_signal_3_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_state_new_signal_3_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_state_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_state_new_signal_4_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_state_new_signal_4_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_state_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_state_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_state_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_state_state_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_state_state_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_state_state_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_state_lka_active_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_state_lka_active_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_state_lka_active_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_state_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_state_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_state_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_state_counter_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_state_counter_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_state_counter_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_state_checksum_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_state_checksum_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_state_checksum_is_in_range(uint8_t value);
+
+    /**
+     * Pack message WHEEL_SPEED_REAR.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_wheel_speed_rear_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_wheel_speed_rear_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message WHEEL_SPEED_REAR.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_wheel_speed_rear_unpack(
+        struct chery_canfd_wheel_speed_rear_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from WHEEL_SPEED_REAR.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_wheel_speed_rear_init(struct chery_canfd_wheel_speed_rear_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_wheel_speed_rear_wheel_speed_rr_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_wheel_speed_rear_wheel_speed_rr_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_wheel_speed_rear_wheel_speed_rr_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_wheel_speed_rear_wheel_speed_rl_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_wheel_speed_rear_wheel_speed_rl_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_wheel_speed_rear_wheel_speed_rl_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_wheel_speed_rear_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_wheel_speed_rear_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_wheel_speed_rear_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Pack message WHEEL_SPEED_FRNT.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_wheel_speed_frnt_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_wheel_speed_frnt_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message WHEEL_SPEED_FRNT.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_wheel_speed_frnt_unpack(
+        struct chery_canfd_wheel_speed_frnt_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from WHEEL_SPEED_FRNT.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_wheel_speed_frnt_init(struct chery_canfd_wheel_speed_frnt_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int16_t chery_canfd_wheel_speed_frnt_wheel_speed_fr_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_wheel_speed_frnt_wheel_speed_fr_decode(int16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_wheel_speed_frnt_wheel_speed_fr_is_in_range(int16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int16_t chery_canfd_wheel_speed_frnt_wheel_speed_fl_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_wheel_speed_frnt_wheel_speed_fl_decode(int16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_wheel_speed_frnt_wheel_speed_fl_is_in_range(int16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_wheel_speed_frnt_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_wheel_speed_frnt_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_wheel_speed_frnt_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_wheel_speed_frnt_stopped_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_wheel_speed_frnt_stopped_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_wheel_speed_frnt_stopped_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_319.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_319_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_319_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_319.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_319_unpack(
+        struct chery_canfd_new_msg_319_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_319.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_319_init(struct chery_canfd_new_msg_319_t *msg_p);
+
+    /**
+     * Pack message LKAS_CAM_CMD_345.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_lkas_cam_cmd_345_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_lkas_cam_cmd_345_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message LKAS_CAM_CMD_345.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_lkas_cam_cmd_345_unpack(
+        struct chery_canfd_lkas_cam_cmd_345_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from LKAS_CAM_CMD_345.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_lkas_cam_cmd_345_init(struct chery_canfd_lkas_cam_cmd_345_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_lkas_cam_cmd_345_cmd_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_cam_cmd_345_cmd_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_cam_cmd_345_cmd_is_in_range(uint16_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_cam_cmd_345_lka_active_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_cam_cmd_345_lka_active_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_cam_cmd_345_lka_active_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_cam_cmd_345_set_x0_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_cam_cmd_345_set_x0_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_cam_cmd_345_set_x0_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int8_t chery_canfd_lkas_cam_cmd_345_new_signal_5_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_cam_cmd_345_new_signal_5_decode(int8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_cam_cmd_345_new_signal_5_is_in_range(int8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_cam_cmd_345_new_signal_6_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_cam_cmd_345_new_signal_6_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_cam_cmd_345_new_signal_6_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_cam_cmd_345_new_signal_7_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_cam_cmd_345_new_signal_7_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_cam_cmd_345_new_signal_7_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_cam_cmd_345_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_cam_cmd_345_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_cam_cmd_345_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lkas_cam_cmd_345_checksum_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lkas_cam_cmd_345_checksum_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lkas_cam_cmd_345_checksum_is_in_range(uint8_t value);
+
+    /**
+     * Pack message STEER_BUTTON.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_steer_button_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_steer_button_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message STEER_BUTTON.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_steer_button_unpack(
+        struct chery_canfd_steer_button_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from STEER_BUTTON.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_steer_button_init(struct chery_canfd_steer_button_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_steer_button_checksum_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_button_checksum_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_steer_button_checksum_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_steer_button_counter_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_steer_button_counter_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
+    bool chery_canfd_steer_button_counter_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_5;
+    uint8_t chery_canfd_steer_button_res_plus_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint16_t new_signal_4;
+    double chery_canfd_steer_button_res_plus_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_8;
+    bool chery_canfd_steer_button_res_plus_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    int16_t accel;
+    uint8_t chery_canfd_steer_button_cc_btn_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_2;
+    double chery_canfd_steer_button_cc_btn_decode(uint8_t value);
 
     /**
-     * Range: 600..727 (0..127 -)
-     * Scale: 1
-     * Offset: -600
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint16_t gas_pos;
+    bool chery_canfd_steer_button_cc_btn_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_9;
+    uint8_t chery_canfd_steer_button_acc_encode(double value);
 
     /**
-     * Range: 0..32767 (0..32767 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint16_t new_signal_7;
+    double chery_canfd_steer_button_acc_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_13;
+    bool chery_canfd_steer_button_acc_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..32767 (0..32767 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint16_t new_signal_6;
+    uint8_t chery_canfd_steer_button_new_signal_1_encode(double value);
 
     /**
-     * Range: 0..65535 (0..65535 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint16_t new_signal_15;
+    double chery_canfd_steer_button_new_signal_1_decode(uint8_t value);
 
     /**
-     * Range: 0..127 (0..127 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_11;
+    bool chery_canfd_steer_button_new_signal_1_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..127 (0..127 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_12;
+    uint8_t chery_canfd_steer_button_res_minus_encode(double value);
 
     /**
-     * Range: 0..327670 (0..32767 -)
-     * Scale: 0.1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint16_t gas;
+    double chery_canfd_steer_button_res_minus_decode(uint8_t value);
 
     /**
-     * Range: 0..63 (0..63 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t gear;
+    bool chery_canfd_steer_button_res_minus_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t gear_button;
+    uint8_t chery_canfd_steer_button_gap_adjust_up_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t brake_press;
+    double chery_canfd_steer_button_gap_adjust_up_decode(uint8_t value);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t cc_state;
+    bool chery_canfd_steer_button_gap_adjust_up_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..63 (0..63 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t cruize_speed;
+    uint8_t chery_canfd_steer_button_gap_adjust_down_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t switch_to_p;
+    double chery_canfd_steer_button_gap_adjust_down_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_3;
+    bool chery_canfd_steer_button_gap_adjust_down_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..32767 (0..32767 -)
-     * Scale: 1
-     * Offset: 0
+     * Pack message SETTING.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
      */
-    uint16_t new_signal_14;
-};
+    int chery_canfd_setting_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_setting_t *src_p,
+        size_t size);
 
-/**
- * Signals in message STEER_SENSOR.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_steer_sensor_t {
     /**
-     * Range: 0..32767 (0..32767 -)
-     * Scale: 1
-     * Offset: 0
+     * Unpack message SETTING.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
      */
-    uint8_t angle;
+    int chery_canfd_setting_unpack(
+        struct chery_canfd_setting_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Init message fields to default values from SETTING.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
      */
-    uint8_t fraction;
+    int chery_canfd_setting_init(struct chery_canfd_setting_t *msg_p);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    int8_t torque;
+    uint8_t chery_canfd_setting_cancel_alert_encode(double value);
 
     /**
-     * Range: 0..127 (0..127 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    int8_t torque_driver;
+    double chery_canfd_setting_cancel_alert_decode(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_3;
-};
+    bool chery_canfd_setting_cancel_alert_is_in_range(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_127.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_127_t {
     /**
-     * Range: 0..63 (0..63 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
+    uint8_t chery_canfd_setting_new_signal_6_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_4;
+    double chery_canfd_setting_new_signal_6_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_3;
+    bool chery_canfd_setting_new_signal_6_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..65535 (0..65535 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    int8_t new_signal_1;
-};
+    uint8_t chery_canfd_setting_show_aeb_encode(double value);
 
-/**
- * Signals in message NEW_MSG_128.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_128_t {
     /**
-     * Range: 0..4095 (0..4095 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint16_t new_signal_1;
-};
+    double chery_canfd_setting_show_aeb_decode(uint8_t value);
 
-/**
- * Signals in message STEER_ANGLE_SENSOR.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_steer_angle_sensor_t {
     /**
-     * Range: 7800..171630 (0..16383 -)
-     * Scale: 0.1
-     * Offset: -780
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint16_t steer_angle;
+    bool chery_canfd_setting_show_aeb_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    int8_t torque;
+    uint8_t chery_canfd_setting_gap_encode(double value);
 
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t counter;
+    double chery_canfd_setting_gap_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t checksum;
-};
+    bool chery_canfd_setting_gap_is_in_range(uint8_t value);
 
-/**
- * Signals in message LKAS.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_lkas_t {
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_1;
+    uint8_t chery_canfd_setting_new_signal_2_encode(double value);
 
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    int8_t new_signal_7;
+    double chery_canfd_setting_new_signal_2_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_5;
+    bool chery_canfd_setting_new_signal_2_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..2047 (0..2047 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    int16_t lkas_cmd;
+    uint8_t chery_canfd_setting_new_signal_3_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_2;
+    double chery_canfd_setting_new_signal_3_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_3;
+    bool chery_canfd_setting_new_signal_3_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_4;
+    uint8_t chery_canfd_setting_acc_available_encode(double value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t counter;
+    double chery_canfd_setting_acc_available_decode(uint8_t value);
 
     /**
-     * Range: 0..4095 (0..4095 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t checksum;
-};
+    bool chery_canfd_setting_acc_available_is_in_range(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_260.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_260_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_6;
+    uint8_t chery_canfd_setting_acc_active_encode(double value);
 
     /**
-     * Range: 0..1023 (0..1023 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint16_t new_signal_3;
+    double chery_canfd_setting_acc_active_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_5;
+    bool chery_canfd_setting_acc_active_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t brake_press;
+    uint8_t chery_canfd_setting_aeb_active_encode(double value);
 
     /**
-     * Range: 0..127 (0..127 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_4;
+    double chery_canfd_setting_aeb_active_decode(uint8_t value);
 
     /**
-     * Range: 0..65535 (0..65535 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_2;
+    bool chery_canfd_setting_aeb_active_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..4095 (0..4095 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    int16_t new_signal_1;
-};
+    uint8_t chery_canfd_setting_cc_speed_encode(double value);
 
-/**
- * Signals in message NEW_MSG_287.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_287_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t epb_status;
+    double chery_canfd_setting_cc_speed_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t seatbelt_lock;
-};
+    bool chery_canfd_setting_cc_speed_is_in_range(uint8_t value);
 
-/**
- * Signals in message BRAKE_DATA.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_brake_data_t {
     /**
-     * Range: 0..63 (0..63 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_1;
+    uint8_t chery_canfd_setting_counter_encode(double value);
 
     /**
-     * Range: 100..611 (0..511 -)
-     * Scale: 1
-     * Offset: -100
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    int16_t brake_pos;
-};
+    double chery_canfd_setting_counter_decode(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_2E9.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_2_e9_t {
     /**
-     * Dummy signal in empty message.
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t dummy;
-};
+    bool chery_canfd_setting_counter_is_in_range(uint8_t value);
 
-/**
- * Signals in message DOOR.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_door_t {
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
+    uint8_t chery_canfd_setting_checksum_encode(double value);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_1;
-};
+    double chery_canfd_setting_checksum_decode(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_305.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_305_t {
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_2;
+    bool chery_canfd_setting_checksum_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Pack message BCM_SIGNAL_2.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
      */
-    uint8_t new_signal_1;
-};
+    int chery_canfd_bcm_signal_2_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_bcm_signal_2_t *src_p,
+        size_t size);
 
-/**
- * Signals in message LKAS_STATE.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_lkas_state_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Unpack message BCM_SIGNAL_2.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
      */
-    uint8_t new_signal_3;
+    int chery_canfd_bcm_signal_2_unpack(
+        struct chery_canfd_bcm_signal_2_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Init message fields to default values from BCM_SIGNAL_2.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
      */
-    uint8_t new_signal_4;
+    int chery_canfd_bcm_signal_2_init(struct chery_canfd_bcm_signal_2_t *msg_p);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
+    uint8_t chery_canfd_bcm_signal_2_new_signal_6_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t state;
+    double chery_canfd_bcm_signal_2_new_signal_6_decode(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t lka_active;
+    bool chery_canfd_bcm_signal_2_new_signal_6_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_1;
+    uint8_t chery_canfd_bcm_signal_2_high_beam_encode(double value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t counter;
+    double chery_canfd_bcm_signal_2_high_beam_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t checksum;
-};
+    bool chery_canfd_bcm_signal_2_high_beam_is_in_range(uint8_t value);
 
-/**
- * Signals in message WHEEL_SPEED_REAR.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_wheel_speed_rear_t {
     /**
-     * Range: 0..3957367 (0..32767 -)
-     * Scale: 0.00828
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint16_t wheel_speed_rr;
+    uint8_t chery_canfd_bcm_signal_2_left_sign_encode(double value);
 
     /**
-     * Range: 0..3957367 (0..32767 -)
-     * Scale: 0.00828
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint16_t wheel_speed_rl;
+    double chery_canfd_bcm_signal_2_left_sign_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
-};
+    bool chery_canfd_bcm_signal_2_left_sign_is_in_range(uint8_t value);
 
-/**
- * Signals in message WHEEL_SPEED_FRNT.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_wheel_speed_frnt_t {
     /**
-     * Range: -241255..3952593 (-2000..32767 kmh)
-     * Scale: 0.00829
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    int16_t wheel_speed_fr;
+    uint8_t chery_canfd_bcm_signal_2_right_sign_encode(double value);
 
     /**
-     * Range: 0..3952593 (0..32767 -)
-     * Scale: 0.00829
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    int16_t wheel_speed_fl;
+    double chery_canfd_bcm_signal_2_right_sign_decode(uint8_t value);
 
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
+    bool chery_canfd_bcm_signal_2_right_sign_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t stopped;
-};
+    uint8_t chery_canfd_bcm_signal_2_status_encode(double value);
 
-/**
- * Signals in message NEW_MSG_319.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_319_t {
     /**
-     * Dummy signal in empty message.
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t dummy;
-};
+    double chery_canfd_bcm_signal_2_status_decode(uint8_t value);
 
-/**
- * Signals in message LKAS_CAM_CMD_345.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_lkas_cam_cmd_345_t {
     /**
-     * Range: 7800..89710 (0..8191 -)
-     * Scale: 0.1
-     * Offset: -780
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint16_t cmd;
+    bool chery_canfd_bcm_signal_2_status_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t lka_active;
+    uint8_t chery_canfd_bcm_signal_2_door_lock_open_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t set_x0;
+    double chery_canfd_bcm_signal_2_door_lock_open_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    int8_t new_signal_5;
+    bool chery_canfd_bcm_signal_2_door_lock_open_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_6;
+    uint8_t chery_canfd_bcm_signal_2_new_signal_8_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_7;
+    double chery_canfd_bcm_signal_2_new_signal_8_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
+    bool chery_canfd_bcm_signal_2_new_signal_8_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t checksum;
-};
+    uint8_t chery_canfd_bcm_signal_2_new_signal_11_encode(double value);
 
-/**
- * Signals in message STEER_BUTTON.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_steer_button_t {
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t checksum;
+    double chery_canfd_bcm_signal_2_new_signal_11_decode(uint8_t value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t counter;
+    bool chery_canfd_bcm_signal_2_new_signal_11_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t res_plus;
+    uint8_t chery_canfd_bcm_signal_2_new_signal_3_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t cc_btn;
+    double chery_canfd_bcm_signal_2_new_signal_3_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t acc;
+    bool chery_canfd_bcm_signal_2_new_signal_3_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_1;
+    uint8_t chery_canfd_bcm_signal_2_new_signal_5_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t res_minus;
+    double chery_canfd_bcm_signal_2_new_signal_5_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t gap_adjust_up;
+    bool chery_canfd_bcm_signal_2_new_signal_5_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t gap_adjust_down;
-};
+    uint8_t chery_canfd_bcm_signal_2_right_sign_pressed_encode(double value);
 
-/**
- * Signals in message SETTING.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_setting_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t cancel_alert;
+    double chery_canfd_bcm_signal_2_right_sign_pressed_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_6;
+    bool chery_canfd_bcm_signal_2_right_sign_pressed_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t show_aeb;
+    uint8_t chery_canfd_bcm_signal_2_left_sign_pressed_encode(double value);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t gap;
+    double chery_canfd_bcm_signal_2_left_sign_pressed_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_2;
+    bool chery_canfd_bcm_signal_2_left_sign_pressed_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_3;
+    uint8_t chery_canfd_bcm_signal_2_wiper_button_encode(double value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t acc_available;
+    double chery_canfd_bcm_signal_2_wiper_button_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t acc_active;
+    bool chery_canfd_bcm_signal_2_wiper_button_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t aeb_active;
+    uint8_t chery_canfd_bcm_signal_2_new_signal_9_encode(double value);
 
     /**
-     * Range: 0..1023 (0..1023 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t cc_speed;
+    double chery_canfd_bcm_signal_2_new_signal_9_decode(uint8_t value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t counter;
+    bool chery_canfd_bcm_signal_2_new_signal_9_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t checksum;
-};
+    uint8_t chery_canfd_bcm_signal_2_new_signal_2_encode(double value);
 
-/**
- * Signals in message BCM_SIGNAL_2.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_bcm_signal_2_t {
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_6;
+    double chery_canfd_bcm_signal_2_new_signal_2_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t high_beam;
+    bool chery_canfd_bcm_signal_2_new_signal_2_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Pack message BCM_SIGNAL_1.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
      */
-    uint8_t left_sign;
+    int chery_canfd_bcm_signal_1_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_bcm_signal_1_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Unpack message BCM_SIGNAL_1.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
      */
-    uint8_t right_sign;
+    int chery_canfd_bcm_signal_1_unpack(
+        struct chery_canfd_bcm_signal_1_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..63 (0..63 -)
-     * Scale: 1
-     * Offset: 0
+     * Init message fields to default values from BCM_SIGNAL_1.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
      */
-    uint8_t status;
+    int chery_canfd_bcm_signal_1_init(struct chery_canfd_bcm_signal_1_t *msg_p);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t door_lock_open;
+    uint8_t chery_canfd_bcm_signal_1_new_signal_2_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_8;
+    double chery_canfd_bcm_signal_1_new_signal_2_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_11;
+    bool chery_canfd_bcm_signal_1_new_signal_2_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_3;
+    uint8_t chery_canfd_bcm_signal_1_sign_signal_encode(double value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_5;
+    double chery_canfd_bcm_signal_1_sign_signal_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t right_sign_pressed;
+    bool chery_canfd_bcm_signal_1_sign_signal_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t left_sign_pressed;
+    uint8_t chery_canfd_bcm_signal_1_door_lock_encode(double value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t wiper_button;
+    double chery_canfd_bcm_signal_1_door_lock_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_9;
+    bool chery_canfd_bcm_signal_1_door_lock_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
-};
+    uint8_t chery_canfd_bcm_signal_1_rl_door_open_encode(double value);
 
-/**
- * Signals in message BCM_SIGNAL_1.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_bcm_signal_1_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_2;
+    double chery_canfd_bcm_signal_1_rl_door_open_decode(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t sign_signal;
+    bool chery_canfd_bcm_signal_1_rl_door_open_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t door_lock;
+    uint8_t chery_canfd_bcm_signal_1_rr_door_open_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t rl_door_open;
+    double chery_canfd_bcm_signal_1_rr_door_open_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t rr_door_open;
+    bool chery_canfd_bcm_signal_1_rr_door_open_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t fl_door_open;
+    uint8_t chery_canfd_bcm_signal_1_fl_door_open_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t fr_door_open;
+    double chery_canfd_bcm_signal_1_fl_door_open_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_3;
+    bool chery_canfd_bcm_signal_1_fl_door_open_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_1;
-};
+    uint8_t chery_canfd_bcm_signal_1_fr_door_open_encode(double value);
 
-/**
- * Signals in message STEER_SENSOR_2.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_steer_sensor_2_t {
     /**
-     * Range: 0..4262 (0..1023 -)
-     * Scale: 0.24
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    int16_t torque_driver;
+    double chery_canfd_bcm_signal_1_fr_door_open_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
-};
+    bool chery_canfd_bcm_signal_1_fr_door_open_is_in_range(uint8_t value);
 
-/**
- * Signals in message ACC_CMD.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_acc_cmd_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t accel_on;
+    uint8_t chery_canfd_bcm_signal_1_new_signal_3_encode(double value);
 
     /**
-     * Range: 0..127 (0..127 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    int16_t cmd;
+    double chery_canfd_bcm_signal_1_new_signal_3_decode(uint8_t value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t acc_state_2;
+    bool chery_canfd_bcm_signal_1_new_signal_3_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t stopped;
+    uint8_t chery_canfd_bcm_signal_1_new_signal_1_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t acc_state;
+    double chery_canfd_bcm_signal_1_new_signal_1_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t stopping;
+    bool chery_canfd_bcm_signal_1_new_signal_1_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Pack message STEER_SENSOR_2.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
      */
-    uint8_t new_signal_2;
+    int chery_canfd_steer_sensor_2_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_steer_sensor_2_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Unpack message STEER_SENSOR_2.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
      */
-    uint8_t new_signal_9;
+    int chery_canfd_steer_sensor_2_unpack(
+        struct chery_canfd_steer_sensor_2_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Init message fields to default values from STEER_SENSOR_2.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
      */
-    uint8_t new_signal_12;
+    int chery_canfd_steer_sensor_2_init(struct chery_canfd_steer_sensor_2_t *msg_p);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_6;
+    int16_t chery_canfd_steer_sensor_2_torque_driver_encode(double value);
 
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_5;
+    double chery_canfd_steer_sensor_2_torque_driver_decode(int16_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_8;
+    bool chery_canfd_steer_sensor_2_torque_driver_is_in_range(int16_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_13;
+    uint8_t chery_canfd_steer_sensor_2_new_signal_1_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_10;
+    double chery_canfd_steer_sensor_2_new_signal_1_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_3;
+    bool chery_canfd_steer_sensor_2_new_signal_1_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Pack message ACC_CMD.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
      */
-    int8_t new_signal_4;
+    int chery_canfd_acc_cmd_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_acc_cmd_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Unpack message ACC_CMD.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
      */
-    uint8_t gas_pressed;
+    int chery_canfd_acc_cmd_unpack(
+        struct chery_canfd_acc_cmd_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Init message fields to default values from ACC_CMD.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
      */
-    uint8_t counter;
+    int chery_canfd_acc_cmd_init(struct chery_canfd_acc_cmd_t *msg_p);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_11;
+    uint8_t chery_canfd_acc_cmd_accel_on_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t checksum;
-};
+    double chery_canfd_acc_cmd_accel_on_decode(uint8_t value);
 
-/**
- * Signals in message ACC.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_acc_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_7;
+    bool chery_canfd_acc_cmd_accel_on_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_10;
+    int16_t chery_canfd_acc_cmd_cmd_encode(double value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_8;
+    double chery_canfd_acc_cmd_cmd_decode(int16_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_9;
+    bool chery_canfd_acc_cmd_cmd_is_in_range(int16_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_6;
+    uint8_t chery_canfd_acc_cmd_acc_state_2_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_11;
+    double chery_canfd_acc_cmd_acc_state_2_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_5;
+    bool chery_canfd_acc_cmd_acc_state_2_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_4;
+    uint8_t chery_canfd_acc_cmd_stopped_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t gas_pressed;
+    double chery_canfd_acc_cmd_stopped_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t acc_active;
+    bool chery_canfd_acc_cmd_stopped_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_1;
+    uint8_t chery_canfd_acc_cmd_acc_state_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_12;
+    double chery_canfd_acc_cmd_acc_state_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t aeb_active;
+    bool chery_canfd_acc_cmd_acc_state_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
+    uint8_t chery_canfd_acc_cmd_stopping_encode(double value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t counter;
+    double chery_canfd_acc_cmd_stopping_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t checksum;
-};
+    bool chery_canfd_acc_cmd_stopping_is_in_range(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_3A7.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_3_a7_t {
     /**
-     * Dummy signal in empty message.
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t dummy;
-};
+    uint8_t chery_canfd_acc_cmd_new_signal_2_encode(double value);
 
-/**
- * Signals in message NEW_MSG_3AF.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_3_af_t {
     /**
-     * Range: 0..16383 (0..16383 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint16_t new_signal_3;
+    double chery_canfd_acc_cmd_new_signal_2_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_5;
+    bool chery_canfd_acc_cmd_new_signal_2_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..16383 (0..16383 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint16_t new_signal_1;
+    uint8_t chery_canfd_acc_cmd_new_signal_9_encode(double value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_2;
+    double chery_canfd_acc_cmd_new_signal_9_decode(uint8_t value);
 
     /**
-     * Range: 0..4095 (0..4095 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint16_t checksum;
-};
+    bool chery_canfd_acc_cmd_new_signal_9_is_in_range(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_3DC.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_3_dc_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_8;
+    uint8_t chery_canfd_acc_cmd_new_signal_12_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_6;
+    double chery_canfd_acc_cmd_new_signal_12_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_5;
+    bool chery_canfd_acc_cmd_new_signal_12_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_7;
+    uint8_t chery_canfd_acc_cmd_new_signal_6_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t aeb_maybe;
+    double chery_canfd_acc_cmd_new_signal_6_decode(uint8_t value);
 
     /**
-     * Range: 0..8191 (0..8191 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint16_t new_signal_4;
+    bool chery_canfd_acc_cmd_new_signal_6_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..8191 (0..8191 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_1;
+    uint8_t chery_canfd_acc_cmd_new_signal_5_encode(double value);
 
     /**
-     * Range: 0..63 (0..63 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_3;
+    double chery_canfd_acc_cmd_new_signal_5_decode(uint8_t value);
 
     /**
-     * Range: 0..65535 (0..65535 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint16_t new_signal_2;
+    bool chery_canfd_acc_cmd_new_signal_5_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t counter;
+    uint8_t chery_canfd_acc_cmd_new_signal_8_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t checksum;
-};
+    double chery_canfd_acc_cmd_new_signal_8_decode(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_3DE.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_3_de_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_2;
+    bool chery_canfd_acc_cmd_new_signal_8_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_5;
+    uint8_t chery_canfd_acc_cmd_new_signal_13_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_1;
+    double chery_canfd_acc_cmd_new_signal_13_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_6;
+    bool chery_canfd_acc_cmd_new_signal_13_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_4;
+    uint8_t chery_canfd_acc_cmd_new_signal_10_encode(double value);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_7;
+    double chery_canfd_acc_cmd_new_signal_10_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint16_t new_signal_3;
-};
+    bool chery_canfd_acc_cmd_new_signal_10_is_in_range(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_3E2.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_3_e2_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
+    uint8_t chery_canfd_acc_cmd_new_signal_3_encode(double value);
 
     /**
-     * Range: 0..1023 (0..1023 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    int16_t new_signal_1;
-};
+    double chery_canfd_acc_cmd_new_signal_3_decode(uint8_t value);
 
-/**
- * Signals in message LEAD_FRONT.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_lead_front_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_7;
+    bool chery_canfd_acc_cmd_new_signal_3_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t valid_signal;
+    int8_t chery_canfd_acc_cmd_new_signal_4_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_3;
+    double chery_canfd_acc_cmd_new_signal_4_decode(int8_t value);
 
     /**
-     * Range: 0..8191 (0..8191 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t lead_distance;
+    bool chery_canfd_acc_cmd_new_signal_4_is_in_range(int8_t value);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_6;
+    uint8_t chery_canfd_acc_cmd_gas_pressed_encode(double value);
 
     /**
-     * Range: 0..2047 (0..2047 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_4;
+    double chery_canfd_acc_cmd_gas_pressed_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_9;
+    bool chery_canfd_acc_cmd_gas_pressed_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_8;
+    uint8_t chery_canfd_acc_cmd_counter_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_5;
+    double chery_canfd_acc_cmd_counter_decode(uint8_t value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_2;
+    bool chery_canfd_acc_cmd_counter_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_1;
-};
+    uint8_t chery_canfd_acc_cmd_new_signal_11_encode(double value);
 
-/**
- * Signals in message NEW_MSG_3F0.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_3_f0_t {
     /**
-     * Dummy signal in empty message.
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t dummy;
-};
+    double chery_canfd_acc_cmd_new_signal_11_decode(uint8_t value);
 
-/**
- * Signals in message LEAD_RIGHT_LEFT.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_lead_right_left_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_3;
+    bool chery_canfd_acc_cmd_new_signal_11_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_9;
+    uint8_t chery_canfd_acc_cmd_checksum_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_8;
+    double chery_canfd_acc_cmd_checksum_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t valid_signal;
+    bool chery_canfd_acc_cmd_checksum_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..511 (0..511 -)
-     * Scale: 1
-     * Offset: 0
+     * Pack message ACC.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
      */
-    uint8_t lead_left;
+    int chery_canfd_acc_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_acc_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Unpack message ACC.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
      */
-    uint8_t new_signal_4;
+    int chery_canfd_acc_unpack(
+        struct chery_canfd_acc_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Init message fields to default values from ACC.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
      */
-    uint8_t new_signal_2;
+    int chery_canfd_acc_init(struct chery_canfd_acc_t *msg_p);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_7;
+    uint8_t chery_canfd_acc_new_signal_7_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t valid_signal_2;
+    double chery_canfd_acc_new_signal_7_decode(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t lead_right;
+    bool chery_canfd_acc_new_signal_7_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_6;
+    uint8_t chery_canfd_acc_new_signal_10_encode(double value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_5;
+    double chery_canfd_acc_new_signal_10_decode(uint8_t value);
 
     /**
-     * Range: 0..4095 (0..4095 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint16_t new_signal_1;
-};
+    bool chery_canfd_acc_new_signal_10_is_in_range(uint8_t value);
 
-/**
- * Signals in message HUD_ALERT.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_hud_alert_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_6;
+    uint8_t chery_canfd_acc_new_signal_8_encode(double value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_7;
+    double chery_canfd_acc_new_signal_8_decode(uint8_t value);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t ica_warning;
+    bool chery_canfd_acc_new_signal_8_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_4;
+    uint8_t chery_canfd_acc_new_signal_9_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t steer_warning;
+    double chery_canfd_acc_new_signal_9_decode(uint8_t value);
 
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t take_over_warning;
+    bool chery_canfd_acc_new_signal_9_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    int8_t new_signal_3;
+    uint8_t chery_canfd_acc_new_signal_6_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_5;
-};
+    double chery_canfd_acc_new_signal_6_decode(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_40F.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_40_f_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
+    bool chery_canfd_acc_new_signal_6_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
+    uint8_t chery_canfd_acc_new_signal_11_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_4;
+    double chery_canfd_acc_new_signal_11_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_5;
+    bool chery_canfd_acc_new_signal_11_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_6;
+    uint8_t chery_canfd_acc_new_signal_5_encode(double value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_3;
-};
+    double chery_canfd_acc_new_signal_5_decode(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_427.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_427_t {
     /**
-     * Range: 0..31 (0..31 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
+    bool chery_canfd_acc_new_signal_5_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
-};
+    uint8_t chery_canfd_acc_new_signal_4_encode(double value);
 
-/**
- * Signals in message NEW_MSG_430.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_430_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_1;
+    double chery_canfd_acc_new_signal_4_decode(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_9;
+    bool chery_canfd_acc_new_signal_4_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
+    uint8_t chery_canfd_acc_gas_pressed_encode(double value);
 
     /**
-     * Range: 0..127 (0..127 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_6;
+    double chery_canfd_acc_gas_pressed_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_8;
+    bool chery_canfd_acc_gas_pressed_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_7;
+    uint8_t chery_canfd_acc_acc_active_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_5;
+    double chery_canfd_acc_acc_active_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t seatbelt;
+    bool chery_canfd_acc_acc_active_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_4;
+    uint8_t chery_canfd_acc_new_signal_1_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_3;
-};
+    double chery_canfd_acc_new_signal_1_decode(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_435.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_435_t {
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
-};
+    bool chery_canfd_acc_new_signal_1_is_in_range(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_45A.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_45_a_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t avm_pressed;
-};
+    uint8_t chery_canfd_acc_new_signal_12_encode(double value);
 
-/**
- * Signals in message BSM_LEFT.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_bsm_left_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_3;
+    double chery_canfd_acc_new_signal_12_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
+    bool chery_canfd_acc_new_signal_12_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t bsm_left_detect;
-};
+    uint8_t chery_canfd_acc_aeb_active_encode(double value);
 
-/**
- * Signals in message BSM_RIGHT.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_bsm_right_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t bsm_right_detect;
+    double chery_canfd_acc_aeb_active_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
-};
+    bool chery_canfd_acc_aeb_active_is_in_range(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_4DD.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_4_dd_t {
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
+    uint8_t chery_canfd_acc_new_signal_2_encode(double value);
 
     /**
-     * Range: 0..255 (0..255 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_1;
-};
+    double chery_canfd_acc_new_signal_2_decode(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_4E3.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_4_e3_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
+    bool chery_canfd_acc_new_signal_2_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_2;
-};
+    uint8_t chery_canfd_acc_counter_encode(double value);
 
-/**
- * Signals in message BRAKE_SENSOR.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_brake_sensor_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t drive_mode;
+    double chery_canfd_acc_counter_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t epb_release;
+    bool chery_canfd_acc_counter_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t new_signal_3;
+    uint8_t chery_canfd_acc_checksum_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t new_signal_2;
+    double chery_canfd_acc_checksum_decode(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
+    bool chery_canfd_acc_checksum_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Pack message NEW_MSG_3A7.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
      */
-    uint8_t brake_press;
+    int chery_canfd_new_msg_3_a7_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_3_a7_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Unpack message NEW_MSG_3A7.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
      */
-    uint8_t new_signal_4;
+    int chery_canfd_new_msg_3_a7_unpack(
+        struct chery_canfd_new_msg_3_a7_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Init message fields to default values from NEW_MSG_3A7.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
      */
-    uint8_t charge_status;
+    int chery_canfd_new_msg_3_a7_init(struct chery_canfd_new_msg_3_a7_t *msg_p);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Pack message NEW_MSG_3AF.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
      */
-    uint8_t brake_request;
-};
+    int chery_canfd_new_msg_3_af_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_3_af_t *src_p,
+        size_t size);
 
-/**
- * Signals in message carlinko.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_carlinko_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Unpack message NEW_MSG_3AF.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
      */
-    uint8_t new_signal_1;
+    int chery_canfd_new_msg_3_af_unpack(
+        struct chery_canfd_new_msg_3_af_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Init message fields to default values from NEW_MSG_3AF.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
      */
-    uint8_t new_signal_2;
-};
+    int chery_canfd_new_msg_3_af_init(struct chery_canfd_new_msg_3_af_t *msg_p);
 
-/**
- * Signals in message EPB.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_epb_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t epb_signal;
+    uint16_t chery_canfd_new_msg_3_af_new_signal_3_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t epb_active;
-};
+    double chery_canfd_new_msg_3_af_new_signal_3_decode(uint16_t value);
 
-/**
- * Signals in message Window_Command.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_window_command_t {
     /**
-     * Range: 0..15 (0..15 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_1;
-};
+    bool chery_canfd_new_msg_3_af_new_signal_3_is_in_range(uint16_t value);
 
-/**
- * Signals in message AEB_COMMAND.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_aeb_command_t {
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t aeb_active;
-};
+    uint8_t chery_canfd_new_msg_3_af_new_signal_5_encode(double value);
 
-/**
- * Signals in message NEW_MSG_51B.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_51_b_t {
     /**
-     * Dummy signal in empty message.
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t dummy;
-};
+    double chery_canfd_new_msg_3_af_new_signal_5_decode(uint8_t value);
 
-/**
- * Signals in message NEW_MSG_51D.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_51_d_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t new_signal_2;
+    bool chery_canfd_new_msg_3_af_new_signal_5_is_in_range(uint8_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t hdc_active;
-};
+    uint16_t chery_canfd_new_msg_3_af_new_signal_1_encode(double value);
 
-/**
- * Signals in message NEW_MSG_535.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_535_t {
     /**
-     * Dummy signal in empty message.
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t dummy;
-};
+    double chery_canfd_new_msg_3_af_new_signal_1_decode(uint16_t value);
 
-/**
- * Signals in message NEW_MSG_537.
- *
- * All signal values are as on the CAN bus.
- */
-struct chery_canfd_new_msg_537_t {
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
      */
-    uint8_t traksi_command;
+    bool chery_canfd_new_msg_3_af_new_signal_1_is_in_range(uint16_t value);
 
     /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
      */
-    uint8_t drive_mode;
+    uint8_t chery_canfd_new_msg_3_af_new_signal_2_encode(double value);
 
     /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
      */
-    uint8_t epb_pressed;
-};
+    double chery_canfd_new_msg_3_af_new_signal_2_decode(uint8_t value);
 
-/**
- * Pack message ENGINE_DATA.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_engine_data_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_engine_data_t *src_p,
-    size_t size);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_af_new_signal_2_is_in_range(uint8_t value);
 
-/**
- * Unpack message ENGINE_DATA.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_engine_data_unpack(
-    struct chery_canfd_engine_data_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_new_msg_3_af_checksum_encode(double value);
 
-/**
- * Init message fields to default values from ENGINE_DATA.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_engine_data_init(struct chery_canfd_engine_data_t *msg_p);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_af_checksum_decode(uint16_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_new_signal_1_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_af_checksum_is_in_range(uint16_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_1_decode(uint8_t value);
+    /**
+     * Pack message NEW_MSG_3DC.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_3_dc_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_3_dc_t *src_p,
+        size_t size);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_1_is_in_range(uint8_t value);
+    /**
+     * Unpack message NEW_MSG_3DC.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_3_dc_unpack(
+        struct chery_canfd_new_msg_3_dc_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_new_signal_5_encode(double value);
+    /**
+     * Init message fields to default values from NEW_MSG_3DC.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_3_dc_init(struct chery_canfd_new_msg_3_dc_t *msg_p);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_5_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_dc_new_signal_8_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_5_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_new_signal_8_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_engine_data_new_signal_4_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_new_signal_8_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_4_decode(uint16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_dc_new_signal_6_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_4_is_in_range(uint16_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_new_signal_6_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_new_signal_8_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_new_signal_6_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_8_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_dc_new_signal_5_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_8_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_new_signal_5_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int16_t chery_canfd_engine_data_accel_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_new_signal_5_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_accel_decode(int16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_dc_new_signal_7_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_accel_is_in_range(int16_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_new_signal_7_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_new_signal_2_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_new_signal_7_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_2_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_dc_aeb_maybe_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_2_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_aeb_maybe_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_engine_data_gas_pos_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_aeb_maybe_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_gas_pos_decode(uint16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_new_msg_3_dc_new_signal_4_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_gas_pos_is_in_range(uint16_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_new_signal_4_decode(uint16_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_new_signal_9_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_new_signal_4_is_in_range(uint16_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_9_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_dc_new_signal_1_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_9_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_new_signal_1_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_engine_data_new_signal_7_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_new_signal_1_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_7_decode(uint16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_dc_new_signal_3_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_7_is_in_range(uint16_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_new_signal_3_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_new_signal_13_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_new_signal_3_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_13_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_new_msg_3_dc_new_signal_2_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_13_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_new_signal_2_decode(uint16_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_engine_data_new_signal_6_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_new_signal_2_is_in_range(uint16_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_6_decode(uint16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_dc_counter_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_6_is_in_range(uint16_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_counter_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_engine_data_new_signal_15_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_counter_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_15_decode(uint16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_dc_checksum_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_15_is_in_range(uint16_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_dc_checksum_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_new_signal_11_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_dc_checksum_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_11_decode(uint8_t value);
+    /**
+     * Pack message NEW_MSG_3DE.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_3_de_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_3_de_t *src_p,
+        size_t size);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_11_is_in_range(uint8_t value);
+    /**
+     * Unpack message NEW_MSG_3DE.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_3_de_unpack(
+        struct chery_canfd_new_msg_3_de_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_new_signal_12_encode(double value);
+    /**
+     * Init message fields to default values from NEW_MSG_3DE.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_3_de_init(struct chery_canfd_new_msg_3_de_t *msg_p);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_12_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_de_new_signal_2_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_12_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_de_new_signal_2_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_engine_data_gas_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_de_new_signal_2_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_gas_decode(uint16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_de_new_signal_5_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_gas_is_in_range(uint16_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_de_new_signal_5_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_gear_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_de_new_signal_5_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_gear_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_de_new_signal_1_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_gear_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_de_new_signal_1_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_gear_button_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_de_new_signal_1_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_gear_button_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_de_new_signal_6_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_gear_button_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_de_new_signal_6_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_brake_press_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_de_new_signal_6_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_brake_press_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_de_new_signal_4_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_brake_press_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_de_new_signal_4_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_cc_state_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_de_new_signal_4_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_cc_state_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_de_new_signal_7_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_cc_state_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_de_new_signal_7_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_cruize_speed_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_de_new_signal_7_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_cruize_speed_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_new_msg_3_de_new_signal_3_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_cruize_speed_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_de_new_signal_3_decode(uint16_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_switch_to_p_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_de_new_signal_3_is_in_range(uint16_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_switch_to_p_decode(uint8_t value);
+    /**
+     * Pack message NEW_MSG_3E2.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_3_e2_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_3_e2_t *src_p,
+        size_t size);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_switch_to_p_is_in_range(uint8_t value);
+    /**
+     * Unpack message NEW_MSG_3E2.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_3_e2_unpack(
+        struct chery_canfd_new_msg_3_e2_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_engine_data_new_signal_3_encode(double value);
+    /**
+     * Init message fields to default values from NEW_MSG_3E2.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_3_e2_init(struct chery_canfd_new_msg_3_e2_t *msg_p);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_3_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_3_e2_new_signal_2_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_3_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_e2_new_signal_2_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_engine_data_new_signal_14_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_e2_new_signal_2_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_engine_data_new_signal_14_decode(uint16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int16_t chery_canfd_new_msg_3_e2_new_signal_1_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_engine_data_new_signal_14_is_in_range(uint16_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_3_e2_new_signal_1_decode(int16_t value);
 
-/**
- * Pack message STEER_SENSOR.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_steer_sensor_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_steer_sensor_t *src_p,
-    size_t size);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_3_e2_new_signal_1_is_in_range(int16_t value);
 
-/**
- * Unpack message STEER_SENSOR.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_steer_sensor_unpack(
-    struct chery_canfd_steer_sensor_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
+    /**
+     * Pack message LEAD_FRONT.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_lead_front_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_lead_front_t *src_p,
+        size_t size);
 
-/**
- * Init message fields to default values from STEER_SENSOR.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_steer_sensor_init(struct chery_canfd_steer_sensor_t *msg_p);
+    /**
+     * Unpack message LEAD_FRONT.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_lead_front_unpack(
+        struct chery_canfd_lead_front_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_sensor_angle_encode(double value);
+    /**
+     * Init message fields to default values from LEAD_FRONT.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_lead_front_init(struct chery_canfd_lead_front_t *msg_p);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_sensor_angle_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_new_signal_7_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_sensor_angle_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_new_signal_7_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_sensor_fraction_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_new_signal_7_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_sensor_fraction_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_valid_signal_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_sensor_fraction_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_valid_signal_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int8_t chery_canfd_steer_sensor_torque_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_valid_signal_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_sensor_torque_decode(int8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_new_signal_3_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_sensor_torque_is_in_range(int8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_new_signal_3_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int8_t chery_canfd_steer_sensor_torque_driver_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_new_signal_3_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_sensor_torque_driver_decode(int8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_lead_distance_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_sensor_torque_driver_is_in_range(int8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_lead_distance_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_sensor_new_signal_3_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_lead_distance_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_sensor_new_signal_3_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_new_signal_6_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_sensor_new_signal_3_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_new_signal_6_decode(uint8_t value);
 
-/**
- * Pack message NEW_MSG_127.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_127_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_127_t *src_p,
-    size_t size);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_new_signal_6_is_in_range(uint8_t value);
 
-/**
- * Unpack message NEW_MSG_127.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_127_unpack(
-    struct chery_canfd_new_msg_127_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_new_signal_4_encode(double value);
 
-/**
- * Init message fields to default values from NEW_MSG_127.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_127_init(struct chery_canfd_new_msg_127_t *msg_p);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_new_signal_4_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_127_new_signal_2_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_new_signal_4_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_127_new_signal_2_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_new_signal_9_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_127_new_signal_2_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_new_signal_9_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_127_new_signal_4_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_new_signal_9_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_127_new_signal_4_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_new_signal_8_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_127_new_signal_4_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_new_signal_8_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_127_new_signal_3_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_new_signal_8_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_127_new_signal_3_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_new_signal_5_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_127_new_signal_3_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_new_signal_5_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int8_t chery_canfd_new_msg_127_new_signal_1_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_new_signal_5_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_127_new_signal_1_decode(int8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_new_signal_2_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_127_new_signal_1_is_in_range(int8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_new_signal_2_decode(uint8_t value);
 
-/**
- * Pack message NEW_MSG_128.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_128_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_128_t *src_p,
-    size_t size);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_new_signal_2_is_in_range(uint8_t value);
 
-/**
- * Unpack message NEW_MSG_128.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_128_unpack(
-    struct chery_canfd_new_msg_128_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_front_new_signal_1_encode(double value);
 
-/**
- * Init message fields to default values from NEW_MSG_128.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_128_init(struct chery_canfd_new_msg_128_t *msg_p);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_front_new_signal_1_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_new_msg_128_new_signal_1_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_front_new_signal_1_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_128_new_signal_1_decode(uint16_t value);
+    /**
+     * Pack message NEW_MSG_3F0.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_3_f0_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_3_f0_t *src_p,
+        size_t size);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_128_new_signal_1_is_in_range(uint16_t value);
+    /**
+     * Unpack message NEW_MSG_3F0.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_3_f0_unpack(
+        struct chery_canfd_new_msg_3_f0_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Pack message STEER_ANGLE_SENSOR.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_steer_angle_sensor_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_steer_angle_sensor_t *src_p,
-    size_t size);
+    /**
+     * Init message fields to default values from NEW_MSG_3F0.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_3_f0_init(struct chery_canfd_new_msg_3_f0_t *msg_p);
 
-/**
- * Unpack message STEER_ANGLE_SENSOR.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_steer_angle_sensor_unpack(
-    struct chery_canfd_steer_angle_sensor_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
+    /**
+     * Pack message LEAD_RIGHT_LEFT.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_lead_right_left_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_lead_right_left_t *src_p,
+        size_t size);
 
-/**
- * Init message fields to default values from STEER_ANGLE_SENSOR.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_steer_angle_sensor_init(struct chery_canfd_steer_angle_sensor_t *msg_p);
+    /**
+     * Unpack message LEAD_RIGHT_LEFT.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_lead_right_left_unpack(
+        struct chery_canfd_lead_right_left_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_steer_angle_sensor_steer_angle_encode(double value);
+    /**
+     * Init message fields to default values from LEAD_RIGHT_LEFT.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_lead_right_left_init(struct chery_canfd_lead_right_left_t *msg_p);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_angle_sensor_steer_angle_decode(uint16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_new_signal_3_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_angle_sensor_steer_angle_is_in_range(uint16_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_new_signal_3_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int8_t chery_canfd_steer_angle_sensor_torque_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_new_signal_3_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_angle_sensor_torque_decode(int8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_new_signal_9_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_angle_sensor_torque_is_in_range(int8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_new_signal_9_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_angle_sensor_counter_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_new_signal_9_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_angle_sensor_counter_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_new_signal_8_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_angle_sensor_counter_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_new_signal_8_decode(uint8_t value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_angle_sensor_checksum_encode(double value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_new_signal_8_is_in_range(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_angle_sensor_checksum_decode(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_valid_signal_encode(double value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_angle_sensor_checksum_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_valid_signal_decode(uint8_t value);
 
-/**
- * Pack message LKAS.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_lkas_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_lkas_t *src_p,
-    size_t size);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_valid_signal_is_in_range(uint8_t value);
 
-/**
- * Unpack message LKAS.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_lkas_unpack(
-    struct chery_canfd_lkas_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_lead_left_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_lead_left_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_lead_left_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_new_signal_4_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_new_signal_4_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_new_signal_7_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_new_signal_7_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_new_signal_7_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_valid_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_valid_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_valid_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_lead_right_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_lead_right_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_lead_right_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_new_signal_6_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_new_signal_6_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_new_signal_6_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_lead_right_left_new_signal_5_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_new_signal_5_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_new_signal_5_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint16_t chery_canfd_lead_right_left_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_lead_right_left_new_signal_1_decode(uint16_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_lead_right_left_new_signal_1_is_in_range(uint16_t value);
+
+    /**
+     * Pack message HUD_ALERT.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_hud_alert_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_hud_alert_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message HUD_ALERT.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_hud_alert_unpack(
+        struct chery_canfd_hud_alert_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from HUD_ALERT.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_hud_alert_init(struct chery_canfd_hud_alert_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_hud_alert_new_signal_6_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_hud_alert_new_signal_6_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_hud_alert_new_signal_6_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_hud_alert_new_signal_7_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_hud_alert_new_signal_7_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_hud_alert_new_signal_7_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_hud_alert_ica_warning_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_hud_alert_ica_warning_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_hud_alert_ica_warning_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_hud_alert_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_hud_alert_new_signal_4_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_hud_alert_new_signal_4_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_hud_alert_steer_warning_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_hud_alert_steer_warning_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_hud_alert_steer_warning_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_hud_alert_take_over_warning_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_hud_alert_take_over_warning_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_hud_alert_take_over_warning_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    int8_t chery_canfd_hud_alert_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_hud_alert_new_signal_3_decode(int8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_hud_alert_new_signal_3_is_in_range(int8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_hud_alert_new_signal_5_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_hud_alert_new_signal_5_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_hud_alert_new_signal_5_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_40F.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_40_f_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_40_f_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_40F.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_40_f_unpack(
+        struct chery_canfd_new_msg_40_f_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_40F.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_40_f_init(struct chery_canfd_new_msg_40_f_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_40_f_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_40_f_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_40_f_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_40_f_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_40_f_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_40_f_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_40_f_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_40_f_new_signal_4_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_40_f_new_signal_4_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_40_f_new_signal_5_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_40_f_new_signal_5_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_40_f_new_signal_5_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_40_f_new_signal_6_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_40_f_new_signal_6_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_40_f_new_signal_6_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_40_f_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_40_f_new_signal_3_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_40_f_new_signal_3_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_427.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_427_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_427_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_427.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_427_unpack(
+        struct chery_canfd_new_msg_427_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_427.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_427_init(struct chery_canfd_new_msg_427_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_427_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_427_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_427_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_427_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_427_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_427_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_430.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_430_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_430_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_430.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_430_unpack(
+        struct chery_canfd_new_msg_430_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_430.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_430_init(struct chery_canfd_new_msg_430_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_new_signal_9_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_new_signal_9_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_new_signal_9_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_new_signal_6_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_new_signal_6_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_new_signal_6_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_new_signal_8_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_new_signal_8_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_new_signal_8_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_new_signal_7_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_new_signal_7_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_new_signal_7_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_new_signal_5_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_new_signal_5_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_new_signal_5_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_seatbelt_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_seatbelt_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_seatbelt_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_new_signal_4_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_new_signal_4_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_430_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_430_new_signal_3_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_430_new_signal_3_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_435.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_435_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_435_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_435.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_435_unpack(
+        struct chery_canfd_new_msg_435_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_435.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_435_init(struct chery_canfd_new_msg_435_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_435_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_435_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_435_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_45A.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_45_a_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_45_a_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_45A.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_45_a_unpack(
+        struct chery_canfd_new_msg_45_a_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_45A.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_45_a_init(struct chery_canfd_new_msg_45_a_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_45_a_avm_pressed_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_45_a_avm_pressed_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_45_a_avm_pressed_is_in_range(uint8_t value);
+
+    /**
+     * Pack message BSM_LEFT.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_bsm_left_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_bsm_left_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message BSM_LEFT.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_bsm_left_unpack(
+        struct chery_canfd_bsm_left_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from BSM_LEFT.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_bsm_left_init(struct chery_canfd_bsm_left_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_bsm_left_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_bsm_left_new_signal_3_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_bsm_left_new_signal_3_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_bsm_left_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_bsm_left_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_bsm_left_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_bsm_left_bsm_left_detect_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_bsm_left_bsm_left_detect_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_bsm_left_bsm_left_detect_is_in_range(uint8_t value);
+
+    /**
+     * Pack message BSM_RIGHT.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_bsm_right_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_bsm_right_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message BSM_RIGHT.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_bsm_right_unpack(
+        struct chery_canfd_bsm_right_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from BSM_RIGHT.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_bsm_right_init(struct chery_canfd_bsm_right_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_bsm_right_bsm_right_detect_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_bsm_right_bsm_right_detect_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_bsm_right_bsm_right_detect_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_bsm_right_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_bsm_right_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_bsm_right_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_4DD.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_4_dd_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_4_dd_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_4DD.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_4_dd_unpack(
+        struct chery_canfd_new_msg_4_dd_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_4DD.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_4_dd_init(struct chery_canfd_new_msg_4_dd_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_4_dd_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_4_dd_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_4_dd_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_4_dd_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_4_dd_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_4_dd_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Pack message NEW_MSG_4E3.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_4_e3_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_4_e3_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message NEW_MSG_4E3.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_4_e3_unpack(
+        struct chery_canfd_new_msg_4_e3_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from NEW_MSG_4E3.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_4_e3_init(struct chery_canfd_new_msg_4_e3_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_4_e3_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_4_e3_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_4_e3_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_4_e3_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_4_e3_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_4_e3_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Pack message BRAKE_SENSOR.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_brake_sensor_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_brake_sensor_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message BRAKE_SENSOR.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_brake_sensor_unpack(
+        struct chery_canfd_brake_sensor_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from BRAKE_SENSOR.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_brake_sensor_init(struct chery_canfd_brake_sensor_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_sensor_drive_mode_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_sensor_drive_mode_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_sensor_drive_mode_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_sensor_epb_release_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_sensor_epb_release_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_sensor_epb_release_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_sensor_new_signal_3_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_sensor_new_signal_3_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_sensor_new_signal_3_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_sensor_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_sensor_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_sensor_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_sensor_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_sensor_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_sensor_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_sensor_brake_press_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_sensor_brake_press_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_sensor_brake_press_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_sensor_new_signal_4_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_sensor_new_signal_4_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_sensor_new_signal_4_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_sensor_charge_status_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_sensor_charge_status_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_sensor_charge_status_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_brake_sensor_brake_request_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_brake_sensor_brake_request_decode(uint8_t value);
 
-/**
- * Init message fields to default values from LKAS.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_lkas_init(struct chery_canfd_lkas_t *msg_p);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_brake_sensor_brake_request_is_in_range(uint8_t value);
+
+    /**
+     * Pack message carlinko.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_carlinko_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_carlinko_t *src_p,
+        size_t size);
+
+    /**
+     * Unpack message carlinko.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_carlinko_unpack(
+        struct chery_canfd_carlinko_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from carlinko.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_carlinko_init(struct chery_canfd_carlinko_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_carlinko_new_signal_1_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_carlinko_new_signal_1_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_carlinko_new_signal_1_is_in_range(uint8_t value);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_carlinko_new_signal_2_encode(double value);
+
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_carlinko_new_signal_2_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_carlinko_new_signal_2_is_in_range(uint8_t value);
+
+    /**
+     * Pack message EPB.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_epb_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_epb_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_new_signal_1_encode(double value);
+    /**
+     * Unpack message EPB.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_epb_unpack(
+        struct chery_canfd_epb_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
+
+    /**
+     * Init message fields to default values from EPB.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_epb_init(struct chery_canfd_epb_t *msg_p);
+
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_epb_epb_signal_encode(double value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_new_signal_1_decode(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_epb_epb_signal_decode(uint8_t value);
+
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_epb_epb_signal_is_in_range(uint8_t value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_new_signal_1_is_in_range(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_epb_epb_active_encode(double value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int8_t chery_canfd_lkas_new_signal_7_encode(double value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_epb_epb_active_decode(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_new_signal_7_decode(int8_t value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_epb_epb_active_is_in_range(uint8_t value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_new_signal_7_is_in_range(int8_t value);
+    /**
+     * Pack message Window_Command.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_window_command_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_window_command_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_new_signal_5_encode(double value);
+    /**
+     * Unpack message Window_Command.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_window_command_unpack(
+        struct chery_canfd_window_command_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_new_signal_5_decode(uint8_t value);
+    /**
+     * Init message fields to default values from Window_Command.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_window_command_init(struct chery_canfd_window_command_t *msg_p);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_new_signal_5_is_in_range(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_window_command_new_signal_1_encode(double value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int16_t chery_canfd_lkas_lkas_cmd_encode(double value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_window_command_new_signal_1_decode(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_lkas_cmd_decode(int16_t value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_window_command_new_signal_1_is_in_range(uint8_t value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_lkas_cmd_is_in_range(int16_t value);
+    /**
+     * Pack message AEB_COMMAND.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_aeb_command_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_aeb_command_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_new_signal_2_encode(double value);
+    /**
+     * Unpack message AEB_COMMAND.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_aeb_command_unpack(
+        struct chery_canfd_aeb_command_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_new_signal_2_decode(uint8_t value);
+    /**
+     * Init message fields to default values from AEB_COMMAND.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_aeb_command_init(struct chery_canfd_aeb_command_t *msg_p);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_new_signal_2_is_in_range(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_aeb_command_aeb_active_encode(double value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_new_signal_3_encode(double value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_aeb_command_aeb_active_decode(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_new_signal_3_decode(uint8_t value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_aeb_command_aeb_active_is_in_range(uint8_t value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_new_signal_3_is_in_range(uint8_t value);
+    /**
+     * Pack message NEW_MSG_51B.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_51_b_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_51_b_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_new_signal_4_encode(double value);
+    /**
+     * Unpack message NEW_MSG_51B.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_51_b_unpack(
+        struct chery_canfd_new_msg_51_b_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_new_signal_4_decode(uint8_t value);
+    /**
+     * Init message fields to default values from NEW_MSG_51B.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_51_b_init(struct chery_canfd_new_msg_51_b_t *msg_p);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_new_signal_4_is_in_range(uint8_t value);
+    /**
+     * Pack message NEW_MSG_51D.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_51_d_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_51_d_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_counter_encode(double value);
+    /**
+     * Unpack message NEW_MSG_51D.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_51_d_unpack(
+        struct chery_canfd_new_msg_51_d_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_counter_decode(uint8_t value);
+    /**
+     * Init message fields to default values from NEW_MSG_51D.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_51_d_init(struct chery_canfd_new_msg_51_d_t *msg_p);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_counter_is_in_range(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_51_d_new_signal_2_encode(double value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_checksum_encode(double value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_51_d_new_signal_2_decode(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_checksum_decode(uint8_t value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_51_d_new_signal_2_is_in_range(uint8_t value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_checksum_is_in_range(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_51_d_hdc_active_encode(double value);
 
-/**
- * Pack message NEW_MSG_260.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_260_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_260_t *src_p,
-    size_t size);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_51_d_hdc_active_decode(uint8_t value);
 
-/**
- * Unpack message NEW_MSG_260.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_260_unpack(
-    struct chery_canfd_new_msg_260_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_51_d_hdc_active_is_in_range(uint8_t value);
 
-/**
- * Init message fields to default values from NEW_MSG_260.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_260_init(struct chery_canfd_new_msg_260_t *msg_p);
+    /**
+     * Pack message NEW_MSG_535.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_535_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_535_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_260_new_signal_6_encode(double value);
+    /**
+     * Unpack message NEW_MSG_535.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_535_unpack(
+        struct chery_canfd_new_msg_535_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_260_new_signal_6_decode(uint8_t value);
+    /**
+     * Init message fields to default values from NEW_MSG_535.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_535_init(struct chery_canfd_new_msg_535_t *msg_p);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_260_new_signal_6_is_in_range(uint8_t value);
+    /**
+     * Pack message NEW_MSG_537.
+     *
+     * @param[out] dst_p Buffer to pack the message into.
+     * @param[in] src_p Data to pack.
+     * @param[in] size Size of dst_p.
+     *
+     * @return Size of packed data, or negative error code.
+     */
+    int chery_canfd_new_msg_537_pack(
+        uint8_t *dst_p,
+        const struct chery_canfd_new_msg_537_t *src_p,
+        size_t size);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_new_msg_260_new_signal_3_encode(double value);
+    /**
+     * Unpack message NEW_MSG_537.
+     *
+     * @param[out] dst_p Object to unpack the message into.
+     * @param[in] src_p Message to unpack.
+     * @param[in] size Size of src_p.
+     *
+     * @return zero(0) or negative error code.
+     */
+    int chery_canfd_new_msg_537_unpack(
+        struct chery_canfd_new_msg_537_t *dst_p,
+        const uint8_t *src_p,
+        size_t size);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_260_new_signal_3_decode(uint16_t value);
+    /**
+     * Init message fields to default values from NEW_MSG_537.
+     *
+     * @param[in] msg_p Message to init.
+     *
+     * @return zero(0) on success or (-1) in case of nullptr argument.
+     */
+    int chery_canfd_new_msg_537_init(struct chery_canfd_new_msg_537_t *msg_p);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_260_new_signal_3_is_in_range(uint16_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_537_traksi_command_encode(double value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_260_new_signal_5_encode(double value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_537_traksi_command_decode(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_260_new_signal_5_decode(uint8_t value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_537_traksi_command_is_in_range(uint8_t value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_260_new_signal_5_is_in_range(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_537_drive_mode_encode(double value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_260_brake_press_encode(double value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_537_drive_mode_decode(uint8_t value);
 
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_260_brake_press_decode(uint8_t value);
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_537_drive_mode_is_in_range(uint8_t value);
 
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_260_brake_press_is_in_range(uint8_t value);
+    /**
+     * Encode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to encode.
+     *
+     * @return Encoded signal.
+     */
+    uint8_t chery_canfd_new_msg_537_epb_pressed_encode(double value);
 
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_260_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_260_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_260_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_260_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_260_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_260_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int16_t chery_canfd_new_msg_260_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_260_new_signal_1_decode(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_260_new_signal_1_is_in_range(int16_t value);
-
-/**
- * Pack message NEW_MSG_287.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_287_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_287_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_287.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_287_unpack(
-    struct chery_canfd_new_msg_287_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_287.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_287_init(struct chery_canfd_new_msg_287_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_287_epb_status_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_287_epb_status_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_287_epb_status_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_287_seatbelt_lock_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_287_seatbelt_lock_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_287_seatbelt_lock_is_in_range(uint8_t value);
-
-/**
- * Pack message BRAKE_DATA.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_brake_data_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_brake_data_t *src_p,
-    size_t size);
-
-/**
- * Unpack message BRAKE_DATA.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_brake_data_unpack(
-    struct chery_canfd_brake_data_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from BRAKE_DATA.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_brake_data_init(struct chery_canfd_brake_data_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_data_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_data_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_data_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int16_t chery_canfd_brake_data_brake_pos_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_data_brake_pos_decode(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_data_brake_pos_is_in_range(int16_t value);
-
-/**
- * Pack message NEW_MSG_2E9.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_2_e9_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_2_e9_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_2E9.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_2_e9_unpack(
-    struct chery_canfd_new_msg_2_e9_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_2E9.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_2_e9_init(struct chery_canfd_new_msg_2_e9_t *msg_p);
-
-/**
- * Pack message DOOR.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_door_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_door_t *src_p,
-    size_t size);
-
-/**
- * Unpack message DOOR.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_door_unpack(
-    struct chery_canfd_door_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from DOOR.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_door_init(struct chery_canfd_door_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_door_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_door_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_door_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_door_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_door_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_door_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_305.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_305_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_305_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_305.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_305_unpack(
-    struct chery_canfd_new_msg_305_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_305.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_305_init(struct chery_canfd_new_msg_305_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_305_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_305_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_305_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_305_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_305_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_305_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message LKAS_STATE.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_lkas_state_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_lkas_state_t *src_p,
-    size_t size);
-
-/**
- * Unpack message LKAS_STATE.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_lkas_state_unpack(
-    struct chery_canfd_lkas_state_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from LKAS_STATE.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_lkas_state_init(struct chery_canfd_lkas_state_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_state_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_state_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_state_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_state_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_state_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_state_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_state_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_state_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_state_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_state_state_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_state_state_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_state_state_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_state_lka_active_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_state_lka_active_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_state_lka_active_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_state_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_state_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_state_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_state_counter_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_state_counter_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_state_counter_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_state_checksum_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_state_checksum_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_state_checksum_is_in_range(uint8_t value);
-
-/**
- * Pack message WHEEL_SPEED_REAR.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_wheel_speed_rear_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_wheel_speed_rear_t *src_p,
-    size_t size);
-
-/**
- * Unpack message WHEEL_SPEED_REAR.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_wheel_speed_rear_unpack(
-    struct chery_canfd_wheel_speed_rear_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from WHEEL_SPEED_REAR.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_wheel_speed_rear_init(struct chery_canfd_wheel_speed_rear_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_wheel_speed_rear_wheel_speed_rr_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_wheel_speed_rear_wheel_speed_rr_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_wheel_speed_rear_wheel_speed_rr_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_wheel_speed_rear_wheel_speed_rl_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_wheel_speed_rear_wheel_speed_rl_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_wheel_speed_rear_wheel_speed_rl_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_wheel_speed_rear_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_wheel_speed_rear_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_wheel_speed_rear_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message WHEEL_SPEED_FRNT.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_wheel_speed_frnt_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_wheel_speed_frnt_t *src_p,
-    size_t size);
-
-/**
- * Unpack message WHEEL_SPEED_FRNT.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_wheel_speed_frnt_unpack(
-    struct chery_canfd_wheel_speed_frnt_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from WHEEL_SPEED_FRNT.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_wheel_speed_frnt_init(struct chery_canfd_wheel_speed_frnt_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int16_t chery_canfd_wheel_speed_frnt_wheel_speed_fr_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_wheel_speed_frnt_wheel_speed_fr_decode(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_wheel_speed_frnt_wheel_speed_fr_is_in_range(int16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int16_t chery_canfd_wheel_speed_frnt_wheel_speed_fl_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_wheel_speed_frnt_wheel_speed_fl_decode(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_wheel_speed_frnt_wheel_speed_fl_is_in_range(int16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_wheel_speed_frnt_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_wheel_speed_frnt_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_wheel_speed_frnt_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_wheel_speed_frnt_stopped_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_wheel_speed_frnt_stopped_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_wheel_speed_frnt_stopped_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_319.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_319_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_319_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_319.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_319_unpack(
-    struct chery_canfd_new_msg_319_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_319.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_319_init(struct chery_canfd_new_msg_319_t *msg_p);
-
-/**
- * Pack message LKAS_CAM_CMD_345.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_lkas_cam_cmd_345_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_lkas_cam_cmd_345_t *src_p,
-    size_t size);
-
-/**
- * Unpack message LKAS_CAM_CMD_345.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_lkas_cam_cmd_345_unpack(
-    struct chery_canfd_lkas_cam_cmd_345_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from LKAS_CAM_CMD_345.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_lkas_cam_cmd_345_init(struct chery_canfd_lkas_cam_cmd_345_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_lkas_cam_cmd_345_cmd_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_cam_cmd_345_cmd_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_cam_cmd_345_cmd_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_cam_cmd_345_lka_active_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_cam_cmd_345_lka_active_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_cam_cmd_345_lka_active_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_cam_cmd_345_set_x0_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_cam_cmd_345_set_x0_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_cam_cmd_345_set_x0_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int8_t chery_canfd_lkas_cam_cmd_345_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_cam_cmd_345_new_signal_5_decode(int8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_cam_cmd_345_new_signal_5_is_in_range(int8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_cam_cmd_345_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_cam_cmd_345_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_cam_cmd_345_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_cam_cmd_345_new_signal_7_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_cam_cmd_345_new_signal_7_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_cam_cmd_345_new_signal_7_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_cam_cmd_345_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_cam_cmd_345_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_cam_cmd_345_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lkas_cam_cmd_345_checksum_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lkas_cam_cmd_345_checksum_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lkas_cam_cmd_345_checksum_is_in_range(uint8_t value);
-
-/**
- * Pack message STEER_BUTTON.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_steer_button_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_steer_button_t *src_p,
-    size_t size);
-
-/**
- * Unpack message STEER_BUTTON.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_steer_button_unpack(
-    struct chery_canfd_steer_button_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from STEER_BUTTON.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_steer_button_init(struct chery_canfd_steer_button_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_button_checksum_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_button_checksum_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_button_checksum_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_button_counter_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_button_counter_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_button_counter_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_button_res_plus_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_button_res_plus_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_button_res_plus_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_button_cc_btn_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_button_cc_btn_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_button_cc_btn_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_button_acc_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_button_acc_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_button_acc_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_button_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_button_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_button_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_button_res_minus_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_button_res_minus_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_button_res_minus_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_button_gap_adjust_up_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_button_gap_adjust_up_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_button_gap_adjust_up_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_button_gap_adjust_down_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_button_gap_adjust_down_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_button_gap_adjust_down_is_in_range(uint8_t value);
-
-/**
- * Pack message SETTING.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_setting_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_setting_t *src_p,
-    size_t size);
-
-/**
- * Unpack message SETTING.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_setting_unpack(
-    struct chery_canfd_setting_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from SETTING.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_setting_init(struct chery_canfd_setting_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_cancel_alert_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_cancel_alert_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_cancel_alert_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_show_aeb_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_show_aeb_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_show_aeb_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_gap_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_gap_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_gap_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_acc_available_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_acc_available_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_acc_available_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_acc_active_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_acc_active_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_acc_active_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_aeb_active_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_aeb_active_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_aeb_active_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_cc_speed_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_cc_speed_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_cc_speed_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_counter_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_counter_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_counter_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_setting_checksum_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_setting_checksum_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_setting_checksum_is_in_range(uint8_t value);
-
-/**
- * Pack message BCM_SIGNAL_2.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_bcm_signal_2_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_bcm_signal_2_t *src_p,
-    size_t size);
-
-/**
- * Unpack message BCM_SIGNAL_2.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_bcm_signal_2_unpack(
-    struct chery_canfd_bcm_signal_2_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from BCM_SIGNAL_2.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_bcm_signal_2_init(struct chery_canfd_bcm_signal_2_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_high_beam_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_high_beam_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_high_beam_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_left_sign_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_left_sign_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_left_sign_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_right_sign_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_right_sign_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_right_sign_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_status_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_status_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_status_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_door_lock_open_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_door_lock_open_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_door_lock_open_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_new_signal_8_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_new_signal_8_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_new_signal_8_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_new_signal_11_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_new_signal_11_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_new_signal_11_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_right_sign_pressed_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_right_sign_pressed_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_right_sign_pressed_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_left_sign_pressed_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_left_sign_pressed_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_left_sign_pressed_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_wiper_button_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_wiper_button_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_wiper_button_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_new_signal_9_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_new_signal_9_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_new_signal_9_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_2_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_2_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_2_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Pack message BCM_SIGNAL_1.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_bcm_signal_1_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_bcm_signal_1_t *src_p,
-    size_t size);
-
-/**
- * Unpack message BCM_SIGNAL_1.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_bcm_signal_1_unpack(
-    struct chery_canfd_bcm_signal_1_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from BCM_SIGNAL_1.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_bcm_signal_1_init(struct chery_canfd_bcm_signal_1_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_1_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_1_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_1_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_1_sign_signal_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_1_sign_signal_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_1_sign_signal_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_1_door_lock_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_1_door_lock_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_1_door_lock_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_1_rl_door_open_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_1_rl_door_open_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_1_rl_door_open_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_1_rr_door_open_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_1_rr_door_open_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_1_rr_door_open_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_1_fl_door_open_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_1_fl_door_open_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_1_fl_door_open_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_1_fr_door_open_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_1_fr_door_open_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_1_fr_door_open_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_1_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_1_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_1_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bcm_signal_1_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bcm_signal_1_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bcm_signal_1_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message STEER_SENSOR_2.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_steer_sensor_2_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_steer_sensor_2_t *src_p,
-    size_t size);
-
-/**
- * Unpack message STEER_SENSOR_2.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_steer_sensor_2_unpack(
-    struct chery_canfd_steer_sensor_2_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from STEER_SENSOR_2.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_steer_sensor_2_init(struct chery_canfd_steer_sensor_2_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int16_t chery_canfd_steer_sensor_2_torque_driver_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_sensor_2_torque_driver_decode(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_sensor_2_torque_driver_is_in_range(int16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_steer_sensor_2_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_steer_sensor_2_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_steer_sensor_2_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message ACC_CMD.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_acc_cmd_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_acc_cmd_t *src_p,
-    size_t size);
-
-/**
- * Unpack message ACC_CMD.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_acc_cmd_unpack(
-    struct chery_canfd_acc_cmd_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from ACC_CMD.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_acc_cmd_init(struct chery_canfd_acc_cmd_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_accel_on_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_accel_on_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_accel_on_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int16_t chery_canfd_acc_cmd_cmd_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_cmd_decode(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_cmd_is_in_range(int16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_acc_state_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_acc_state_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_acc_state_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_stopped_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_stopped_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_stopped_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_acc_state_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_acc_state_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_acc_state_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_stopping_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_stopping_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_stopping_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_9_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_9_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_9_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_12_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_12_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_12_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_8_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_8_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_8_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_13_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_13_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_13_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_10_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_10_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_10_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int8_t chery_canfd_acc_cmd_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_4_decode(int8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_4_is_in_range(int8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_gas_pressed_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_gas_pressed_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_gas_pressed_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_counter_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_counter_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_counter_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_new_signal_11_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_new_signal_11_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_new_signal_11_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_cmd_checksum_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_cmd_checksum_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_cmd_checksum_is_in_range(uint8_t value);
-
-/**
- * Pack message ACC.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_acc_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_acc_t *src_p,
-    size_t size);
-
-/**
- * Unpack message ACC.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_acc_unpack(
-    struct chery_canfd_acc_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from ACC.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_acc_init(struct chery_canfd_acc_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_7_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_7_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_7_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_10_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_10_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_10_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_8_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_8_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_8_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_9_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_9_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_9_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_11_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_11_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_11_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_gas_pressed_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_gas_pressed_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_gas_pressed_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_acc_active_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_acc_active_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_acc_active_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_12_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_12_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_12_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_aeb_active_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_aeb_active_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_aeb_active_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_counter_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_counter_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_counter_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_acc_checksum_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_acc_checksum_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_acc_checksum_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_3A7.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_3_a7_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_3_a7_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_3A7.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_3_a7_unpack(
-    struct chery_canfd_new_msg_3_a7_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_3A7.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_3_a7_init(struct chery_canfd_new_msg_3_a7_t *msg_p);
-
-/**
- * Pack message NEW_MSG_3AF.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_3_af_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_3_af_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_3AF.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_3_af_unpack(
-    struct chery_canfd_new_msg_3_af_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_3AF.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_3_af_init(struct chery_canfd_new_msg_3_af_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_new_msg_3_af_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_af_new_signal_3_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_af_new_signal_3_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_af_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_af_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_af_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_new_msg_3_af_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_af_new_signal_1_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_af_new_signal_1_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_af_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_af_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_af_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_new_msg_3_af_checksum_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_af_checksum_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_af_checksum_is_in_range(uint16_t value);
-
-/**
- * Pack message NEW_MSG_3DC.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_3_dc_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_3_dc_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_3DC.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_3_dc_unpack(
-    struct chery_canfd_new_msg_3_dc_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_3DC.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_3_dc_init(struct chery_canfd_new_msg_3_dc_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_dc_new_signal_8_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_new_signal_8_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_new_signal_8_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_dc_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_dc_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_dc_new_signal_7_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_new_signal_7_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_new_signal_7_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_dc_aeb_maybe_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_aeb_maybe_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_aeb_maybe_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_new_msg_3_dc_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_new_signal_4_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_new_signal_4_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_dc_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_dc_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_new_msg_3_dc_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_new_signal_2_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_new_signal_2_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_dc_counter_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_counter_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_counter_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_dc_checksum_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_dc_checksum_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_dc_checksum_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_3DE.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_3_de_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_3_de_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_3DE.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_3_de_unpack(
-    struct chery_canfd_new_msg_3_de_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_3DE.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_3_de_init(struct chery_canfd_new_msg_3_de_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_de_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_de_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_de_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_de_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_de_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_de_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_de_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_de_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_de_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_de_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_de_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_de_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_de_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_de_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_de_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_de_new_signal_7_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_de_new_signal_7_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_de_new_signal_7_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_new_msg_3_de_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_de_new_signal_3_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_de_new_signal_3_is_in_range(uint16_t value);
-
-/**
- * Pack message NEW_MSG_3E2.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_3_e2_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_3_e2_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_3E2.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_3_e2_unpack(
-    struct chery_canfd_new_msg_3_e2_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_3E2.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_3_e2_init(struct chery_canfd_new_msg_3_e2_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_3_e2_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_e2_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_e2_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int16_t chery_canfd_new_msg_3_e2_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_3_e2_new_signal_1_decode(int16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_3_e2_new_signal_1_is_in_range(int16_t value);
-
-/**
- * Pack message LEAD_FRONT.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_lead_front_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_lead_front_t *src_p,
-    size_t size);
-
-/**
- * Unpack message LEAD_FRONT.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_lead_front_unpack(
-    struct chery_canfd_lead_front_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from LEAD_FRONT.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_lead_front_init(struct chery_canfd_lead_front_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_new_signal_7_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_new_signal_7_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_new_signal_7_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_valid_signal_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_valid_signal_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_valid_signal_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_lead_distance_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_lead_distance_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_lead_distance_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_new_signal_9_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_new_signal_9_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_new_signal_9_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_new_signal_8_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_new_signal_8_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_new_signal_8_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_front_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_front_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_front_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_3F0.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_3_f0_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_3_f0_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_3F0.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_3_f0_unpack(
-    struct chery_canfd_new_msg_3_f0_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_3F0.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_3_f0_init(struct chery_canfd_new_msg_3_f0_t *msg_p);
-
-/**
- * Pack message LEAD_RIGHT_LEFT.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_lead_right_left_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_lead_right_left_t *src_p,
-    size_t size);
-
-/**
- * Unpack message LEAD_RIGHT_LEFT.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_lead_right_left_unpack(
-    struct chery_canfd_lead_right_left_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from LEAD_RIGHT_LEFT.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_lead_right_left_init(struct chery_canfd_lead_right_left_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_new_signal_9_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_new_signal_9_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_new_signal_9_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_new_signal_8_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_new_signal_8_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_new_signal_8_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_valid_signal_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_valid_signal_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_valid_signal_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_lead_left_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_lead_left_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_lead_left_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_new_signal_7_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_new_signal_7_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_new_signal_7_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_valid_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_valid_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_valid_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_lead_right_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_lead_right_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_lead_right_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_lead_right_left_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t chery_canfd_lead_right_left_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_lead_right_left_new_signal_1_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_lead_right_left_new_signal_1_is_in_range(uint16_t value);
-
-/**
- * Pack message HUD_ALERT.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_hud_alert_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_hud_alert_t *src_p,
-    size_t size);
-
-/**
- * Unpack message HUD_ALERT.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_hud_alert_unpack(
-    struct chery_canfd_hud_alert_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from HUD_ALERT.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_hud_alert_init(struct chery_canfd_hud_alert_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_hud_alert_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_hud_alert_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_hud_alert_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_hud_alert_new_signal_7_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_hud_alert_new_signal_7_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_hud_alert_new_signal_7_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_hud_alert_ica_warning_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_hud_alert_ica_warning_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_hud_alert_ica_warning_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_hud_alert_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_hud_alert_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_hud_alert_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_hud_alert_steer_warning_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_hud_alert_steer_warning_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_hud_alert_steer_warning_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_hud_alert_take_over_warning_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_hud_alert_take_over_warning_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_hud_alert_take_over_warning_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-int8_t chery_canfd_hud_alert_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_hud_alert_new_signal_3_decode(int8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_hud_alert_new_signal_3_is_in_range(int8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_hud_alert_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_hud_alert_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_hud_alert_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_40F.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_40_f_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_40_f_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_40F.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_40_f_unpack(
-    struct chery_canfd_new_msg_40_f_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_40F.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_40_f_init(struct chery_canfd_new_msg_40_f_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_40_f_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_40_f_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_40_f_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_40_f_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_40_f_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_40_f_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_40_f_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_40_f_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_40_f_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_40_f_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_40_f_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_40_f_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_40_f_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_40_f_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_40_f_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_40_f_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_40_f_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_40_f_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_427.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_427_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_427_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_427.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_427_unpack(
-    struct chery_canfd_new_msg_427_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_427.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_427_init(struct chery_canfd_new_msg_427_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_427_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_427_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_427_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_427_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_427_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_427_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_430.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_430_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_430_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_430.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_430_unpack(
-    struct chery_canfd_new_msg_430_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_430.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_430_init(struct chery_canfd_new_msg_430_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_new_signal_9_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_new_signal_9_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_new_signal_9_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_new_signal_6_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_new_signal_6_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_new_signal_6_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_new_signal_8_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_new_signal_8_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_new_signal_8_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_new_signal_7_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_new_signal_7_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_new_signal_7_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_new_signal_5_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_new_signal_5_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_new_signal_5_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_seatbelt_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_seatbelt_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_seatbelt_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_430_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_430_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_430_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_435.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_435_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_435_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_435.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_435_unpack(
-    struct chery_canfd_new_msg_435_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_435.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_435_init(struct chery_canfd_new_msg_435_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_435_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_435_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_435_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_45A.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_45_a_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_45_a_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_45A.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_45_a_unpack(
-    struct chery_canfd_new_msg_45_a_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_45A.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_45_a_init(struct chery_canfd_new_msg_45_a_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_45_a_avm_pressed_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_45_a_avm_pressed_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_45_a_avm_pressed_is_in_range(uint8_t value);
-
-/**
- * Pack message BSM_LEFT.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_bsm_left_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_bsm_left_t *src_p,
-    size_t size);
-
-/**
- * Unpack message BSM_LEFT.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_bsm_left_unpack(
-    struct chery_canfd_bsm_left_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from BSM_LEFT.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_bsm_left_init(struct chery_canfd_bsm_left_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bsm_left_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bsm_left_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bsm_left_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bsm_left_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bsm_left_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bsm_left_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bsm_left_bsm_left_detect_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bsm_left_bsm_left_detect_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bsm_left_bsm_left_detect_is_in_range(uint8_t value);
-
-/**
- * Pack message BSM_RIGHT.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_bsm_right_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_bsm_right_t *src_p,
-    size_t size);
-
-/**
- * Unpack message BSM_RIGHT.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_bsm_right_unpack(
-    struct chery_canfd_bsm_right_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from BSM_RIGHT.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_bsm_right_init(struct chery_canfd_bsm_right_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bsm_right_bsm_right_detect_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bsm_right_bsm_right_detect_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bsm_right_bsm_right_detect_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_bsm_right_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_bsm_right_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_bsm_right_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_4DD.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_4_dd_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_4_dd_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_4DD.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_4_dd_unpack(
-    struct chery_canfd_new_msg_4_dd_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_4DD.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_4_dd_init(struct chery_canfd_new_msg_4_dd_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_4_dd_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_4_dd_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_4_dd_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_4_dd_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_4_dd_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_4_dd_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_4E3.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_4_e3_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_4_e3_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_4E3.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_4_e3_unpack(
-    struct chery_canfd_new_msg_4_e3_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_4E3.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_4_e3_init(struct chery_canfd_new_msg_4_e3_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_4_e3_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_4_e3_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_4_e3_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_4_e3_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_4_e3_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_4_e3_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Pack message BRAKE_SENSOR.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_brake_sensor_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_brake_sensor_t *src_p,
-    size_t size);
-
-/**
- * Unpack message BRAKE_SENSOR.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_brake_sensor_unpack(
-    struct chery_canfd_brake_sensor_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from BRAKE_SENSOR.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_brake_sensor_init(struct chery_canfd_brake_sensor_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_sensor_drive_mode_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_sensor_drive_mode_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_sensor_drive_mode_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_sensor_epb_release_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_sensor_epb_release_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_sensor_epb_release_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_sensor_new_signal_3_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_sensor_new_signal_3_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_sensor_new_signal_3_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_sensor_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_sensor_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_sensor_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_sensor_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_sensor_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_sensor_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_sensor_brake_press_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_sensor_brake_press_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_sensor_brake_press_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_sensor_new_signal_4_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_sensor_new_signal_4_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_sensor_new_signal_4_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_sensor_charge_status_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_sensor_charge_status_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_sensor_charge_status_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_brake_sensor_brake_request_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_brake_sensor_brake_request_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_brake_sensor_brake_request_is_in_range(uint8_t value);
-
-/**
- * Pack message carlinko.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_carlinko_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_carlinko_t *src_p,
-    size_t size);
-
-/**
- * Unpack message carlinko.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_carlinko_unpack(
-    struct chery_canfd_carlinko_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from carlinko.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_carlinko_init(struct chery_canfd_carlinko_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_carlinko_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_carlinko_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_carlinko_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_carlinko_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_carlinko_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_carlinko_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Pack message EPB.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_epb_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_epb_t *src_p,
-    size_t size);
-
-/**
- * Unpack message EPB.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_epb_unpack(
-    struct chery_canfd_epb_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from EPB.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_epb_init(struct chery_canfd_epb_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_epb_epb_signal_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_epb_epb_signal_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_epb_epb_signal_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_epb_epb_active_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_epb_epb_active_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_epb_epb_active_is_in_range(uint8_t value);
-
-/**
- * Pack message Window_Command.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_window_command_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_window_command_t *src_p,
-    size_t size);
-
-/**
- * Unpack message Window_Command.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_window_command_unpack(
-    struct chery_canfd_window_command_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from Window_Command.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_window_command_init(struct chery_canfd_window_command_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_window_command_new_signal_1_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_window_command_new_signal_1_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_window_command_new_signal_1_is_in_range(uint8_t value);
-
-/**
- * Pack message AEB_COMMAND.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_aeb_command_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_aeb_command_t *src_p,
-    size_t size);
-
-/**
- * Unpack message AEB_COMMAND.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_aeb_command_unpack(
-    struct chery_canfd_aeb_command_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from AEB_COMMAND.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_aeb_command_init(struct chery_canfd_aeb_command_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_aeb_command_aeb_active_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_aeb_command_aeb_active_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_aeb_command_aeb_active_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_51B.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_51_b_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_51_b_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_51B.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_51_b_unpack(
-    struct chery_canfd_new_msg_51_b_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_51B.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_51_b_init(struct chery_canfd_new_msg_51_b_t *msg_p);
-
-/**
- * Pack message NEW_MSG_51D.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_51_d_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_51_d_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_51D.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_51_d_unpack(
-    struct chery_canfd_new_msg_51_d_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_51D.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_51_d_init(struct chery_canfd_new_msg_51_d_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_51_d_new_signal_2_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_51_d_new_signal_2_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_51_d_new_signal_2_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_51_d_hdc_active_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_51_d_hdc_active_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_51_d_hdc_active_is_in_range(uint8_t value);
-
-/**
- * Pack message NEW_MSG_535.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_535_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_535_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_535.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_535_unpack(
-    struct chery_canfd_new_msg_535_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_535.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_535_init(struct chery_canfd_new_msg_535_t *msg_p);
-
-/**
- * Pack message NEW_MSG_537.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int chery_canfd_new_msg_537_pack(
-    uint8_t *dst_p,
-    const struct chery_canfd_new_msg_537_t *src_p,
-    size_t size);
-
-/**
- * Unpack message NEW_MSG_537.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int chery_canfd_new_msg_537_unpack(
-    struct chery_canfd_new_msg_537_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Init message fields to default values from NEW_MSG_537.
- *
- * @param[in] msg_p Message to init.
- *
- * @return zero(0) on success or (-1) in case of nullptr argument.
- */
-int chery_canfd_new_msg_537_init(struct chery_canfd_new_msg_537_t *msg_p);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_537_traksi_command_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_537_traksi_command_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_537_traksi_command_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_537_drive_mode_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_537_drive_mode_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_537_drive_mode_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t chery_canfd_new_msg_537_epb_pressed_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double chery_canfd_new_msg_537_epb_pressed_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool chery_canfd_new_msg_537_epb_pressed_is_in_range(uint8_t value);
+    /**
+     * Decode given signal by applying scaling and offset.
+     *
+     * @param[in] value Signal to decode.
+     *
+     * @return Decoded signal.
+     */
+    double chery_canfd_new_msg_537_epb_pressed_decode(uint8_t value);
 
+    /**
+     * Check that given signal is in allowed range.
+     *
+     * @param[in] value Signal to check.
+     *
+     * @return true if in range, false otherwise.
+     */
+    bool chery_canfd_new_msg_537_epb_pressed_is_in_range(uint8_t value);
 
 #ifdef __cplusplus
 }

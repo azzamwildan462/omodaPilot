@@ -27,6 +27,7 @@ class Mask2LaserScan:
         scan_strategy: int,
         px2m_strategy: int,
         base_frame: str = "base_link",
+        max_range: float = 50.0,
     ):
         """
         scan_strategy:
@@ -53,7 +54,7 @@ class Mask2LaserScan:
         self.angle_max = 1.57       #  +90 deg
         self.angle_increment = 0.002 # ~0.57 deg
         self.range_min = 8.0
-        self.range_max = 50.0
+        self.range_max = max_range
         self.y_batas_bawah_scan_pixel = 240 # Pixel diatas ini akan diabaikan
 
         # Untuk mengurangi beban: skip beberapa kolom
@@ -204,7 +205,7 @@ class Mask2LaserScan:
             (scan.angle_max - scan.angle_min) / scan.angle_increment
         ) + 1
 
-        ranges = [float('inf')] * num_beams
+        ranges = [(scan.range_max - 0.1)] * num_beams
         intensities = [0.0] * num_beams
 
         # 4) Proyeksikan setiap pixel ke base_link dan isi ranges

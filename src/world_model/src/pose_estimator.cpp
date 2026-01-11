@@ -277,6 +277,11 @@ public:
         while (d_gyro < -M_PI)
             d_gyro += 2 * M_PI;
 
+        if (fabsf(d_gyro) > 0.5)
+        {
+            logger.warn("GYRO TERLALU BESAR %.2f", d_gyro);
+        }
+
         // logger.info("%.2f %.2f %.2f -> %.2f %.2f %f", final_pose_xyo[0], final_pose_xyo[1], final_pose_xyo[2], vehicle_speed_ms, encoder_to_meter, dt);
 
         if (use_encoder_pulse)

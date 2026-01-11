@@ -19,6 +19,10 @@ include_directories(include)
 add_executable(keyboard_input src/keyboard_input.cpp)
 ament_target_dependencies(keyboard_input rclcpp std_msgs)
 
+add_executable(udp_can_pc src/udp_can_pc.cpp)
+ament_target_dependencies(udp_can_pc rclcpp std_msgs ros2_utils)
+
+
 set(
   CANBUS_HAL_SRCS 
   src/canable2_slcan.cpp
@@ -39,6 +43,7 @@ install(TARGETS
   keyboard_input
   CANBUS_HAL_node
   serial_imu
+  udp_can_pc
   DESTINATION lib/${PROJECT_NAME}
 )
 

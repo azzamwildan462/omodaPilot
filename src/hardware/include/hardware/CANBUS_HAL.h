@@ -114,6 +114,15 @@ public:
 
     std::vector<uint16_t> intercepted_can_ids;
 
+    uint64_t tick = 0;
+
+    // data dari stm
+    uint8_t relay_state_tx;
+    uint8_t fb_relay_state;
+    uint8_t fb_key_state;
+    uint16_t interval_led_tx;
+    uint8_t counter_stm_tx;
+
     /**
      * Data data internal untuk canbus hal
      */
@@ -135,7 +144,7 @@ public:
     virtual int send_msgs(const std::vector<can_frame_t> &can_msgs) = 0;
     virtual std::vector<can_frame_t> recv_msgs() = 0;
 
-    virtual int update() = 0;
+    virtual int update(uint64_t tick) = 0;
     virtual int init_update_as_new_thread() = 0;
 
     virtual void shutdown() = 0;

@@ -64,6 +64,7 @@ class NydusMaskNode(Node):
     def __init__(self):
         super().__init__("nydus_mask_node")
         self.lock = Lock()
+        self.depth_lock = Lock()
         self.bridge = CvBridge()
         self.has_init = False
 
@@ -103,6 +104,7 @@ class NydusMaskNode(Node):
         P("do_mask2laserscan", False)     # penting
         P("mask2laserscan_px2m_strategy", 0)     # penting
         P("mask2laserscan_scan_strategy", 0)     # penting
+        P("mask2laserscan_max_range", 20.0)     # penting
 
         # -------- Get params --------
         g = self.get_parameter
@@ -143,6 +145,7 @@ class NydusMaskNode(Node):
         self.do_mask2laserscan = bool(g("do_mask2laserscan").value)
         m2ls_px2m_strategy = int(g("mask2laserscan_px2m_strategy").value)
         m2ls_scan_strategy = int(g("mask2laserscan_scan_strategy").value)
+        mask2laserscan_max_range = float(g("mask2laserscan_max_range").value)
 
         # -------- Logger --------
         logger.remove()
@@ -165,7 +168,7 @@ class NydusMaskNode(Node):
             scene_cut=reset_on, scene_cut_thresh=cut_thr
         )
         if self.do_mask2laserscan:
-            self.m2ls = Mask2LaserScan(logger, m2ls_scan_strategy, m2ls_px2m_strategy, base_frame="base_link")
+            self.m2ls = Mask2LaserScan(logger, m2ls_scan_strategy, m2ls_px2m_strategy, base_frame="base_link", max_range=mask2laserscan_max_range)
 
             # TF buffer & listener (listen T base_link <- camera_frame_id)
             self.tf_buffer = tf2_ros.Buffer()
@@ -219,7 +222,8 @@ class NydusMaskNode(Node):
             logger.error(f"cv_bridge error (depth): {e}")
             return
 
-        self.m2ls.px2m_converter.set_depth_frame(depth_frame)
+        with self.depth_lock:
+            self.m2ls.px2m_converter.set_depth_frame(depth_frame)
     
     def _cb_camera_info(self, msg: CameraInfo):
         if not self.has_init or not self.do_mask2laserscan:
@@ -283,7 +287,9 @@ class NydusMaskNode(Node):
         # -------- Optional: mask -> LaserScan --------
         if self.do_mask2laserscan and self.has_extrinsic and self.is_camera_info_set:
             # Mask2LaserScan.__call__(mask, header: Optional[Header])
-            laser_scan = self.m2ls(mask_u8, header)
+
+            with self.depth_lock:
+                laser_scan = self.m2ls(mask_u8, header)
             if laser_scan is not None and self.pub_laserscan is not None:
                 self.pub_laserscan.publish(laser_scan)
 

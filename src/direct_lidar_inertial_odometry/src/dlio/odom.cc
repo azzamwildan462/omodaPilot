@@ -64,7 +64,7 @@ dlio::OdomNode::OdomNode() : Node("dlio_odom_node")
 
   this->br = std::make_shared<tf2_ros::TransformBroadcaster>(*this);
 
-  this->publish_timer = this->create_wall_timer(std::chrono::duration<double>(0.01),
+  this->publish_timer = this->create_wall_timer(std::chrono::duration<double>(this->rate_publish_odometry),
                                                 std::bind(&dlio::OdomNode::publishPose, this));
 
   this->T = Eigen::Matrix4f::Identity();
@@ -119,6 +119,15 @@ dlio::OdomNode::OdomNode() : Node("dlio_odom_node")
   this->gicp.setTransformationEpsilon(this->gicp_transformation_ep_);
   this->gicp.setRotationEpsilon(this->gicp_rotation_ep_);
   this->gicp.setInitialLambdaFactor(this->gicp_init_lambda_factor_);
+  // if (this->gicp_use_reciprocal_correspondences_)
+  // {
+  //   this->gicp.setUseReciprocalCorrespondences(true);
+  // }
+  if (this->gicp_ransac_iterations_ > 0)
+  {
+    this->gicp.setRANSACIterations(this->gicp_ransac_iterations_);
+    this->gicp.setRANSACOutlierRejectionThreshold(this->gicp_ransac_outliers_rejection_threshold_);
+  }
 
   this->gicp_temp.setCorrespondenceRandomness(this->gicp_k_correspondences_);
   this->gicp_temp.setMaxCorrespondenceDistance(this->gicp_max_corr_dist_);
@@ -126,6 +135,15 @@ dlio::OdomNode::OdomNode() : Node("dlio_odom_node")
   this->gicp_temp.setTransformationEpsilon(this->gicp_transformation_ep_);
   this->gicp_temp.setRotationEpsilon(this->gicp_rotation_ep_);
   this->gicp_temp.setInitialLambdaFactor(this->gicp_init_lambda_factor_);
+  // if (this->gicp_use_reciprocal_correspondences_)
+  // {
+  //   this->gicp_temp.setUseReciprocalCorrespondences(true);
+  // }
+  if (this->gicp_ransac_iterations_ > 0)
+  {
+    this->gicp_temp.setRANSACIterations(this->gicp_ransac_iterations_);
+    this->gicp_temp.setRANSACOutlierRejectionThreshold(this->gicp_ransac_outliers_rejection_threshold_);
+  }
 
   pcl::Registration<PointType, PointType>::KdTreeReciprocalPtr temp;
   this->gicp.setSearchMethodSource(temp, true);
@@ -239,6 +257,8 @@ void dlio::OdomNode::getParams()
 
   dlio::declare_param(this, "is_debug", this->is_debug, false);
 
+  dlio::declare_param(this, "rate_publish_odometry", this->rate_publish_odometry, 20.0);
+
   // Extrinsics
   std::vector<double> t_default{0., 0., 0.};
   std::vector<double> R_default{1., 0., 0., 0., 1., 0., 0., 0., 1.};
@@ -317,6 +337,10 @@ void dlio::OdomNode::getParams()
   dlio::declare_param(this, "odom/gicp/transformationEpsilon", this->gicp_transformation_ep_, 0.0005);
   dlio::declare_param(this, "odom/gicp/rotationEpsilon", this->gicp_rotation_ep_, 0.0005);
   dlio::declare_param(this, "odom/gicp/initLambdaFactor", this->gicp_init_lambda_factor_, 1e-9);
+  dlio::declare_param(this, "odom/gicp/useReciprocalCorrespondences", this->gicp_use_reciprocal_correspondences_, false);
+  dlio::declare_param(this, "odom/gicp/ransacIterations", this->gicp_ransac_iterations_, 0);
+  dlio::declare_param(this, "odom/gicp/ransacOutliersRejectionThreshold", this->gicp_ransac_outliers_rejection_threshold_, 1.0);
+  dlio::declare_param(this, "odom/gicp/maxFitnessScore", this->gicp_max_fitness_score_, 0.5);
 
   // Geometric Observer
   dlio::declare_param(this, "odom/geo/Kp", this->geo_Kp_, 1.0);
@@ -349,12 +373,16 @@ void dlio::OdomNode::publishPose()
 
   this->odom_ros.pose.pose.position.x = this->state.p[0];
   this->odom_ros.pose.pose.position.y = this->state.p[1];
-  this->odom_ros.pose.pose.position.z = this->state.p[2];
+  this->odom_ros.pose.pose.position.z = 0;
 
-  this->odom_ros.pose.pose.orientation.w = this->state.q.w();
-  this->odom_ros.pose.pose.orientation.x = this->state.q.x();
-  this->odom_ros.pose.pose.orientation.y = this->state.q.y();
-  this->odom_ros.pose.pose.orientation.z = this->state.q.z();
+  double siny_cosp = 2 * (this->state.q.w() * this->state.q.z() + this->state.q.x() * this->state.q.y());
+  double cosy_cosp = 1 - 2 * (this->state.q.y() * this->state.q.y() + this->state.q.z() * this->state.q.z());
+  double yaw = std::atan2(siny_cosp, cosy_cosp);
+
+  this->odom_ros.pose.pose.orientation.w = std::cos(yaw * 0.5);
+  this->odom_ros.pose.pose.orientation.x = 0;
+  this->odom_ros.pose.pose.orientation.y = 0;
+  this->odom_ros.pose.pose.orientation.z = std::sin(yaw * 0.5);
 
   this->odom_ros.pose.covariance[0] = 1e-2;
   this->odom_ros.pose.covariance[7] = 1e-2;
@@ -365,10 +393,10 @@ void dlio::OdomNode::publishPose()
 
   this->odom_ros.twist.twist.linear.x = this->state.v.lin.w[0];
   this->odom_ros.twist.twist.linear.y = this->state.v.lin.w[1];
-  this->odom_ros.twist.twist.linear.z = this->state.v.lin.w[2];
+  this->odom_ros.twist.twist.linear.z = 0;
 
-  this->odom_ros.twist.twist.angular.x = this->state.v.ang.b[0];
-  this->odom_ros.twist.twist.angular.y = this->state.v.ang.b[1];
+  this->odom_ros.twist.twist.angular.x = 0;
+  this->odom_ros.twist.twist.angular.y = 0;
   this->odom_ros.twist.twist.angular.z = this->state.v.ang.b[2];
 
   this->odom_ros.twist.covariance[0] = 1e-2;
@@ -380,43 +408,43 @@ void dlio::OdomNode::publishPose()
 
   this->odom_pub->publish(this->odom_ros);
 
-  // geometry_msgs::msg::PoseStamped
-  this->pose_ros.header.stamp = this->imu_stamp;
-  this->pose_ros.header.frame_id = this->odom_frame;
+  // // geometry_msgs::msg::PoseStamped
+  // this->pose_ros.header.stamp = this->imu_stamp;
+  // this->pose_ros.header.frame_id = this->odom_frame;
 
-  this->pose_ros.pose.position.x = this->state.p[0];
-  this->pose_ros.pose.position.y = this->state.p[1];
-  this->pose_ros.pose.position.z = this->state.p[2];
+  // this->pose_ros.pose.position.x = this->state.p[0];
+  // this->pose_ros.pose.position.y = this->state.p[1];
+  // this->pose_ros.pose.position.z = this->state.p[2];
 
-  this->pose_ros.pose.orientation.w = this->state.q.w();
-  this->pose_ros.pose.orientation.x = this->state.q.x();
-  this->pose_ros.pose.orientation.y = this->state.q.y();
-  this->pose_ros.pose.orientation.z = this->state.q.z();
+  // this->pose_ros.pose.orientation.w = this->state.q.w();
+  // this->pose_ros.pose.orientation.x = this->state.q.x();
+  // this->pose_ros.pose.orientation.y = this->state.q.y();
+  // this->pose_ros.pose.orientation.z = this->state.q.z();
 
-  this->pose_pub->publish(this->pose_ros);
+  // this->pose_pub->publish(this->pose_ros);
 }
 
 void dlio::OdomNode::publishToROS(pcl::PointCloud<PointType>::ConstPtr published_cloud, Eigen::Matrix4f T_cloud)
 {
-  this->publishCloud(published_cloud, T_cloud);
+  // this->publishCloud(published_cloud, T_cloud);
 
-  // nav_msgs::msg::Path
-  this->path_ros.header.stamp = this->imu_stamp;
-  this->path_ros.header.frame_id = this->odom_frame;
+  // // nav_msgs::msg::Path
+  // this->path_ros.header.stamp = this->imu_stamp;
+  // this->path_ros.header.frame_id = this->odom_frame;
 
-  geometry_msgs::msg::PoseStamped p;
-  p.header.stamp = this->imu_stamp;
-  p.header.frame_id = this->odom_frame;
-  p.pose.position.x = this->state.p[0];
-  p.pose.position.y = this->state.p[1];
-  p.pose.position.z = this->state.p[2];
-  p.pose.orientation.w = this->state.q.w();
-  p.pose.orientation.x = this->state.q.x();
-  p.pose.orientation.y = this->state.q.y();
-  p.pose.orientation.z = this->state.q.z();
+  // geometry_msgs::msg::PoseStamped p;
+  // p.header.stamp = this->imu_stamp;
+  // p.header.frame_id = this->odom_frame;
+  // p.pose.position.x = this->state.p[0];
+  // p.pose.position.y = this->state.p[1];
+  // p.pose.position.z = this->state.p[2];
+  // p.pose.orientation.w = this->state.q.w();
+  // p.pose.orientation.x = this->state.q.x();
+  // p.pose.orientation.y = this->state.q.y();
+  // p.pose.orientation.z = this->state.q.z();
 
-  this->path_ros.poses.push_back(p);
-  this->path_pub->publish(this->path_ros);
+  // this->path_ros.poses.push_back(p);
+  // this->path_pub->publish(this->path_ros);
 
   // transform: odom to baselink
   geometry_msgs::msg::TransformStamped transformStamped;
@@ -427,48 +455,52 @@ void dlio::OdomNode::publishToROS(pcl::PointCloud<PointType>::ConstPtr published
 
   transformStamped.transform.translation.x = this->state.p[0];
   transformStamped.transform.translation.y = this->state.p[1];
-  transformStamped.transform.translation.z = this->state.p[2];
+  transformStamped.transform.translation.z = 0;
 
-  transformStamped.transform.rotation.w = this->state.q.w();
-  transformStamped.transform.rotation.x = this->state.q.x();
-  transformStamped.transform.rotation.y = this->state.q.y();
-  transformStamped.transform.rotation.z = this->state.q.z();
+  double siny_cosp = 2 * (this->state.q.w() * this->state.q.z() + this->state.q.x() * this->state.q.y());
+  double cosy_cosp = 1 - 2 * (this->state.q.y() * this->state.q.y() + this->state.q.z() * this->state.q.z());
+  double yaw = std::atan2(siny_cosp, cosy_cosp);
 
-  br->sendTransform(transformStamped);
-
-  // transform: baselink to imu
-  transformStamped.header.stamp = this->imu_stamp;
-  transformStamped.header.frame_id = this->baselink_frame;
-  transformStamped.child_frame_id = this->imu_frame;
-
-  transformStamped.transform.translation.x = this->extrinsics.baselink2imu.t[0];
-  transformStamped.transform.translation.y = this->extrinsics.baselink2imu.t[1];
-  transformStamped.transform.translation.z = this->extrinsics.baselink2imu.t[2];
-
-  Eigen::Quaternionf q(this->extrinsics.baselink2imu.R);
-  transformStamped.transform.rotation.w = q.w();
-  transformStamped.transform.rotation.x = q.x();
-  transformStamped.transform.rotation.y = q.y();
-  transformStamped.transform.rotation.z = q.z();
+  transformStamped.transform.rotation.w = std::cos(yaw * 0.5);
+  transformStamped.transform.rotation.x = 0;
+  transformStamped.transform.rotation.y = 0;
+  transformStamped.transform.rotation.z = std::sin(yaw * 0.5);
 
   br->sendTransform(transformStamped);
 
-  // transform: baselink to lidar
-  transformStamped.header.stamp = this->imu_stamp;
-  transformStamped.header.frame_id = this->baselink_frame;
-  transformStamped.child_frame_id = this->lidar_frame;
+  // // transform: baselink to imu
+  // transformStamped.header.stamp = this->imu_stamp;
+  // transformStamped.header.frame_id = this->baselink_frame;
+  // transformStamped.child_frame_id = this->imu_frame;
 
-  transformStamped.transform.translation.x = this->extrinsics.baselink2lidar.t[0];
-  transformStamped.transform.translation.y = this->extrinsics.baselink2lidar.t[1];
-  transformStamped.transform.translation.z = this->extrinsics.baselink2lidar.t[2];
+  // transformStamped.transform.translation.x = this->extrinsics.baselink2imu.t[0];
+  // transformStamped.transform.translation.y = this->extrinsics.baselink2imu.t[1];
+  // transformStamped.transform.translation.z = this->extrinsics.baselink2imu.t[2];
 
-  Eigen::Quaternionf qq(this->extrinsics.baselink2lidar.R);
-  transformStamped.transform.rotation.w = qq.w();
-  transformStamped.transform.rotation.x = qq.x();
-  transformStamped.transform.rotation.y = qq.y();
-  transformStamped.transform.rotation.z = qq.z();
+  // Eigen::Quaternionf q(this->extrinsics.baselink2imu.R);
+  // transformStamped.transform.rotation.w = q.w();
+  // transformStamped.transform.rotation.x = q.x();
+  // transformStamped.transform.rotation.y = q.y();
+  // transformStamped.transform.rotation.z = q.z();
 
-  br->sendTransform(transformStamped);
+  // br->sendTransform(transformStamped);
+
+  // // transform: baselink to lidar
+  // transformStamped.header.stamp = this->imu_stamp;
+  // transformStamped.header.frame_id = this->baselink_frame;
+  // transformStamped.child_frame_id = this->lidar_frame;
+
+  // transformStamped.transform.translation.x = this->extrinsics.baselink2lidar.t[0];
+  // transformStamped.transform.translation.y = this->extrinsics.baselink2lidar.t[1];
+  // transformStamped.transform.translation.z = this->extrinsics.baselink2lidar.t[2];
+
+  // Eigen::Quaternionf qq(this->extrinsics.baselink2lidar.R);
+  // transformStamped.transform.rotation.w = qq.w();
+  // transformStamped.transform.rotation.x = qq.x();
+  // transformStamped.transform.rotation.y = qq.y();
+  // transformStamped.transform.rotation.z = qq.z();
+
+  // br->sendTransform(transformStamped);
 }
 
 void dlio::OdomNode::publishCloud(pcl::PointCloud<PointType>::ConstPtr published_cloud, Eigen::Matrix4f T_cloud)
@@ -1147,6 +1179,21 @@ void dlio::OdomNode::getNextPose()
   pcl::PointCloud<PointType>::Ptr aligned = std::make_shared<pcl::PointCloud<PointType>>();
   this->gicp.align(*aligned);
 
+  // if (!this->gicp.hasConverged())
+  // {
+  //   RCLCPP_INFO(this->get_logger(), "GICP did not converge!");
+  //   this->T = this->T_prior;
+  //   return;
+  // }
+
+  // this->cok_icp_score = this->gicp.getFitnessScore();
+  // if (this->cok_icp_score > this->gicp_max_fitness_score_)
+  // {
+  //   RCLCPP_INFO(this->get_logger(), "GICP fitness score too high: %f", this->cok_icp_score);
+  //   this->T = this->T_prior;
+  //   return;
+  // }
+
   // Get final transformation in global frame
   this->T_corr = this->gicp.getFinalTransformation(); // "correction" transformation
   this->T = this->T_corr * this->T_prior;
@@ -1424,9 +1471,9 @@ void dlio::OdomNode::propagateState()
     const double dt_enc = std::fabs(t_enc - t_imu);
 
     // Simple time-sync gate: only trust encoder if timestamps are close.
-    // You can tighten or loosen this threshold as needed.
-    if (dt_enc < 0.05)
-    { // 50 ms
+    // RCLCPP_INFO(this->get_logger(), " dt_enc: %.3f ", dt_enc);
+    if (dt_enc < 0.1)
+    {
       use_encoder_vel = true;
     }
   }
@@ -1504,6 +1551,24 @@ void dlio::OdomNode::updateState()
 
   Eigen::Vector3f err = pin - this->state.p;
   Eigen::Vector3f err_body;
+
+  this->error_lidar_state0 = err[0];
+  this->error_lidar_state1 = err[1];
+  this->error_lidar_state2 = err[2];
+
+  // Tambahan
+  // if (fabs(err[0]) > 3.33)
+  // {
+  //   err[0] = 0;
+  // }
+  // if (fabs(err[1]) > 3.33)
+  // {
+  //   err[1] = 0;
+  // }
+  // if (fabs(err[2]) > 3.33)
+  // {
+  //   err[2] = 0;
+  // }
 
   err_body = qhat.conjugate()._transformVector(err);
 
@@ -2015,8 +2080,8 @@ void dlio::OdomNode::buildKeyframesAndSubmap(State vehicle_state)
     this->keyframes[i].second = transformed_keyframe;
     this->keyframe_normals[i] = transformed_covariances;
 
-    this->publish_keyframe_thread = std::thread(&dlio::OdomNode::publishKeyframe, this, this->keyframes[i], this->keyframe_timestamps[i]);
-    this->publish_keyframe_thread.detach();
+    // this->publish_keyframe_thread = std::thread(&dlio::OdomNode::publishKeyframe, this, this->keyframes[i], this->keyframe_timestamps[i]);
+    // this->publish_keyframe_thread.detach();
   }
 
   lock.unlock();
@@ -2195,7 +2260,7 @@ void dlio::OdomNode::debug()
             << "Lin Velocity {B}  [xyz] :: " + to_string_with_precision(this->state.v.lin.b[0], 4) + " " + to_string_with_precision(this->state.v.lin.b[1], 4) + " " + to_string_with_precision(this->state.v.lin.b[2], 4)
             << "|" << std::endl;
   std::cout << "| " << std::left << std::setfill(' ') << std::setw(66)
-            << "Ang Velocity {B}  [xyz] :: " + to_string_with_precision(this->state.v.ang.b[0], 4) + " " + to_string_with_precision(this->state.v.ang.b[1], 4) + " " + to_string_with_precision(this->state.v.ang.b[2], 4)
+            << "Ang Velocity {B}  [xyz] :: " + to_string_with_precision(this->cok_icp_score, 4) + " " + to_string_with_precision(this->state.v.ang.b[1], 4) + " " + to_string_with_precision(this->state.v.ang.b[2], 4)
             << "|" << std::endl;
   std::cout << "| " << std::left << std::setfill(' ') << std::setw(66)
             << "Accel Bias        [xyz] :: " + to_string_with_precision(this->state.b.accel[0], 8) + " " + to_string_with_precision(this->state.b.accel[1], 8) + " " + to_string_with_precision(this->state.b.accel[2], 8)

@@ -1,4 +1,3 @@
-// asd
 /**
  *
  * Idenya nge transform scan box daripada transform semua lidar point ke frame scan box
@@ -107,6 +106,7 @@ public:
     bool hitung_roadseg2laserscan = false;
     float threshold_delta_z = 0.3;
     float max_range_gap = 0.9;
+    float laser_scan_max_range = 18.0;
 
     //----Variables
     float result_lidar_kanan = 0.0;
@@ -192,6 +192,9 @@ public:
     AllObstacleFilter()
         : Node("obstacle_filter")
     {
+        this->declare_parameter("laser_scan_max_range", 18.0);
+        this->get_parameter("laser_scan_max_range", laser_scan_max_range);
+
         this->declare_parameter("pcl2laser_obs_x_min", -10.0);
         this->get_parameter("pcl2laser_obs_x_min", pcl2laser_obs_x_min);
 
@@ -368,6 +371,11 @@ public:
             sub_roadseg_mask = this->create_subscription<sensor_msgs::msg::Image>(
                 roadseg_topic, 1, std::bind(&AllObstacleFilter::callback_sub_roadseg_mask, this, std::placeholders::_1), sub_roadseg_options);
         }
+
+        // Create best effort publishers
+        // auto qos_best_effort = rclcpp::QoS(rclcpp::KeepLast(1)).best_effort();
+        // pub_all_pcl2laserscan = this->create_publisher<sensor_msgs::msg::LaserScan>(
+        //     "/all_obstacle_filter/all_pcl2laserscan", qos_best_effort);
 
         //----Publisher
         pub_result_all_obstacle = this->create_publisher<std_msgs::msg::Float32MultiArray>(
@@ -1189,7 +1197,7 @@ public:
         const float angle_max = 3.14f;
         const float angle_inc = 0.0174532925f; // 1 derajat
         const float range_min = 0.05f;
-        const float range_max = 30.0f;
+        const float range_max = laser_scan_max_range;
 
         laser_scan_msg.header.stamp = this->now();
         laser_scan_msg.header.frame_id = target_frame;
@@ -1222,7 +1230,7 @@ public:
             const float z = point.z;
 
             const float r = std::sqrt(x * x + y * y);
-            if (!std::isfinite(r) || r < range_min || r > range_max)
+            if (!std::isfinite(r) || r < range_min /*|| r > range_max */)
                 continue;
 
             const float angle = std::atan2(y, x);
@@ -1241,7 +1249,7 @@ public:
         // 2. Deteksi step trotoar di tiap beam (PARALEL dengan OpenMP)
         // ----------------------------------------------------------
         laser_scan_msg.ranges.assign(
-            num_ranges, std::numeric_limits<float>::infinity());
+            num_ranges, range_max - 0.1);
 
         const int num_bins = static_cast<int>(num_ranges);
 
@@ -1250,6 +1258,7 @@ public:
 #endif
         for (int i = 0; i < num_bins; ++i)
         {
+            laser_scan_msg.ranges[i] = range_max - 0.1;
             auto &vec = beams[i];
             if (vec.size() < 2)
             {
@@ -1264,7 +1273,7 @@ public:
                       });
 
             // kandidat trotoar: pilih yang r paling kecil
-            float best_step_range = std::numeric_limits<float>::infinity();
+            float best_step_range = range_max - 0.1;
 
             float prev_r = vec[0].r;
             float prev_z = vec[0].z;
@@ -1300,9 +1309,16 @@ public:
             if (std::isfinite(best_step_range))
             {
                 laser_scan_msg.ranges[i] = best_step_range;
+                // laser_scan_msg.ranges[i] = range_max - 0.1;
             }
+            // else
+            // {
+            //     laser_scan_msg.ranges[i] = range_max;
+            // }
             // kalau tidak ada kandidat, biarkan tetap infinity
         }
+
+        laser_scan_msg.intensities.resize(num_ranges, 0.0f);
 
         return laser_scan_msg;
     }

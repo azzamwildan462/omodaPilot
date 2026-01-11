@@ -23,6 +23,9 @@ from sensor_msgs.msg import NavSatFix
 from nav_msgs.msg import Path
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseWithCovarianceStamped
+
+from tf2_ros import Buffer, TransformListener
 
 # ============================
 #          CONSTANTS
@@ -280,15 +283,15 @@ class waypoint_router(Node):
 
         self.pkg_path = get_package_share_directory("world_model")
 
-        self.WPS_FOLDER = os.path.join(self.pkg_path, "../../../..", "src/world_model/waypoints/segments")
+        self.WPS_FOLDER = os.path.join(self.pkg_path, "../../../..", "src/world_model/waypoints/test")
         self.DST_FILE = os.path.join(self.pkg_path, "../../../..", "src/world_model/waypoints/destinations/rc_robotik.csv")
         self.segments = self.load_all_segments(self.WPS_FOLDER)
         self.destinations = self.load_destinations_csv(self.DST_FILE)
 
         logger.info(f"Loaded {len(self.segments)} segments from {self.WPS_FOLDER}")
 
-        self.graph = self.build_graph(self.segments, threshold_meters=5.0)
-        logger.info(f"Graph built with {len(self.graph)} nodes")
+        # self.graph = self.build_graph(self.segments, threshold_meters=5.0)
+        # logger.info(f"Graph built with {len(self.graph)} nodes")
 
         # Print graph connections
         # for node, neighbors in graph.items():
@@ -314,11 +317,13 @@ class waypoint_router(Node):
         self.declare_parameter("gps_topic", "/fix")
         self.declare_parameter("timer_period", 1.0)
         self.declare_parameter("destinations_file", self.DST_FILE)
+        self.declare_parameter("offset_degree", 0.0)
 
         # Ambil nilai parameter
         self.gps_topic: str = self.get_parameter("gps_topic").value
         self.period: float = self.get_parameter("timer_period").value
         self.DST_FILE: str = self.get_parameter("destinations_file").value
+        self.offset_degree: float = self.get_parameter("offset_degree").value
 
         self.get_logger().info(
             f"Params:\n"
@@ -336,9 +341,15 @@ class waypoint_router(Node):
             self.gps_callback,
             1
         )
+        self.gps_sub_filtered = self.create_subscription(
+            NavSatFix,
+            '/gps/filtered',
+            self.gps_callback_filtered,
+            1
+        )
         self.odom_subscription = self.create_subscription(
-            Odometry,
-            '/odom',
+            PoseWithCovarianceStamped,
+            '/slam/localization_pose',
             self.odom_callback,
             1
         )
@@ -351,6 +362,22 @@ class waypoint_router(Node):
             '/waypoint_router/path',
             1
         )
+        self.gps_pose_fix_pub = self.create_publisher(
+            PoseStamped,
+            '/waypoint_router/gps_pose_fix',
+            1
+        )
+        self.gps_pose_filtered_pub = self.create_publisher(
+            PoseStamped,
+            '/waypoint_router/gps_pose_filtered',
+            1
+        )
+
+        # ============================
+        #        TF LISTENER
+        # ============================
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self)
 
         # ============================
         #          ROS TIMER
@@ -366,6 +393,34 @@ class waypoint_router(Node):
         self.gps_lat = msg.latitude
         self.gps_lon = msg.longitude
 
+        tf = self.get_map_to_base_transform()
+        if tf is None:
+            self.get_logger().warn("No TF map→base_link, skipping path publish")
+            return
+
+        q = tf.transform.rotation
+        yaw = self.quaternion_to_yaw(q)
+
+        cos_yaw = math.cos(-yaw + math.radians(self.offset_degree))
+        sin_yaw = math.sin(-yaw + math.radians(self.offset_degree))
+
+        e, n = self.latlon_to_local(-7.278155399999999, 112.7974098, self.gps_lat, self.gps_lon)
+
+        e_rot = e * cos_yaw - n * sin_yaw
+        n_rot = e * sin_yaw + n * cos_yaw
+
+        pose_msg = PoseStamped()
+        pose_msg.header.frame_id = "base_link"
+        pose_msg.header.stamp = self.get_clock().now().to_msg()
+        pose_msg.pose.position.x = e_rot * 56.8
+        pose_msg.pose.position.y = n_rot * 56.8
+        pose_msg.pose.position.z = 0.0
+        pose_msg.pose.orientation.x = 0.0
+        pose_msg.pose.orientation.y = 0.0
+        pose_msg.pose.orientation.z = 0.0
+        pose_msg.pose.orientation.w = 1.0
+        self.gps_pose_fix_pub.publish(pose_msg)
+
         if self.got_pose == 0:
             self.got_pose = 1
             logger.info(f"Initial GPS fix acquired: lat={self.gps_lat:.6f}, lon={self.gps_lon:.6f}")
@@ -373,6 +428,38 @@ class waypoint_router(Node):
 
         # logger.info(f"GPS Update: lat={self.gps_lat:.6f}, lon={self.gps_lon:.6f}")
 
+    def gps_callback_filtered(self, msg):
+        gps_lat = msg.latitude
+        gps_lon = msg.longitude
+
+        tf = self.get_map_to_base_transform()
+        if tf is None:
+            self.get_logger().warn("No TF map→base_link, skipping path publish")
+            return
+
+        q = tf.transform.rotation
+        yaw = self.quaternion_to_yaw(q)
+
+        cos_yaw = math.cos(-yaw + math.radians(self.offset_degree))
+        sin_yaw = math.sin(-yaw + math.radians(self.offset_degree))
+
+        e, n = self.latlon_to_local(-7.278155399999999, 112.7974098, gps_lat, gps_lon)
+
+        e_rot = e * cos_yaw - n * sin_yaw
+        n_rot = e * sin_yaw + n * cos_yaw
+
+        pose_msg = PoseStamped()
+        pose_msg.header.frame_id = "base_link"
+        pose_msg.header.stamp = self.get_clock().now().to_msg()
+        pose_msg.pose.position.x = e_rot * 56.8
+        pose_msg.pose.position.y = n_rot * 56.8
+        pose_msg.pose.position.z = 0.0
+        pose_msg.pose.orientation.x = 0.0
+        pose_msg.pose.orientation.y = 0.0
+        pose_msg.pose.orientation.z = 0.0
+        pose_msg.pose.orientation.w = 1.0
+        self.gps_pose_filtered_pub.publish(pose_msg)
+       
     def odom_callback(self, msg):
         q = msg.pose.pose.orientation
         siny_cosp = 2 * (q.w * q.z + q.x * q.y)
@@ -381,41 +468,68 @@ class waypoint_router(Node):
         self.car_orientation_rad = yaw
 
     def timer_callback(self):
-        logger.info(f"Timer triggered at GPS: lat={self.gps_lat:.6f}, lon={self.gps_lon:.6f}")
+        # logger.info(f"Timer triggered at GPS: lat={self.gps_lat:.6f}, lon={self.gps_lon:.6f}")
 
-        if self.dst_idx >= self.destinations[0].shape[0]:
-            logger.info("All destinations have been processed.")
-            self.timer.cancel()
-            return
-        else:
-            logger.info(f"Processing destination {self.dst_idx + 1} of {self.destinations[0].shape[0]}")
-            self.dst_lat = self.destinations[0][self.dst_idx]
-            self.dst_lon = self.destinations[1][self.dst_idx]
+        # if self.dst_idx >= self.destinations[0].shape[0]:
+        #     logger.info("All destinations have been processed.")
+        #     self.timer.cancel()
+        #     return
+        # else:
+        #     logger.info(f"Processing destination {self.dst_idx + 1} of {self.destinations[0].shape[0]}")
+        #     self.dst_lat = self.destinations[0][self.dst_idx]
+        #     self.dst_lon = self.destinations[1][self.dst_idx]
 
-            if self.has_arrived(self.gps_lat, self.gps_lon, self.dst_lat, self.dst_lon, threshold_meters=5.0):
-                logger.info(f"Arrived at destination {self.dst_idx + 1}: lat={self.dst_lat:.6f}, lon={self.dst_lon:.6f}")
-                self.dst_idx += 1
-                self.got_final_wps = 0
-                self.final_wps = []
-                return
+        #     if self.has_arrived(self.gps_lat, self.gps_lon, self.dst_lat, self.dst_lon, threshold_meters=5.0):
+        #         logger.info(f"Arrived at destination {self.dst_idx + 1}: lat={self.dst_lat:.6f}, lon={self.dst_lon:.6f}")
+        #         self.dst_idx += 1
+        #         self.got_final_wps = 0
+        #         self.final_wps = []
+        #         return
             
-            if self.got_final_wps == 0:
-                current_segment, wp_idx, d = self.find_nearest_segment(self.segments, self.gps_lat, self.gps_lon)
-                goal_segment, _, _ = self.find_nearest_segment(self.segments, self.dst_lat, self.dst_lon)
-                START = current_segment
-                GOAL = goal_segment
-                route, total_cost = self.dijkstra(self.segments, self.graph, START, GOAL)
-                logger.info(f"Route to destination {self.dst_idx + 1}: {route} with total cost {total_cost:.2f}")
+        #     if self.got_final_wps == 0:
+        #         current_segment, wp_idx, d = self.find_nearest_segment(self.segments, self.gps_lat, self.gps_lon)
+        #         goal_segment, _, _ = self.find_nearest_segment(self.segments, self.dst_lat, self.dst_lon)
+        #         START = current_segment
+        #         GOAL = goal_segment
+        #         route, total_cost = self.dijkstra(self.segments, self.graph, START, GOAL)
+        #         logger.info(f"Route to destination {self.dst_idx + 1}: {route} with total cost {total_cost:.2f}")
 
-                if route is None:
-                    logger.error(f"No route found to destination {self.dst_idx + 1}: lat={self.dst_lat:.6f}, lon={self.dst_lon:.6f}")
-                    return
+        #         if route is None:
+        #             logger.error(f"No route found to destination {self.dst_idx + 1}: lat={self.dst_lat:.6f}, lon={self.dst_lon:.6f}")
+        #             return
 
-                self.final_wps = self.generate_waypoints_from_route(self.segments, route, current_segment, wp_idx, self.dst_lat, self.dst_lon)
-                logger.info(f"Generated final waypoints to destination {self.dst_idx + 1}: {len(self.final_wps)} points")
-                self.got_final_wps = 1
+        #         self.final_wps = self.generate_waypoints_from_route(self.segments, route, current_segment, wp_idx, self.dst_lat, self.dst_lon)
+        #         logger.info(f"Generated final waypoints to destination {self.dst_idx + 1}: {len(self.final_wps)} points")
+        #         self.got_final_wps = 1
+
+        tf = self.get_map_to_base_transform()
+        if tf is None:
+            self.get_logger().warn("No TF map→base_link, skipping path publish")
+            return
         
-        crop_wps = self.crop_waypoints_by_distance(self.final_wps, self.gps_lat, self.gps_lon, max_distance=30.0)
+        q = tf.transform.rotation
+        yaw = self.quaternion_to_yaw(q)
+
+        cos_yaw = math.cos(-yaw + math.radians(self.offset_degree))
+        sin_yaw = math.sin(-yaw + math.radians(self.offset_degree))
+
+        self.dst_lat = self.destinations[0][self.dst_idx]
+        self.dst_lon = self.destinations[1][self.dst_idx]
+
+        current_segment, wp_idx, d = self.find_nearest_segment(self.segments, self.gps_lat, self.gps_lon)
+        goal_segment, _, _ = self.find_nearest_segment(self.segments, self.dst_lat, self.dst_lon)
+
+        # logger.info(f"current_segment={current_segment}, wp_idx={wp_idx}, goal_segment={goal_segment}")
+        # self.get_logger().info(f"current_segment={current_segment}, wp_idx={wp_idx}, goal_segment={goal_segment}")
+
+        START = current_segment
+        GOAL = goal_segment
+
+        # route, total_cost = self.dijkstra(self.segments, self.graph, START, GOAL)
+        # self.final_wps = self.generate_waypoints_from_route(self.segments, route, current_segment, wp_idx, self.dst_lat, self.dst_lon)
+        # crop_wps = self.crop_waypoints_by_distance(self.final_wps, self.gps_lat, self.gps_lon, max_distance=100.0)
+
+        crop_wps = self.load_waypoints_csv(self.WPS_FOLDER + "/gps_log2.csv")
 
         path_msg = Path()
         path_msg.header.frame_id = "base_link"
@@ -427,16 +541,14 @@ class waypoint_router(Node):
                 lat, lon
             )
 
-            cos_yaw = math.cos(-self.car_orientation_rad)
-            sin_yaw = math.sin(-self.car_orientation_rad)
             e_rot = e * cos_yaw - n * sin_yaw
             n_rot = e * sin_yaw + n * cos_yaw
 
             pose_stamped = PoseStamped()
-            pose_stamped.header.frame_id = "base_link"
+            pose_stamped.header.frame_id = "map"
             pose_stamped.header.stamp = self.get_clock().now().to_msg()
-            pose_stamped.pose.position.x = e_rot
-            pose_stamped.pose.position.y = n_rot
+            pose_stamped.pose.position.x = e_rot * 56.8
+            pose_stamped.pose.position.y = n_rot * 56.8
             pose_stamped.pose.position.z = 0.0
             pose_stamped.pose.orientation.x = 0.0
             pose_stamped.pose.orientation.y = 0.0
@@ -444,8 +556,27 @@ class waypoint_router(Node):
             pose_stamped.pose.orientation.w = 1.0
             path_msg.poses.append(pose_stamped)
         
-        logger.info(f"Published {len(crop_wps)} waypoints (cropped)")
+        # logger.info(f"Published {len(crop_wps)} waypoints (cropped)")
         self.path_pub.publish(path_msg)
+
+    def get_map_to_base_transform(self):
+        try:
+            tf = self.tf_buffer.lookup_transform(
+                'map',
+                'base_link',
+                rclpy.time.Time(),
+                timeout=rclpy.duration.Duration(seconds=0.5)
+            )
+            return tf
+        except Exception as e:
+            self.get_logger().warn(f"TF lookup failed: {e}")
+            return None
+        
+    def quaternion_to_yaw(self, q):
+        # q = geometry_msgs.msg.Quaternion
+        siny_cosp = 2 * (q.w * q.z + q.x * q.y)
+        cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z)
+        return math.atan2(siny_cosp, cosy_cosp)
 
     # ============================
     #         ROAD LOADER
@@ -498,6 +629,23 @@ class waypoint_router(Node):
         }
 
         return seg
+
+    def load_waypoints_csv(self, path):
+        wps = []  # akan berisi [lat, lon]
+
+        with open(path, 'r') as f:
+            reader = csv.reader(f)
+            next(reader)  # skip header: id,latitude,longitude
+
+            for row in reader:
+                # row[0] = id
+                # row[1] = latitude
+                # row[2] = longitude
+                lat = float(row[1])
+                lon = float(row[2])
+                wps.append([lat, lon])
+
+        return np.array(wps)   # shape: (N, 2)
 
     def load_destinations_csv(self, path):
         lat = []

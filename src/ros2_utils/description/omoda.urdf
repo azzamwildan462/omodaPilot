@@ -31,6 +31,9 @@
     <link name="shadow_base_link">
     </link>
 
+    <link name="gps">
+    </link>
+
     <joint name="shadow_base_joint" type="fixed">
         <parent link="base_link" />
         <child link="shadow_base_link" />
@@ -83,6 +86,12 @@
         <parent link="base_lidar" />
         <child link="lidartengah" />
         <origin xyz="0.0 0.0 0.43" rpy="0.0 0.020 0.0" />
+    </joint>
+
+    <joint name="gps_joint" type="fixed">
+        <parent link="base_lidar" />
+        <child link="gps" />
+        <origin xyz="0.0 0.0 0.43" rpy="0.0 0.0 0.0" />
     </joint>
 
 </robot>

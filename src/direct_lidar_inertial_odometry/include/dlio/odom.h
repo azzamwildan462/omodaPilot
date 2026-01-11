@@ -222,6 +222,17 @@ private:
   double first_scan_stamp;
   double elapsed_time;
 
+  float error_lidar_state0 = 0;
+  float error_lidar_state1 = 0;
+  float error_lidar_state2 = 0;
+
+  float gicp_max_fitness_score_ = 0.5;
+  float cok_icp_score = 0.0;
+
+  int gicp_ransac_iterations_ = 0;
+  float gicp_ransac_outliers_rejection_threshold_ = 1.0;
+  bool gicp_use_reciprocal_correspondences_ = false;
+
   // GICP
   nano_gicp::NanoGICP<PointType, PointType> gicp;
   nano_gicp::NanoGICP<PointType, PointType> gicp_temp;
@@ -389,4 +400,6 @@ private:
   double geo_Kgb_;
   double geo_abias_max_;
   double geo_gbias_max_;
+
+  double rate_publish_odometry;
 };

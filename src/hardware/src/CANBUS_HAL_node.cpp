@@ -67,6 +67,7 @@ public:
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr sub_target_steering_angle;
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr sub_target_velocity;
     rclcpp::Subscription<std_msgs::msg::Int16>::SharedPtr sub_global_fsm;
+    rclcpp::Subscription<std_msgs::msg::UInt8>::SharedPtr sub_hw_flag;
 
     std::thread thread_can1_routine;
     std::thread thread_can2_routine;
@@ -101,7 +102,7 @@ public:
     chery_canfd_steer_button_t msg_steer_button_cmd;
     chery_canfd_setting_t msg_setting_dari_adas_cmd;
 
-    uint64_t can1_internal_tick = 0;
+    uint64_t can_node_internal_tick = 0;
     uint8_t is_mobil_initialized = 0;
 
     uint8_t flag_reset = 0;
@@ -140,6 +141,8 @@ public:
     bool intercept_gas = false;
     bool intercept_lkas_state = false;
     bool intercept_cc_speed = false;
+
+    bool long_active, resume, full_stop;
 
     std::vector<double> pid_terms;
 
@@ -195,7 +198,7 @@ public:
             else if (can1_type == 1)
                 canbus1_hal = std::make_unique<CANable2_SOCKET_CAN>(&logger);
 
-            if (canbus1_hal->init(device1_name, baudrate) != 0)
+            if (canbus1_hal->init(device1_name, baudrate, fd_baudrate) != 0)
             {
                 logger.error("Failed to initialize CANBUS_HAL can1");
                 rclcpp::shutdown();
@@ -209,12 +212,18 @@ public:
             else if (can2_type == 1)
                 canbus2_hal = std::make_unique<CANable2_SOCKET_CAN>(&logger);
 
-            if (canbus2_hal->init(device2_name, baudrate) != 0)
+            if (canbus2_hal->init(device2_name, baudrate, fd_baudrate) != 0)
             {
                 logger.error("Failed to initialize CANBUS_HAL can2");
                 rclcpp::shutdown();
             }
         }
+
+        canbus1_hal->relay_state_tx = 1; // Default ON
+        canbus1_hal->fb_relay_state = 0; // Default OFF (belum sync)
+        send_to_stm(canbus1_hal);
+        logger.info("Sent initial relay state to STM32");
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
         // Memastikan semua variabel sudah diinisialisasi
         bzero(&msg_steer_cmd, sizeof(msg_steer_cmd));
@@ -240,8 +249,8 @@ public:
             "cmd_target_steering_angle", 1, std::bind(&CANBUS_HAL_node::callback_sub_target_steering_angle, this, std::placeholders::_1));
         sub_target_velocity = this->create_subscription<std_msgs::msg::Float32>(
             "cmd_target_velocity", 1, std::bind(&CANBUS_HAL_node::callback_sub_target_velocity, this, std::placeholders::_1));
-        // sub_hw_flag = this->create_subscription<std_msgs::msg::UInt8>(
-        //     "cmd_hw_flag", 1, std::bind(&CANBUS_HAL_node::callback_sub_hw_flag, this, std::placeholders::_1));
+        sub_hw_flag = this->create_subscription<std_msgs::msg::UInt8>(
+            "cmd_hw_flag", 1, std::bind(&CANBUS_HAL_node::callback_sub_hw_flag, this, std::placeholders::_1));
         sub_global_fsm = this->create_subscription<std_msgs::msg::Int16>(
             "global_fsm", 1, std::bind(&CANBUS_HAL_node::callback_sub_global_fsm, this, std::placeholders::_1));
 
@@ -283,6 +292,8 @@ public:
 
         if (canbus1_hal)
         {
+            send_to_stm_shutdown(canbus1_hal);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             canbus1_hal->shutdown();
         }
     }
@@ -297,6 +308,13 @@ public:
         canbus2_hal->cmd_target_velocity = msg->data;
     }
 
+    void callback_sub_hw_flag(const std_msgs::msg::UInt8::SharedPtr msg)
+    {
+        (void)msg;
+        // if (is_mobil_initialized)
+        //     canbus1_hal->relay_state_tx = msg->data;
+    }
+
     void callback_sub_global_fsm(const std_msgs::msg::Int16::SharedPtr msg)
     {
         int16_t prev_fsm = global_fsm_value;
@@ -306,18 +324,20 @@ public:
         {
         case FSM_GLOBAL_INIT:
             canbus2_hal->cmd_hw_flag = 0;
-            reset_acc_button_state();
+            // reset_acc_button_state();
             break;
 
         case FSM_GLOBAL_PREOP:
         case FSM_GLOBAL_SAFEOP:
-            canbus2_hal->cmd_hw_flag &= ~(CMD_STEER_ACTIVE | CMD_GAS_ACTIVE);
+            canbus2_hal->cmd_hw_flag &= ~CMD_STEER_ACTIVE;
+            canbus2_hal->cmd_hw_flag &= ~CMD_GAS_ACTIVE;
             reset_acc_button_state();
             break;
 
         case FSM_GLOBAL_OP_3: // auto acc & steer
-            canbus2_hal->cmd_hw_flag |= (CMD_STEER_ACTIVE | CMD_GAS_ACTIVE);
-            if (prev_fsm != FSM_GLOBAL_OP_3)
+            canbus2_hal->cmd_hw_flag |= CMD_STEER_ACTIVE;
+            canbus2_hal->cmd_hw_flag |= CMD_GAS_ACTIVE;
+            if (prev_fsm != FSM_GLOBAL_OP_3 || prev_fsm == FSM_GLOBAL_OP_4)
             {
                 trigger_acc_button_sequence();
             }
@@ -326,7 +346,7 @@ public:
         case FSM_GLOBAL_OP_4: // auto acc only
             canbus2_hal->cmd_hw_flag &= ~CMD_STEER_ACTIVE;
             canbus2_hal->cmd_hw_flag |= CMD_GAS_ACTIVE;
-            if (prev_fsm != FSM_GLOBAL_OP_4)
+            if (prev_fsm != FSM_GLOBAL_OP_4 || prev_fsm == FSM_GLOBAL_OP_3)
             {
                 trigger_acc_button_sequence();
             }
@@ -338,6 +358,8 @@ public:
             reset_acc_button_state();
             break;
         }
+
+        // logger.info("asdasd %d %d", global_fsm_value, canbus2_hal->cmd_hw_flag);
     }
 
     // =========================================================================================
@@ -398,7 +420,7 @@ public:
                 if (counter_berapa_kali_kirim >= 4)
                 {
                     flag_reset = 1;
-                    acc_button_last_press_tick = can1_internal_tick;
+                    acc_button_last_press_tick = can_node_internal_tick;
                 }
             }
             else
@@ -424,6 +446,8 @@ public:
             msg_steer_button_cmd.acc = 0;
         }
 
+        // msg_steer_button_cmd.counter = (uint8_t)(can_node_internal_tick % 0x0F);
+
         // Packing can
         can_frame_t frame_steer_button_cmd;
         bzero(&frame_steer_button_cmd, sizeof(frame_steer_button_cmd));
@@ -439,6 +463,8 @@ public:
         // Mengirim ke bus adas
         frame_steer_button_cmd.id = CHERY_CANFD_STEER_BUTTON_FRAME_ID;
         frame_steer_button_cmd.dlc = CHERY_CANFD_STEER_BUTTON_LENGTH;
+
+        logger.warn("STEER BTN: %d %d %d", msg_steer_button_cmd.acc, msg_steer_button_cmd.counter, msg_steer_button_cmd.checksum);
 
         canbus_hal_from_adas->send_msg(&frame_steer_button_cmd);
     }
@@ -568,10 +594,10 @@ public:
         // Copy dari bus adas ke bus mobil
         memcpy(&msg_acc_cmd, &canbus_hal_from_adas->acc_cam_cmd, sizeof(msg_acc_cmd));
 
-        bool long_active = (canbus2_hal->cmd_hw_flag & CMD_GAS_ACTIVE) != 0;
+        long_active = (canbus2_hal->cmd_hw_flag & CMD_GAS_ACTIVE) != 0;
         // bool standstill = canbus1_hal->fb_current_velocity < 1e-3;
-        bool full_stop = long_active && (canbus2_hal->cmd_target_velocity < 0);
-        bool resume = (canbus2_hal->cmd_hw_flag & CMD_ACC_BTN_PRESS) != 0;
+        full_stop = long_active && (canbus2_hal->cmd_target_velocity < 0);
+        resume = (canbus2_hal->cmd_hw_flag & CMD_ACC_BTN_PRESS) != 0;
 
         if (gas > 0 && resume)
             full_stop = false;
@@ -595,14 +621,20 @@ public:
         else if (long_active)
             msg_acc_cmd.stopped = 0;
 
-        msg_acc_cmd.gas_pressed = resume ? 1 : 0;
+        bool gas_pressed;
+        if (long_active)
+            gas_pressed = resume;
+        else
+            gas_pressed = (canbus1_hal->engine_gas > 1);
 
-        if (resume)
+        msg_acc_cmd.gas_pressed = gas_pressed ? 1 : 0;
+
+        if (gas_pressed && !long_active)
             flag_override_status |= FLAG_OVERRIDE_GAS;
         else
             flag_override_status &= ~FLAG_OVERRIDE_GAS;
 
-        msg_acc_cmd.counter = (uint8_t)(can1_internal_tick % 0x0F);
+        msg_acc_cmd.counter = (uint8_t)(can_node_internal_tick % 0x0F);
 
         // log all
         logger.info("throttle: %d, target_acc: %.2f, cmd_target_velocity: %.2f, fb_current_velocity: %.2f, long_active: %d, full_stop: %d, resume: %d, acc_state: %d",
@@ -640,7 +672,7 @@ public:
         msg_lkas_state_cmd.new_signal_4 = 1;
         msg_lkas_state_cmd.state = ((canbus2_hal->cmd_hw_flag & CMD_STEER_ACTIVE) >> 0x00) ? 0 : 1;
         msg_lkas_state_cmd.lka_active = ((canbus2_hal->cmd_hw_flag & CMD_STEER_ACTIVE) >> 0x00) ? 1 : 0;
-        msg_lkas_state_cmd.counter = (uint8_t)(can1_internal_tick % 0x0f);
+        msg_lkas_state_cmd.counter = (uint8_t)(can_node_internal_tick % 0x0f);
 
         // Packing can
         can_frame_t frame_lkas_state_cmd;
@@ -665,7 +697,22 @@ public:
         memcpy(&msg_setting_dari_adas_cmd, &canbus_hal_from_adas->setting_cmd_from_adas, sizeof(msg_setting_dari_adas_cmd));
 
         // Mengisi sesuai target
-        msg_setting_dari_adas_cmd.cc_speed = chery_canfd_setting_cc_speed_encode((uint16_t)(canbus2_hal->cmd_target_velocity * 3.6f)); // m/s to km/h
+        float buff_cmd = canbus2_hal->cmd_target_velocity * 3.6f; // m/s to km/h
+        if (buff_cmd < 0)
+            buff_cmd = 0;
+
+        msg_setting_dari_adas_cmd.cc_speed = chery_canfd_setting_cc_speed_encode((uint16_t)(buff_cmd)); // m/s to km/h
+
+        if (full_stop)
+        {
+            msg_setting_dari_adas_cmd.acc_available = 2;
+            msg_setting_dari_adas_cmd.acc_active = 0;
+        }
+        else
+        {
+            msg_setting_dari_adas_cmd.acc_available = 1;
+            msg_setting_dari_adas_cmd.acc_active = 1;
+        }
 
         // Packing can
         can_frame_t frame_setting_dari_adas_cmd;
@@ -684,22 +731,101 @@ public:
         canbus_hal_to_send->send_msg(&frame_setting_dari_adas_cmd);
     }
 
+    void send_to_stm(std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
+    {
+        can_frame_t frame_to_stm;
+        bzero(&frame_to_stm, sizeof(frame_to_stm));
+
+        frame_to_stm.id = 0x69;
+        frame_to_stm.dlc = 5;
+
+        frame_to_stm.data[0] = canbus1_hal->relay_state_tx;
+        // logger.info("sub relay state: %d", canbus1_hal->relay_state_tx);
+        canbus1_hal->interval_led_tx = 100;
+        frame_to_stm.data[1] = (uint8_t)((canbus1_hal->interval_led_tx >> 8) & 0xFF);
+        frame_to_stm.data[2] = (uint8_t)(canbus1_hal->interval_led_tx & 0xFF);
+        canbus1_hal->counter_stm_tx++;
+        frame_to_stm.data[3] = canbus1_hal->counter_stm_tx;
+        uint8_t crc_stm = calculate_crc(frame_to_stm.data, 4, 0x1D, 0xA);
+        frame_to_stm.data[4] = crc_stm;
+        canbus_hal_to_send->send_msg(&frame_to_stm);
+    }
+
+    void send_to_stm_shutdown(std::unique_ptr<CANBUS_HAL> &canbus_hal_to_send)
+    {
+        can_frame_t frame_to_stm;
+        bzero(&frame_to_stm, sizeof(frame_to_stm));
+
+        frame_to_stm.id = 0x69;
+        frame_to_stm.dlc = 5;
+
+        frame_to_stm.data[0] = 0;
+        canbus1_hal->interval_led_tx = 1000;
+        frame_to_stm.data[1] = (uint8_t)((canbus1_hal->interval_led_tx >> 8) & 0xFF);
+        frame_to_stm.data[2] = (uint8_t)(canbus1_hal->interval_led_tx & 0xFF);
+        frame_to_stm.data[3] = 0;
+        uint8_t crc_stm = calculate_crc(frame_to_stm.data, 4, 0x1D, 0xA);
+        frame_to_stm.data[4] = crc_stm;
+        canbus_hal_to_send->send_msg(&frame_to_stm);
+    }
+
+    bool cek_usia_can_data(std::vector<can_frame_t> &can_frames)
+    {
+        for (size_t i = 0; i < can_frames.size(); i++)
+        {
+            if (can_node_internal_tick - can_frames[i].timestamp > 2000)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     // =========================================================================================
 
     void callback_routine_all_routine()
     {
         time_now = rclcpp::Clock(RCL_SYSTEM_TIME).now();
-
         std::vector<can_frame_t> canbus1_frames = canbus1_hal->recv_msgs();
-        canbus1_hal->update();
-        canbus2_hal->send_msgs(canbus1_frames);
-
         std::vector<can_frame_t> canbus2_frames = canbus2_hal->recv_msgs();
-        canbus2_hal->update();
-        canbus1_hal->send_msgs(canbus2_frames);
+
+        static uint8_t last_relay_state = 0;
+
+        if (canbus1_hal->fb_relay_state == 1)
+        {
+
+            canbus1_hal->update(can_node_internal_tick);
+            canbus2_hal->send_msgs(canbus1_frames);
+
+            canbus2_hal->update(can_node_internal_tick);
+            canbus1_hal->send_msgs(canbus2_frames);
+        }
+
+        if (!cek_usia_can_data(canbus1_frames))
+        {
+            logger.warn("ADA DATA ERROR CAN1");
+            if (canbus1_hal->fb_relay_state == 0)
+            {
+                // canbus1_hal->relay_state_tx = 1; // Turn ON relay
+                last_relay_state = 0;
+                intercept_steer = true;
+                intercept_lkas_state = true;
+                intercept_steer_btn = true;
+                intercept_gas = true;
+                intercept_cc_speed = true;
+                can_node_internal_tick = 0;
+                is_mobil_initialized = 0;
+            }
+        }
+
+        if (!cek_usia_can_data(canbus2_frames))
+        {
+            logger.warn("ADA DATA ERROR CAN2");
+        }
 
         // time_now - time_Start_program > rclcpp::Duration(2, 0)
-        if (can1_internal_tick > 5000 && !is_mobil_initialized)
+        if (can_node_internal_tick > 5000 && !is_mobil_initialized && canbus1_hal->fb_relay_state == 1)
         {
             is_mobil_initialized = 1;
 
@@ -733,7 +859,7 @@ public:
                         canbus1_hal->intercepted_can_ids.size());
         }
 
-        if (is_mobil_initialized)
+        if (is_mobil_initialized && canbus1_hal->fb_relay_state == 1)
         {
             static uint16_t divider_50_hz = 0;
 
@@ -742,9 +868,6 @@ public:
                 divider_50_hz = 0;
                 if (intercept_steer)
                     send_steer_cmd(canbus2_hal, canbus1_hal);
-
-                if (intercept_steer_btn)
-                    send_steer_button_cmd(canbus2_hal, canbus1_hal);
 
                 if (intercept_gas)
                     send_gas_cmd(canbus2_hal, canbus1_hal);
@@ -757,12 +880,30 @@ public:
                 if (intercept_lkas_state)
                     send_lkas_state_cmd(canbus2_hal, canbus1_hal);
 
+                if (intercept_steer_btn)
+                    send_steer_button_cmd(canbus2_hal, canbus1_hal);
+
                 if (intercept_cc_speed)
                     send_cc_speed_cmd(canbus2_hal, canbus1_hal);
             }
         }
+        else
+        {
+            // Reset intercepted flags
+            intercept_steer = false;
+            intercept_lkas_state = false;
+            intercept_steer_btn = false;
+            intercept_gas = false;
+            intercept_cc_speed = false;
+        }
 
-        can1_internal_tick++;
+        if (canbus1_hal->relay_state_tx != last_relay_state)
+        {
+            send_to_stm(canbus1_hal);
+            last_relay_state = canbus1_hal->relay_state_tx;
+        }
+
+        can_node_internal_tick++;
 
         // Memastikan publish sesuai dengan periode yang diinginkan
         rclcpp::Duration dt_publish = time_now - last_time_publish;
@@ -810,6 +951,7 @@ public:
 
     void reset_acc_button_state()
     {
+        logger.warn("RESET CC");
         flag_reset = 1;
         counter_berapa_kali_kirim = 0;
         acc_button_press_count = 0;
@@ -828,6 +970,7 @@ public:
 
     void start_acc_button_press()
     {
+        logger.warn("START CC");
         canbus2_hal->cmd_hw_flag |= CMD_ACC_BTN_PRESS;
         flag_reset = 0;
         counter_berapa_kali_kirim = 0;
@@ -838,7 +981,7 @@ public:
     {
         if (acc_button_waiting_for_interval)
         {
-            uint64_t ticks_since_last_press = can1_internal_tick - acc_button_last_press_tick;
+            uint64_t ticks_since_last_press = can_node_internal_tick - acc_button_last_press_tick;
             if (ticks_since_last_press >= ACC_BUTTON_INTERVAL_TICKS)
             {
                 acc_button_waiting_for_interval = false;

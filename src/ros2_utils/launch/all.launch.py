@@ -133,7 +133,6 @@ def generate_launch_description():
         executable="rtabmap",
         name="rtabmap",
         namespace="slam",
-        output="screen",
         parameters=[{
             "use_sim_time": False,
             "frame_id": "base_link",
@@ -152,6 +151,7 @@ def generate_launch_description():
             "subscribe_gps": False,
             "qos_scan": 1,
             "wait_for_transform": 2.0,
+            "Threads": 10,  # Added by Azzam
 
             "publish_tf": True,
             "approx_sync": True,
@@ -165,32 +165,32 @@ def generate_launch_description():
             "odom_tf_angular_variance": 0.0000000001,
 
             "Rtabmap/DetectionRate": "5.0",  # Added by Azzam
-            "Rtabmap/CreateIntermediateNodes": "True",
+            "Rtabmap/CreateIntermediateNodes": "False",
             "Rtabmap/LoopThr": "0.11",  # Routine period untuk cek loop closure
             "Rtabmap/LoopGPS": "True",  # Routine period untuk cek loop closure
 
             "Mem/STMSize": "20",  # Short-term memory size
-            "Mem/IncrementalMemory": "True",  #
+            "Mem/IncrementalMemory": "False",  #
             "Mem/InitWMWithAllNodes": "True",  #
             "Mem/RehearsalSimilaritys": "0.9",  #
             "Mem/UseOdomFeatures": "False",  #
-            "Mem/NotLinkedNodesKept": "True",  # Keep unlinked nodes
+            "Mem/NotLinkedNodesKept": "False",  # Keep unlinked nodes
 
             "Kp/MaxFeatures": "2000",
-            "Kp/DetectorStrategy": "2", # Full ORB saja
+            # "Kp/DetectorStrategy": "2", # Full ORB saja
 
             "RGBD/Enabled": "True", #
             "RGBD/OptimizeFromGraphEnd": "False",  # True agar robot tidak lompat
             "RGBD/NeighborLinkRefining": "True",  # Added from documentation, ikut odom saja (false)
-            "RGBD/AngularUpdate": "0.3",  # Added from documentation
-            "RGBD/LinearUpdate": "0.3",  # Added from documentation
+            "RGBD/AngularUpdate": "0.4",  # Added from documentation
+            "RGBD/LinearUpdate": "0.4",  # Added from documentation
             "RGBD/OptimizeMaxError": "4.0",  # Added from documentation
             "RGBD/InvertedReg": "False",  # Added from documentation
             "RGBD/ProximityPathMaxNeighbors": "5",
             "RGBD/ProximityMaxGraphDepth": "20",
             "RGBD/ProximityByTime": "False",
             "RGBD/ProximityBySpace": "True",
-            "RGBD/LocalRadius": "20.0",
+            "RGBD/LocalRadius": "40.0",
 
             "Optimizer/Strategy": "2",  # Added by Azzam
             "Optimizer/Iterations": "10",  # Added by Azzam
@@ -218,16 +218,18 @@ def generate_launch_description():
             "Icp/MaxRotation": "0.9",  # Added by Azzam
             "Icp/RangeMin": "0.0",  # Added by Azzam
             "Icp/RangeMax": "25.0",  # Added by Azzam
-            "Icp/MaxCorrespondenceDistance": "4.0",  # Added by Azzam
+            "Icp/MaxCorrespondenceDistance": "1.0",  # Added by Azzam
             "Icp/Iterations": "30",  # Added by Azzam
             "Icp/PointToPlane": "True",  # Added by Azzam
-            "Icp/VoxelSize": "0.05",  # Added by Azzam
+            "Icp/VoxelSize": "0.5",  # Added by Azzam
             "Icp/PointToPlaneMinComplexity": "0.03",  # to be more robust to long corridors with low geometry
             "Icp/PointToPlaneLowComplexityStrategy": "1",  # to be more robust to long corridors with low geometry
+
             "Vis/MaxDepth": "20.0",
-            "Vis/MinInliers": "15",
-            "Vis/FeatureType": "2",
-            "Vis/EpipolarGeometryVar": "0.2",
+            "Vis/MinInliers": "7",
+            # "Vis/FeatureType": "2",
+            # "Vis/EpipolarGeometryVar": "0.2",
+
             "Grid/Sensor": "0",  # Added to suppress warning
             "Grid/RangeMin": "0.0",  # Added by Azzam
             "Grid/RangeMax": "150.0",  # Added by Azzam
@@ -239,7 +241,7 @@ def generate_launch_description():
             "Grid/Scan2dUnknownSpaceFilled": "False",  # Added by Azzam
             "GridGlobal/UpdateError": "0.04",  # Added by Azzam
             "Grid/RayTracing": "False",  # Added by Azzam
-            'Grid/MaxObstacleHeight':'3.5',  # All points over 1 meter are ignored
+            'Grid/MaxObstacleHeight':'0.7',  # All points over 1 meter are ignored
 
             # Depth dari lidar 
             # "gen_depth": True,
@@ -258,9 +260,12 @@ def generate_launch_description():
             ("rgb/camera_info", "/camera/rs2_cam_main/color/camera_info"),
             ("depth/image", "/all_obstacle_filter/pcl2cam_dalam"),
             # ("depth/image", "/camera/rs2_cam_main/aligned_depth_to_color/image_raw"),
+            ("map", "/map"),
+
         ],
-        arguments=["--ros-args", "--log-level", "warn"],
+        arguments=["--ros-args", "--log-level", "error"],
         respawn=True,
+        output="log",
     )
 
     rtabmap_icp_odom = Node(
@@ -373,7 +378,7 @@ def generate_launch_description():
             "two_d_mode": True,
             "smooth_lagged_data": True,
             "history_length": 1.0,
-            "frequency": 20.0,
+            "frequency": 25.0,
             "publish_tf": False,
 
             # "odom0": "/icp_odom/odometry/filtered",
@@ -413,7 +418,7 @@ def generate_launch_description():
     dlio_yaml_path = PathJoinSubstitution([dlio_pkg, 'cfg', 'dlio.yaml'])
     dlio_params_yaml_path = PathJoinSubstitution([dlio_pkg, 'cfg', 'params.yaml'])
 
-    dlio_odom_node = Node(
+    dlieo_odom_node = Node(
         package='direct_lidar_inertial_odometry',
         executable='dlio_odom_node',
         output='screen',
@@ -443,40 +448,38 @@ def generate_launch_description():
     params_file = os.path.join(path_config,"nav2_params.yaml")
 
     planner_server = Node(
-        package='nav2_planner', 
-        executable='planner_server', 
-        name='planner_server',
-        output='screen', 
-        parameters=[params_file],
+        package='nav2_planner', executable='planner_server', name='planner_server',
+        output='screen', parameters=[params_file],
+        respawn=True, respawn_delay=2.0
+    )
+    controller_server = Node(
+        package='nav2_controller', executable='controller_server', name='controller_server',
+        output='screen', parameters=[params_file],
+        respawn=True, respawn_delay=2.0
+    )
+    bt_navigator = Node(
+        package='nav2_bt_navigator', executable='bt_navigator', name='bt_navigator',
+        output='screen', parameters=[params_file],
+        respawn=True, respawn_delay=2.0
+    )
+    behavior_server = Node(
+        package='nav2_behaviors', executable='behavior_server', name='behavior_server',
+        output='screen', parameters=[params_file],
         respawn=True, respawn_delay=2.0
     )
 
-    global_costmap_node = Node(
-        package="nav2_costmap_2d",
-        executable="costmap_2d",
-        name="global_costmap",
-        output="screen",
-        parameters=[params_file],
-        remappings=[
-          ("global_costmap/costmap", "global_costmap/costmap"),
-          ("global_costmap/costmap_raw", "global_costmap/costmap_raw"),
-          ("global_costmap/footprint", "global_costmap/footprint"),
-        ],
-        respawn=True, respawn_delay=2.0
-    )
-
-    lifecycle_manager = Node(
-        package="nav2_lifecycle_manager",
-        executable="lifecycle_manager",
-        name="lifecycle_manager_planner",
-        output="screen",
+    lifecycle_navigation = Node(
+        package='nav2_lifecycle_manager', executable='lifecycle_manager',
+        name='lifecycle_manager_navigation', output='screen',
         parameters=[{
-            "use_sim_time": False,
-            "autostart": True,
-            "bond_timeout": 0.0,
-            "node_names": [
-                "planner_server",
-                "global_costmap"
+            'use_sim_time': False,
+            'autostart': True,
+            'bond_timeout': 5.0,
+            'node_names': [
+                'planner_server',
+                # 'controller_server',
+                # 'bt_navigator',
+                # 'behavior_server'
             ]
         }]
     )
@@ -524,6 +527,47 @@ def generate_launch_description():
         respawn=True,
         prefix=['xterm -e'],
     )
+    joy_node = Node(
+        package='joy_linux',
+        executable='joy_linux_node',
+        name='joy_linux',
+        output='log' ,
+        parameters=[{
+            'device_name': '/dev/input/js0',  # PS4/Xbox controller
+            'deadzone': 0.05,               # Small deadzone for precise control
+            'autorepeat_rate': 50.0,        # 50 Hz untuk smooth control
+            'coalesce_interval_ms': 1,      # Low latency
+            'use_sim_time': False,
+        }],
+        respawn=True,
+        arguments=["--ros-args", "--log-level", "warn"],
+    )
+
+    udp_can_pc_as_pc = Node(
+        package='hardware',
+        executable='udp_can_pc',
+        name='udp_can_pc',
+        parameters=[{
+            "is_iam_PC": True,
+            "udp_my_ip": "0.0.0.0",
+            "udp_my_port": 1254,
+            "udp_target_ip": "69.69.69.69",
+            "udp_target_port": 5412,
+        }]
+    )
+
+    udp_can_pc_as_can = Node(
+        package='hardware',
+        executable='udp_can_pc',
+        name='udp_can_pc',
+        parameters=[{
+            "is_iam_PC": False,
+            "udp_my_ip": "0.0.0.0",
+            "udp_my_port": 5412,
+            "udp_target_ip": "69.69.69.96",
+            "udp_target_port": 1254,
+        }]
+    )
 
     CANBUS_HAL_node = Node(
         package='hardware',
@@ -531,13 +575,19 @@ def generate_launch_description():
         name='CANBUS_HAL_node',
         namespace='hardware',
         parameters=[{
-            "can1_type": 0,
-            "can2_type": 0,
-            "device1_name": "/dev/serial/by-id/usb-Openlight_Labs_CANable2_b158aa7_github.com_normaldotcom_canable2.git_208733A43133-if00", # Ini mobil
-            "device2_name": "/dev/serial/by-id/usb-Openlight_Labs_CANable2_b158aa7_github.com_normaldotcom_canable2.git_2074306F5330-if00", # Ini adas
+            # "can1_type": 0,
+            # "can2_type": 0,
+            # "device1_name": "/dev/serial/by-id/usb-Openlight_Labs_CANable2_b158aa7_github.com_normaldotcom_canable2.git_208733A43133-if00", # Ini mobil
+            # "device2_name": "/dev/serial/by-id/usb-Openlight_Labs_CANable2_b158aa7_github.com_normaldotcom_canable2.git_2074306F5330-if00", # Ini adas
+
+            # Migrasi ke socket candlellight
+            "can1_type": 1,
+            "can2_type": 1,
+            "device1_name": "can0",
+            "device2_name": "can1",
             "intercepted_ids_can": [CHERY_CANFD_LKAS_CAM_CMD_345_FRAME_ID, 
                                     CHERY_CANFD_LKAS_STATE_FRAME_ID, 
-                                    # CHERY_CANFD_SETTING_FRAME_ID, 
+                                    CHERY_CANFD_SETTING_FRAME_ID, 
                                     CHERY_CANFD_ACC_CMD_FRAME_ID, 
                                     CHERY_CANFD_STEER_BUTTON_FRAME_ID
                                     ],
@@ -545,14 +595,18 @@ def generate_launch_description():
             "fd_baudrate": 2000000,
             "pid_terms": [0.4, 0.002, 0, 0.02, -3.5, 2.0, -0.1, 0.02],
             "publish_period_ms": 20,
+            "steer_torque_threshold": 50.0,
+            "steer_angle_max": 445.0,
         }],
         remappings=[
             ("cmd_target_steering_angle", "/master/cmd_target_steering_angle"),
             ("cmd_target_velocity", "/master/cmd_target_velocity"),
             ("cmd_hw_flag", "/master/cmd_hw_flag"),
+            ("global_fsm", "/master/global_fsm"),
         ],
-        output='screen',
+        output='log',
         respawn=True,
+        prefix='nice -n -20 chrt -f 99'
     )
 
     multilidar = IncludeLaunchDescription(
@@ -589,7 +643,7 @@ def generate_launch_description():
         package="hardware",
         executable="serial_imu",
         name="serial_imu",
-        output="screen",
+        output="log",
         parameters=[
             {
                 "port": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5069RR4-if00-port0",
@@ -611,9 +665,15 @@ def generate_launch_description():
         namespace='master',
         output='screen',
         parameters=[{
+            "profile_max_velocity": 4.0,
             "lookahead_distance_global": 10.0, 
             "lookahead_distance_local": 5.0,
-            "disable_nav2": True,
+            "waypoint_file_path": os.path.join(path_config, "waypoint.csv"), 
+            "terminal_file_path": os.path.join(path_config, "terminal.csv"), 
+            "global_nav_strategy": 3,
+            "local_nav_strategy": 2,
+            "bypass_wait": False,
+            "offset_sudut_steering": -0.05,
         }],
         remappings=[
             ("fb_steering_angle", "/hardware/fb_steering_angle"),
@@ -622,9 +682,40 @@ def generate_launch_description():
             ("fb_brake_position", "/hardware/fb_brake_position"),
             ("fb_gear_status", "/hardware/fb_gear_status"),
             ("fb_steer_torque", "/hardware/fb_steer_torque"),
+            ("scan", "/all_obstacle_filter/all_pcl2laserscan")
         ],
         respawn=True,
-        prefix='nice -n -10',
+        # prefix='nice -n -10',
+    )
+
+    master_no_map = Node(
+        package='master',
+        executable='master',
+        name='master',
+        namespace='master',
+        output='screen',
+        parameters=[{
+            "profile_max_velocity": 4.0,
+            "lookahead_distance_global": 10.0, 
+            "lookahead_distance_local": 5.0,
+            "waypoint_file_path": os.path.join(path_config, "waypoint.csv"), 
+            "terminal_file_path": os.path.join(path_config, "terminal.csv"), 
+            "global_nav_strategy": 3,
+            "local_nav_strategy": 2,
+            "bypass_wait": True,
+            "offset_sudut_steering": -0.05,
+        }],
+        remappings=[
+            ("fb_steering_angle", "/hardware/fb_steering_angle"),
+            ("fb_current_velocity", "/hardware/fb_current_velocity"),
+            ("fb_throttle_position", "/hardware/fb_throttle_position"),
+            ("fb_brake_position", "/hardware/fb_brake_position"),
+            ("fb_gear_status", "/hardware/fb_gear_status"),
+            ("fb_steer_torque", "/hardware/fb_steer_torque"),
+            ("scan", "/all_obstacle_filter/all_pcl2laserscan")
+        ],
+        respawn=True,
+        # prefix='nice -n -10',
     )
 
     # =========================== Vision ===========================
@@ -666,12 +757,13 @@ def generate_launch_description():
             "use_adaptive_gamma": True,
             "touch_bottom": False,
             "min_area": 100,
-            "alpha_lp": 0.7, # INi low pass kayak biasanya (per waktu)
-            "crop_upper": 175,
+            "alpha_lp": 0.1254, # INi low pass kayak biasanya (per waktu)
+            "crop_upper": 90, # 175 enak
             "crop_lower": 100, # 100 untuk realsense dalam mobil
             # "crop_lower": 20, # 20 untuk kamera atas
             "reset_on_scene_cut": False,
             "scene_cut_thresh": 0.35,
+            "mask2laserscan_max_range": 19.5,
 
             "image_topic": "/camera/rs2_cam_main/color/image_raw",
             "cam_info_topic": "/camera/rs2_cam_main/color/camera_info",
@@ -789,9 +881,10 @@ def generate_launch_description():
                 "pcl2laser_obs_x_max": 50.0,
                 "pcl2laser_obs_y_min": -35.0,
                 "pcl2laser_obs_y_max": 35.0,
-                "pcl2laser_obs_z_min": -0.9,
-                "pcl2laser_obs_z_max": 1.0,
-                "threshold_delta_z": 0.15,
+                "pcl2laser_obs_z_min": 0.6,
+                "pcl2laser_obs_z_max": 1.3,
+                "threshold_delta_z": 0.0000000,
+                "laser_scan_max_range": 19.0, # Ini harus diatas lookahead global
 
                 "depth_cam_pub_color_dbg": False,
                 "camera_dalam_topic": "/camera/rs2_cam_main/color/camera_info",
@@ -814,10 +907,103 @@ def generate_launch_description():
                 "gps_topic": "/fix",
                 "timer_period": 1.0,
                 "destinations_file": os.path.join(ws_path, "src/world_model/waypoints/destinations/rc_robotik.csv"),
+                # "offset_degree": 46.86,
+                "offset_degree": 0.0,
             }
         ],
+        # remappings=[
+        #     ("/fix", "/gps/filtered"),
+        # ]
         respawn=True,
     )
+
+    gps_logger = Node(
+        package="world_model",
+        executable="gps_logger.py",
+        name="gps_logger",
+        output="screen",
+        namespace='world_model',
+    )
+
+    navsat_transform = Node(
+        package="robot_localization",
+        executable="navsat_transform_node",
+        name="navsat_transform",
+        output="screen",
+        parameters=[{
+            "frequency": 30.0,
+            "delay": 3.0,
+            "magnetic_declination_radians": 0.01338,
+            "yaw_offset": -0.73548175,
+            "zero_altitude": True,
+            "broadcast_cartesian_transform": True,
+            "publish_filtered_gps": True,
+            "use_odometry_yaw": True,
+            "wait_for_datum": True,
+        }],
+        remappings=[
+            ("imu/data", "/hardware/imu"),
+            ("gps/fix", "/fix"),
+            ("gps/filtered", "/gps/filtered"),
+            ("odometry/gps", "/odom_gps"),
+            ("odometry/filtered", "/slam/odometry/filtered"),
+        ],
+    )
+
+    set_datum = TimerAction(
+        period=2.0,
+        actions=[
+            ExecuteProcess(
+                cmd=[
+                    "ros2", "service", "call", "/datum",
+                    "robot_localization/srv/SetDatum",
+                    "{geo_pose: {position: {latitude: -7.2781752164915865, longitude: 112.79744069999445, altitude: 21.0}, "
+                    "orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}"
+                ],
+                output="screen"
+            )
+        ]
+    )
+    # lat=-7.278162, lon=112.797424
+    # -7.27818583,112.79737583
+    # -7.278155399999999,112.7974098
+    # -7.2781752164915865,112.79744069999445
+
+
+    # return LaunchDescription(
+    #     [
+    #         # serial_imu,
+    #         # pose_estimator,
+
+    #         joint_state_publisher_node,
+    #         robot_state_publisher_node,
+    #         rs2_cam_main,
+    #         rviz2,
+    #     ]
+    # )
+
+    # return LaunchDescription(
+    #     [
+    #         master_no_map,
+    #         # keyboard_input,
+    #         joy_node,
+    #         udp_can_pc_as_pc,
+    #         # CANBUS_HAL_node,
+    #     ]
+    # )
+
+    # return LaunchDescription(
+    #     [
+    #         gps,
+    #         TimerAction(
+    #             period=2.0,
+    #             actions=[
+    #                 # waypoint_router,
+    #                 gps_logger,
+    #             ],
+    #         ),
+    #     ]
+    # )
 
     return LaunchDescription(
         [
@@ -826,14 +1012,16 @@ def generate_launch_description():
 
             # tf_map_empty,
             # pose_estimator,
-            dlio_odom_node,
-            pose_estimator_base_link,
+            dlieo_odom_node,
+            # pose_estimator_base_link,
             # rtabmap_icp_odom,
             # ekf_icp_odom,
             joint_state_publisher_node,
             robot_state_publisher_node,
 
-            multilidar,
+            joy_node,
+
+            # multilidar,
             # multicamera,
             hesai_lidar,
             gps,
@@ -848,43 +1036,53 @@ def generate_launch_description():
             serial_imu,
             # imu_filter_madgwick_node,
 
+            # TimerAction(
+            #     period=2.0,
+            #     actions=[
+            #         set_datum,
+            #         navsat_transform,
+            #         waypoint_router,
+            #         # gps_logger,
+            #     ],
+            # ),
+
+            rtabmap_slam,
             TimerAction(
                 period=20.0,
                 actions=[
-                    waypoint_router,
+                    ekf_final_pose,
                 ],
             ),
 
-            rtabmap_slam,
-            # TimerAction(
-            #     period=20.0,
-            #     actions=[
-            #         ekf_final_pose,
-            #     ],
-            # ),
+            TimerAction(
+                period=25.0,
+                actions=[
+                    planner_server,
+                    lifecycle_navigation,
+                ],
+            ),
 
-            # TimerAction(
-            #     period=20.0,
-            #     actions=[
-            #         global_costmap_node,
-            #         planner_node,
-            #         lifecycle_manager
-            #     ],
-            # ),
+            TimerAction(
+                period=33.3,
+                actions=[
+                    master,
+                ],
+            ),
 
-            # rosapi_node,
-            # ui_server,
-            # rosbridge_server, 
-            # web_video_server,
+
+            rosapi_node,
+            ui_server,
+            rosbridge_server, 
+            web_video_server,
 
             # telemetry,
 
-            # master,
-
-            # keyboard_input,
+            keyboard_input,
 
             # wifi_control,
             # CANBUS_HAL_node,
+
+            udp_can_pc_as_pc,
 
             rviz2,
         ]

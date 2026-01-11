@@ -29,7 +29,7 @@ public:
     int send_msgs(const std::vector<can_frame_t> &can_msgs) override;
     std::vector<can_frame_t> recv_msgs() override;
 
-    int update() override;
+    int update(uint64_t tick) override;
     int init_update_as_new_thread() override;
 
     void shutdown() override;

@@ -292,36 +292,43 @@ public:
 
         if (recv_len > 0 && recv_buffer[0] == 0x68 && recv_buffer[1] == 0x1f)
         {
-            static const float deg2rad = M_PI / 180;
-            float roll = rion_parse(4, 0.01) * deg2rad;
-            float pitch = rion_parse(7, 0.01) * deg2rad;
-            float yaw = rion_parse(10, 0.01) * deg2rad;
-            float acc_x = rion_parse(13, 0.001);
-            float acc_y = rion_parse(16, 0.001);
-            float acc_z = rion_parse(19, 0.001);
-            float gyro_x = rion_parse(22, 0.01) * deg2rad;
-            float gyro_y = rion_parse(25, 0.01) * deg2rad;
-            float gyro_z = rion_parse(28, 0.01) * deg2rad;
+            if (recv_buffer[1] == (recv_len - 1) && rion_checksum(&recv_buffer[1], recv_buffer[1] - 1) == (uint8_t)(recv_buffer[recv_len - 1]))
+            {
+                static const float deg2rad = M_PI / 180;
+                float roll = rion_parse(4, 0.01) * deg2rad;
+                float pitch = rion_parse(7, 0.01) * deg2rad;
+                float yaw = rion_parse(10, 0.01) * deg2rad;
+                float acc_x = rion_parse(13, 0.001);
+                float acc_y = rion_parse(16, 0.001);
+                float acc_z = rion_parse(19, 0.001);
+                float gyro_x = rion_parse(22, 0.01) * deg2rad;
+                float gyro_y = rion_parse(25, 0.01) * deg2rad;
+                float gyro_z = rion_parse(28, 0.01) * deg2rad;
 
-            tf2::Quaternion q_tf2;
-            q_tf2.setRPY(roll, pitch, yaw);
-            geometry_msgs::msg::Quaternion q_msg;
-            q_msg.x = q_tf2.x();
-            q_msg.y = q_tf2.y();
-            q_msg.z = q_tf2.z();
-            q_msg.w = q_tf2.w();
-            imu_msg.header.frame_id = frame_id;
-            imu_msg.orientation = q_msg;
-            imu_msg.angular_velocity.x = gyro_x;
-            imu_msg.angular_velocity.y = gyro_y;
-            imu_msg.angular_velocity.z = gyro_z;
-            imu_msg.linear_acceleration.x = acc_x;
-            imu_msg.linear_acceleration.y = acc_y;
-            imu_msg.linear_acceleration.z = acc_z;
+                tf2::Quaternion q_tf2;
+                q_tf2.setRPY(roll, pitch, yaw);
+                geometry_msgs::msg::Quaternion q_msg;
+                q_msg.x = q_tf2.x();
+                q_msg.y = q_tf2.y();
+                q_msg.z = q_tf2.z();
+                q_msg.w = q_tf2.w();
+                imu_msg.header.frame_id = frame_id;
+                imu_msg.orientation = q_msg;
+                imu_msg.angular_velocity.x = gyro_x;
+                imu_msg.angular_velocity.y = gyro_y;
+                imu_msg.angular_velocity.z = gyro_z;
+                imu_msg.linear_acceleration.x = acc_x;
+                imu_msg.linear_acceleration.y = acc_y;
+                imu_msg.linear_acceleration.z = acc_z;
 
-            imu_msg.header.stamp = this->now();
+                imu_msg.header.stamp = this->now();
+            }
+            else
+            {
+                logger.warn("RION aneh: %d %d || %d %d", recv_len - 1, recv_buffer[1], rion_checksum(&recv_buffer[1], recv_buffer[1] - 1), (uint8_t)(recv_buffer[recv_len - 1]));
+            }
 
-            // logger.info("%d %x %x %d %d Yaw: %f", recv_len, recv_buffer[0], recv_buffer[1], recv_buffer[recv_buffer[1] - 1], rion_checksum(&recv_buffer[1], recv_buffer[1] - 1), rion_parse(10, 0.01));
+            // logger.info("%d %x %x %d || %d %d %d %d || Data: %.2f %.2f %.2f || %.2f %.2f %.2f || %.2f %.2f %.2f", recv_len, recv_buffer[0], recv_buffer[1], recv_buffer[recv_buffer[1] - 1], recv_len - 1, recv_buffer[1], rion_checksum(&recv_buffer[1], recv_buffer[1] - 1), recv_buffer[recv_len - 1], roll, pitch, yaw, gyro_x, gyro_y, gyro_z, acc_x, acc_y, acc_z);
         }
     }
 
