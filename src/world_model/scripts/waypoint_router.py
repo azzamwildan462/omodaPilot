@@ -498,39 +498,9 @@ class waypoint_router(Node):
         #             logger.error(f"No route found to destination {self.dst_idx + 1}: lat={self.dst_lat:.6f}, lon={self.dst_lon:.6f}")
         #             return
 
-        #         self.final_wps = self.generate_waypoints_from_route(self.segments, route, current_segment, wp_idx, self.dst_lat, self.dst_lon)
         #         logger.info(f"Generated final waypoints to destination {self.dst_idx + 1}: {len(self.final_wps)} points")
-        #         self.got_final_wps = 1
-
-        tf = self.get_map_to_base_transform()
-        if tf is None:
-            self.get_logger().warn("No TF map→base_link, skipping path publish")
-            return
-        
-        q = tf.transform.rotation
-        yaw = self.quaternion_to_yaw(q)
-
-        cos_yaw = math.cos(-yaw + math.radians(self.offset_degree))
-        sin_yaw = math.sin(-yaw + math.radians(self.offset_degree))
-
-        self.dst_lat = self.destinations[0][self.dst_idx]
-        self.dst_lon = self.destinations[1][self.dst_idx]
 
         current_segment, wp_idx, d = self.find_nearest_segment(self.segments, self.gps_lat, self.gps_lon)
-        goal_segment, _, _ = self.find_nearest_segment(self.segments, self.dst_lat, self.dst_lon)
-
-        # logger.info(f"current_segment={current_segment}, wp_idx={wp_idx}, goal_segment={goal_segment}")
-        # self.get_logger().info(f"current_segment={current_segment}, wp_idx={wp_idx}, goal_segment={goal_segment}")
-
-        START = current_segment
-        GOAL = goal_segment
-
-        # route, total_cost = self.dijkstra(self.segments, self.graph, START, GOAL)
-        # self.final_wps = self.generate_waypoints_from_route(self.segments, route, current_segment, wp_idx, self.dst_lat, self.dst_lon)
-        # crop_wps = self.crop_waypoints_by_distance(self.final_wps, self.gps_lat, self.gps_lon, max_distance=100.0)
-
-        crop_wps = self.load_waypoints_csv(self.WPS_FOLDER + "/gps_log2.csv")
-
         path_msg = Path()
         path_msg.header.frame_id = "base_link"
         path_msg.header.stamp = self.get_clock().now().to_msg()
